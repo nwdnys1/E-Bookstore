@@ -1,34 +1,74 @@
-// src/Bookstore.js
-import React from 'react';
-import { Card, Row, Col } from 'antd';
+import React, { useEffect, useState } from "react";
+import BookCarousel from "../components/carousel";
+import BookList from "../components/booklist";
+import {
+  getAllBooks,
+  getRecommendedBooks,
+  searchBooks,
+} from "../services/bookService";
+import { Input } from "antd";
 
-const { Meta } = Card;
+const { Search } = Input;
 
-const HomePage = () => {
-  const books = [
-    { title: "Book 1", description: "Description of Book 1", cover: "book1.jpg" },
-    { title: "Book 2", description: "Description of Book 2", cover: "book2.jpg" },
-    // Add more books as needed
-  ];
+const Home = () => {
+  const [allBooks, setAllBooks] = useState([]);
+  const [recommendedBooks, setRecommendedBooks] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    // 在页面加载时获取所有书籍数据和推荐书籍数据
+    fetchAllBooks();
+    fetchRecommendedBooks();
+  }, []);
+
+  const fetchAllBooks = async () => {
+    try {
+      const books = await getAllBooks();
+      setAllBooks(books);
+    } catch (error) {
+      console.error("Error fetching all books:", error);
+    }
+  };
+
+  const fetchRecommendedBooks = async () => {
+    try {
+      const books = await getRecommendedBooks();
+      setRecommendedBooks(books);
+    } catch (error) {
+      console.error("Error fetching recommended books:", error);
+    }
+  };
+
+  const handleSearch = async (keyword) => {
+    if (keyword.trim() === "") {
+      setSearchResults([]);
+    } else {
+      try {
+        const { items } = await searchBooks(keyword, 0, 10);
+        setSearchResults(items);
+      } catch (error) {
+        console.error("Error searching books:", error);
+      }
+    }
+  };
 
   return (
-    <div>
-      <h1>Welcome to Our Bookstore</h1>
-      <Row gutter={16}>
-        {books.map((book, index) => (
-          <Col span={8} key={index}>
-            <Card
-              hoverable
-              style={{ width: 240, marginBottom: 20 }}
-              cover={<img alt={book.title} src={book.cover} />}
-            >
-              <Meta title={book.title} description={book.description} />
-            </Card>
-          </Col>
-        ))}
-      </Row>
+    <div style={{padding:'20px',width:"80vw",margin:"0 auto"}}>
+      <Search
+        placeholder="Enter keywords"
+        onSearch={handleSearch}
+        style={{
+          width: "100%",
+          margin: "0 auto",
+          display: "block",
+          marginBottom: "20px",
+          marginTop: "0px",
+        }}
+      />
+      <BookCarousel books={recommendedBooks} />
+      <BookList books={searchResults.length > 0 ? searchResults : allBooks} />
     </div>
   );
 };
 
-export default HomePage;
+export default Home;
