@@ -13,7 +13,7 @@ const usePaginationHook = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 1050) {
+      if (window.innerWidth < 0) {
         setPaginationProps({
           ...paginationProps,
           showSizeChanger: false,

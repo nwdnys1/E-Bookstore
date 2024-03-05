@@ -58,6 +58,7 @@ const BookCarousel = () => {
                 padding: "0px",
                 display: "flex",
                 alignItems: "center",
+                border: "none",
               }}
               style={{
                 width: "98%",

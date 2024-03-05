@@ -14,6 +14,7 @@ const Home = () => {
   const [allBooks, setAllBooks] = useState([]);
   const [recommendedBooks, setRecommendedBooks] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const withButton = true;
 
   useEffect(() => {
     // 在页面加载时获取所有书籍数据和推荐书籍数据
@@ -55,8 +56,8 @@ const Home = () => {
   return (
     <div
       style={{
-        width: "70vw",
-        minWidth: "530px",
+        width: "65vw",
+        minWidth: "1000px",
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",
@@ -68,10 +69,11 @@ const Home = () => {
         onSearch={handleSearch}
         style={{
           margin: "20px 0",
+          width: "80%",
         }}
       />
       <BookCarousel books={recommendedBooks} />
-      <BookList books={allBooks.slice(0,5)} />
+      <BookList books={allBooks.slice(0,6)} withButton={withButton} />
     </div>
   );
 };

@@ -8,6 +8,7 @@ const { Search } = Input;
 const AllBooksPage = () => {
   const [allBooks, setAllBooks] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const withButton = false;
 
   useEffect(() => {
     // 在页面加载时获取所有书籍数据和推荐书籍数据
@@ -36,25 +37,30 @@ const AllBooksPage = () => {
     }
   };
   return (
-    <div
-      style={{
-        width: "70vw",
-        minWidth:"530px", // Add this line
-        margin: "0 auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Search
-        placeholder="输入书名、作者或关键词搜索书籍"
-        onSearch={handleSearch}
+    <div style={{ backgroundImage: `url(234.jpg)` }}>
+      <div
         style={{
-          width: "80%",
-          margin: "20px 0",
+          width: "70vw",
+          minWidth: "1000px", // Add this line
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
-      />
-      <BookList books={allBooks} />
+      >
+        <Search
+          placeholder="输入书名、作者或关键词搜索书籍"
+          onSearch={handleSearch}
+          style={{
+            width: "80%",
+            margin: "20px 0",
+          }}
+        />
+        <BookList
+          books={searchResults.length > 0 ? searchResults : allBooks}
+          withButton={withButton}
+        />
+      </div>
     </div>
   );
 };

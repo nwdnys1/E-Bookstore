@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { List, Card, Button, Typography, Space, Pagination } from "antd";
+import { List, Card, Button, Typography, Space, Image, Divider } from "antd";
 import {
   LikeOutlined,
   MessageOutlined,
@@ -28,7 +28,7 @@ export const ListLayout = ({ books }) => {
         <List.Item>
           <Card
             hoverable
-            bodyStyle={{ display: "flex", padding: "10px 15px" }}
+            bodyStyle={{ padding: "10px 15px" }}
             actions={[
               <IconText
                 icon={ShoppingCartOutlined}
@@ -47,95 +47,98 @@ export const ListLayout = ({ books }) => {
               />,
             ]}
           >
-            <div
-              className="book-info"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginRight: "10px",
-              }}
+            <Link
+              href={`/details/${book.id}`}
+              style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <Title
-                level={4}
-                style={{ margin: "0 0 3px 0px" }}
-                ellipsis={{ rows: 2 }}
-                title={book.title}
-              >
-                {book.title}
-              </Title>
-              <Title
-                type="secondary"
-                style={{ margin: "0 0 3px 0px", fontSize: "14px" }}
-              >
-                {book.author}
-              </Title>
-              <Paragraph
-                ellipsis={{
-                  rows: 6,
-                  expandable: true,
-                  symbol: "展开",
-                }}
+              <div
+                className="book-info"
                 style={{
-                  margin: "0 0 10px 0px",
-                  fontSize: "16px",
-                  textIndent: "1em",
+                  display: "flex",
+                  flexDirection: "column",
+                  marginRight: "10px",
                 }}
-                //title={book.description}
               >
-                {book.description}
-              </Paragraph>
-            </div>
+                <Title
+                  level={4}
+                  style={{ margin: "0 0 3px 0px" }}
+                  ellipsis={{ rows: 2 }}
+                  title={book.title}
+                >
+                  {book.title}
+                </Title>
+                <Title
+                  type="secondary"
+                  style={{ margin: "0 0 3px 0px", fontSize: "14px" }}
+                >
+                  {book.author}
+                </Title>
+                <Paragraph
+                  ellipsis={{
+                    rows: 6,
+                    expandable: true,
+                    symbol: "展开",
+                  }}
+                  style={{
+                    margin: "0 0 10px 0px",
+                    fontSize: "16px",
+                    textIndent: "1em",
+                  }}
+                >
+                  {book.description}
+                </Paragraph>
+              </div>
 
-            <img
-              src={book.image}
-              alt="Book Cover"
-              style={{
-                alignSelf: "center",
-                width: "12%",
-                minWidth: 120,
-                aspectRatio: "0.75/1",
-                borderRadius: "10px",
-                objectFit: "cover",
-                flex: "none",
-              }}
-            />
+              <img
+                src={"/" + book.image}
+                alt="Book Cover"
+                style={{
+                  alignSelf: "center",
+                  width: "12%",
+                  minWidth: 120,
+                  aspectRatio: "0.75/1",
+                  borderRadius: "10px",
+                  objectFit: "cover",
+                  flex: "none",
+                }}
+              />
+            </Link>
           </Card>
         </List.Item>
       )}
     />
   );
 };
-
 // 块状布局组件
 export const BlockLayout = ({ books }) => {
   return (
     <List
       grid={{
-        xs: 3,
-        sm: 3,
-        md: 3,
-        lg: 4,
-        xl: 5,
-        xxl: 6,
+        column: 6,
       }}
       pagination={{
         position: "bottom",
+        pageSize: 18,
         showTotal: (total, range) =>
           `${total} 项中的 ${range[0]}-${range[1]} 项 `,
       }}
       dataSource={books}
       renderItem={(book) => (
-        <List.Item style={{ padding: "0", margin: "0" }}>
+        <List.Item style={{ margin: "0" }}>
           <div
             style={{
-              width: "12%",
-              minWidth: 150,
-              aspectRatio: "0.45",
+              width: "90%",
+              minWidth: 100,
+              aspectRatio: "0.6",
               margin: "0 auto",
+              paddingBottom: "5px",
               marginTop: "15px",
+              borderRadius: "10px",
+              //border: "1px solid #f0f0f0",
+              backgroundColor: "#f5f5f5",
             }}
           >
-            <Link href={`/book/${book.id}`}>
+            <Link href={`/details/${book.id}`}>
               <Card
                 hoverable
                 key={book.id}
@@ -145,61 +148,161 @@ export const BlockLayout = ({ books }) => {
                 }}
                 bodyStyle={{ display: "none" }}
                 cover={
-                  <img
-                    alt="Book Cover"
-                    src={book.image}
-                    style={{
-                      width: "100%",
-                      aspectRatio: "3/4",
-                      objectFit: "cover",
-                      borderRadius: "7px",
-                    }}
-                  />
+                  <>
+                    <img
+                      alt="Book Cover"
+                      src={book.image}
+                      style={{
+                        width: "100%",
+                        aspectRatio: "3/4",
+                        objectFit: "cover",
+                        borderRadius: "7px",
+                      }}
+                    />
+                    <div
+                      style={{
+                        fontSize: "20px",
+                        width: "40px",
+                        position: "absolute",
+                        bottom: 3,
+                        right: 5,
+                        color: "yellow",
+                        textAlign: "right",
+                      }}
+                    >
+                      {book.rating.toFixed(1)}
+                    </div>
+                  </>
                 }
               ></Card>
             </Link>
-            
-            <Link href={`/book/${book.id}`}>
+            <div style={{ height: "70px" }}>
+              <Link href={`/details/${book.id}`}>
+                <Title
+                  style={{
+                    color: "blue",
+                    paddingBottom: "3px",
+                    margin: "3px 0px 0px 5px",
+                    fontSize: "14px",
+                  }}
+                  ellipsis={{ rows: 3 }}
+                >
+                  {book.title}
+                </Title>
+              </Link>
               <Title
                 style={{
-                  color: "blue",
+                  margin: "0 0 0px 5px",
+                  fontSize: "12px",
                   paddingBottom: "3px",
-                  margin: "0 0px 0px 5px",
-                  fontSize: "16px",
                 }}
-                ellipsis={{ rows: 2 }}
+                ellipsis={{ rows: 1 }}
               >
-                {book.title}
+                {book.author}
               </Title>
-            </Link>
-            <Title
-              style={{ margin: "0 0 0px 5px", fontSize: "12px" }}
-              ellipsis={{ rows: 2 }}
-            >
-              {book.author}
-            </Title>
-            <Card
+            </div>
+            <div
               style={{
-                boxShadow: "none",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
-              bordered={false}
-              bodyStyle={{ display: "none" }}
-              actions={[
-                <IconText
-                  icon={ShoppingCartOutlined}
-                  text="156"
-                  key="list-vertical-star-o"
-                />,
-                <IconText
-                  icon={LikeOutlined}
-                  text="156"
-                  key="list-vertical-like-o"
-                />,
-              ]}
-            />
+            >
+              <span
+                style={{
+                  fontSize: "15px",
+                  fontWeight: "bold",
+                  marginLeft: "5px",
+                }}
+              >
+                {book.price.toFixed(2) + "¥"}
+              </span>
+              <Button
+                icon={<ShoppingCartOutlined />}
+                style={{
+                  backgroundColor: "#f0f0f0",
+                  borderRadius: "5px",
+                  marginRight: "5px",
+                }}
+              />
+            </div>
           </div>
         </List.Item>
       )}
     />
+  );
+};
+export const DetailLayout = ({ book }) => {
+  const handleAddToCart = () => {
+    // 处理加入购物车逻辑
+  };
+
+  const handleBuyNow = () => {
+    // 处理立即购买逻辑
+  };
+  return (
+    <div style={{ background: "pink", display: "flex" }}>
+      <img
+        alt="Book Cover"
+        src={"/" + book.image}
+        style={{
+          width: "30%",
+          aspectRatio: "3/4",
+          margin: "5px",
+          borderRadius: "10px",
+          objectFit: "cover",
+        }}
+      />
+      <Card
+        bodyStyle={{
+          background: "yellow",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <Title level={1}>{book.title}</Title>
+        <Divider orientation="left">
+          <strong>作者：</strong>
+        </Divider>
+        <Paragraph>{book.author}</Paragraph>
+        <Divider orientation="left">
+          <strong>简介：</strong>
+        </Divider>
+        <Paragraph>{book.description}</Paragraph>
+        
+        <div>
+          <Paragraph>
+            价格：
+            {book.price.toFixed(2) + "¥"}
+          </Paragraph>
+        </div>
+
+        <Divider />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button type="primary" onClick={handleAddToCart}>
+            加入购物车
+          </Button>
+          <Button type="primary" onClick={handleBuyNow}>
+            立即购买
+          </Button>
+        </div>
+      </Card>
+    </div>
+  );
+};
+
+export const CommentLayout = ({ comments }) => {
+  return (
+    <div style={{ background: "lightblue", padding: "10px" }}>
+      <Title level={3}>评论</Title>
+      {comments.map((comment, index) => (
+        <Card key={index} style={{ margin: "10px 0" }}>
+          <Title level={5}>{comment.user}</Title>
+          <Paragraph>{comment.content}</Paragraph>
+        </Card>
+      ))}
+    </div>
   );
 };

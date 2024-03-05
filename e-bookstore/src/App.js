@@ -9,7 +9,7 @@ import OrderPage from "./pages/order";
 import RankPage from "./pages/rank";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
-
+import "./css/global.css";
 
 
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu } from "antd";
+import { Menu,Button } from "antd";
 import { Link } from "react-router-dom";
 import {
   BookOutlined,
@@ -10,6 +10,7 @@ import {
   ReadOutlined,
   ProfileOutlined,
   BarChartOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 
 const Navbar = () => {
@@ -17,7 +18,7 @@ const Navbar = () => {
     <Menu
       mode="horizontal"
       style={{
-        minWidth: "530px",
+        minWidth: "1000px",
         height: "60px",
         display: "flex",
         alignItems: "center",
@@ -42,6 +43,11 @@ const Navbar = () => {
       <Menu.Item key="stats" icon={<BarChartOutlined />}>
         <Link to="/rank">统计</Link>
       </Menu.Item>
+      <Menu.Item
+        key="profile"
+        icon={<UserOutlined />}
+      ></Menu.Item>
+
     </Menu>
   );
 };
