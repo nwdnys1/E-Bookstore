@@ -28,11 +28,12 @@ const BookCarousel = () => {
   return (
     <div
       style={{
-        width: "80vw",
-        maxWidth: "1000px",
+        width: "40vw",
+        minWidth: "400px",
         aspectRatio: "4/3",
         marginBottom: "20px",
         padding: "0px",
+        position: "relative",
       }}
     >
       <Carousel
@@ -45,83 +46,63 @@ const BookCarousel = () => {
           aspectRatio: "4/3",
           display: "grid",
           alignItems: "center",
-          background: "pink",
         }}
       >
         {recommendedBooks.map((book) => (
           <div key={book.id}>
             <Card
               hoverable
+              bodyStyle={{
+                width: "100%",
+                aspectRatio: "4/3",
+                padding: "0px",
+                display: "flex",
+                alignItems: "center",
+              }}
               style={{
-                position:"relative",
-                width: "95%",
+                width: "98%",
                 aspectRatio: "4/3",
                 margin: "0 auto",
                 backgroundColor: "grey",
-                textAlign: "center",
               }}
-              cover={
-                <img
-                  src={book.image}
-                  alt={book.title}
-                  style={{
-                    width: "100%",
-                    //maxHeight:"100%",
-                    //objectFit:"cover",
-                  }}
-                />
-              }
             >
-              <div style={{ position: "absolute", bottom: "0%", right: "0%" }}>
-                <Button
-                  onClick={handlePrev}
-                  style={{
-                    left: "-5px",
-                    width: "4vw",
-                    aspectRatio: "1/1",
-                    maxWidth: "30px",
-                    opacity: "0.3",
-                  }}
-                  icon={<LeftOutlined />}
-                />
-                <Button
-                  onClick={handleNext}
-                  style={{
-                    right: "0px",
-                    width: "4vw",
-                    maxWidth: "30px",
-                    opacity: "0.3",
-                  }}
-                  icon={<RightOutlined />}
-                />
-              </div>
-              {/* <Card.Meta
-              style={{display:"none"}}
-
-              // description={
-              //   <Paragraph
-              //     ellipsis={{rows:0 }}
-              //     style={{
-              //       margin: "0 0 20px 0px",
-              //       fontSize: "14px",
-              //       textIndent: "1em",
-              //     }}
-              //   >
-              //     {book.description}
-              //   </Paragraph>
-              // }
-              // style={{
-              //   width: "100%",
-              //   textAlign: "left",
-              //   background: "#f5f5f5",
-              //   margin: "0 auto",
-              //   padding: "0px",
-              // }}
-              /> */}
+              <img
+                src={book.image}
+                alt={book.title}
+                style={{
+                  width: "100%",
+                  aspectRatio: "4/3",
+                  objectFit: "cover",
+                  margin: "0 auto",
+                  borderRadius: "7px",
+                }}
+              />
             </Card>
           </div>
         ))}
       </Carousel>
+      <div style={{ position: "absolute", bottom: "2%", right: "2%" }}>
+        <Button
+          onClick={handlePrev}
+          style={{
+            left: "-5px",
+            width: "5vw",
+            maxWidth: "30px",
+            opacity: "0.5",
+          }}
+          icon={<LeftOutlined />}
+        />
+        <Button
+          onClick={handleNext}
+          style={{
+            right: "0px",
+            width: "5vw", 
+            maxWidth: "30px",
+            opacity: "0.5",
+          }}
+          icon={<RightOutlined />}
+        />
+      </div>
     </div>
   );
 };

@@ -1,30 +1,62 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import BookList from "../components/booklist";
+import { getAllBooks, searchBooks } from "../services/bookService";
+import { Input } from "antd";
 
-const BookDetailPage = () => {
-    const book = {
-        title: "React入门指南",
-        author: "张三",
-        description: "这本书是关于React入门的指南，适合初学者阅读。",
-        image: "1.jpg"
-    };
+const { Search } = Input;
 
-    return (
-        <div style={{ display: "flex", alignItems: "center" }}>
-            {/* 图片 */}
-            <img
-                src={book.image}
-                alt="Book Cover"
-                style={{ width: 200, height: 300, objectFit: "cover", marginRight: 20 }}
-            />
-            {/* 书籍信息 */}
-            <div>
-                <h1>{book.title}</h1>
-                <h3>作者：{book.author}</h3>
-                <p>{book.description}</p>
-                <button>购买</button>
-            </div>
-        </div>
-    );
+const AllBooksPage = () => {
+  const [allBooks, setAllBooks] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    // 在页面加载时获取所有书籍数据和推荐书籍数据
+    fetchAllBooks();
+  }, []);
+
+  const fetchAllBooks = async () => {
+    try {
+      const books = await getAllBooks();
+      setAllBooks(books);
+    } catch (error) {
+      console.error("Error fetching all books:", error);
+    }
+  };
+
+  const handleSearch = async (keyword) => {
+    if (keyword.trim() === "") {
+      setSearchResults([]);
+    } else {
+      try {
+        const { items } = await searchBooks(keyword, 0, 10);
+        setSearchResults(items);
+      } catch (error) {
+        console.error("Error searching books:", error);
+      }
+    }
+  };
+  return (
+    <div
+      style={{
+        width: "70vw",
+        minWidth:"530px", // Add this line
+        margin: "0 auto",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Search
+        placeholder="输入书名、作者或关键词搜索书籍"
+        onSearch={handleSearch}
+        style={{
+          width: "80%",
+          margin: "20px 0",
+        }}
+      />
+      <BookList books={allBooks} />
+    </div>
+  );
 };
 
-export default BookDetailPage;
+export default AllBooksPage;

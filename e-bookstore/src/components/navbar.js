@@ -17,7 +17,7 @@ const Navbar = () => {
     <Menu
       mode="horizontal"
       style={{
-        minWidth: "350px",
+        minWidth: "530px",
         height: "60px",
         display: "flex",
         alignItems: "center",

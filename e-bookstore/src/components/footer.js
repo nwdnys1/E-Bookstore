@@ -13,7 +13,7 @@ const CustomFooter = () => {
         margin: "0 auto",
         marginBottom: "40px",
         height: "20px",
-        minWidth: "350px",
+        minWidth: "530px",
       }}
     >
       <p>© 2024 E-BOOKSTORE</p>

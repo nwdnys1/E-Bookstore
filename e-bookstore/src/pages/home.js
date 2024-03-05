@@ -55,7 +55,8 @@ const Home = () => {
   return (
     <div
       style={{
-        width: "80vw",
+        width: "70vw",
+        minWidth: "530px",
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",
@@ -70,7 +71,7 @@ const Home = () => {
         }}
       />
       <BookCarousel books={recommendedBooks} />
-      <BookList books={searchResults.length > 0 ? searchResults : allBooks} />
+      <BookList books={allBooks.slice(0,5)} />
     </div>
   );
 };
