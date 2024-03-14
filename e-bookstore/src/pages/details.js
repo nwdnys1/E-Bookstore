@@ -8,7 +8,9 @@ const DetailPage = () => {
   let { id } = useParams();
 
   const book = booksData.books.find((book) => book.id === parseInt(id, 10));
-
+  const comments = booksData.comments.filter(
+    (comment) => comment.bookId === parseInt(id, 10)
+  );
   return (
     <Layout
       style={{
@@ -16,10 +18,11 @@ const DetailPage = () => {
         minWidth: "1000px",
         padding: "10px",
         margin: "auto",
+        backgroundColor: "white",
       }}
     >
       <DetailLayout book={book} />
-      <CommentLayout comments={book.comments} />
+      <CommentLayout comments={comments} />
     </Layout>
   );
 };

@@ -50,6 +50,7 @@ const BookCarousel = () => {
       >
         {recommendedBooks.map((book) => (
           <div key={book.id}>
+            <a href={`/details/${book.id}`} >
             <Card
               hoverable
               bodyStyle={{
@@ -79,6 +80,7 @@ const BookCarousel = () => {
                 }}
               />
             </Card>
+            </a>
           </div>
         ))}
       </Carousel>

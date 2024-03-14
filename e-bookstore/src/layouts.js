@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { List, Card, Button, Typography, Space, Image, Divider } from "antd";
-import {
-  LikeOutlined,
-  MessageOutlined,
-  ShoppingCartOutlined,
-} from "@ant-design/icons";
+import { List, Card, Button, Typography, Image, Divider, Tabs } from "antd";
+import { ShoppingCartOutlined, PayCircleOutlined } from "@ant-design/icons";
 import usePaginationHook from "./components/paginationResize";
-import Link from "antd/es/typography/Link";
+import BookListItem from "./components/book_listitem";
+import BookInfoCard from "./components/book_card";
+import CommentList from "./components/comment_list";
+import CommentBox from "./components/comment_box";
 const { Title, Paragraph } = Typography;
 
-const IconText = ({ icon, text }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-);
-
-// 列表布局组件
 export const ListLayout = ({ books }) => {
   const paginationProps = usePaginationHook();
   return (
@@ -26,90 +17,13 @@ export const ListLayout = ({ books }) => {
       dataSource={books}
       renderItem={(book) => (
         <List.Item>
-          <Card
-            hoverable
-            bodyStyle={{ padding: "10px 15px" }}
-            actions={[
-              <IconText
-                icon={ShoppingCartOutlined}
-                text="156"
-                key="list-vertical-star-o"
-              />,
-              <IconText
-                icon={LikeOutlined}
-                text="156"
-                key="list-vertical-like-o"
-              />,
-              <IconText
-                icon={MessageOutlined}
-                text="2"
-                key="list-vertical-message"
-              />,
-            ]}
-          >
-            <Link
-              href={`/details/${book.id}`}
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <div
-                className="book-info"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginRight: "10px",
-                }}
-              >
-                <Title
-                  level={4}
-                  style={{ margin: "0 0 3px 0px" }}
-                  ellipsis={{ rows: 2 }}
-                  title={book.title}
-                >
-                  {book.title}
-                </Title>
-                <Title
-                  type="secondary"
-                  style={{ margin: "0 0 3px 0px", fontSize: "14px" }}
-                >
-                  {book.author}
-                </Title>
-                <Paragraph
-                  ellipsis={{
-                    rows: 6,
-                    expandable: true,
-                    symbol: "展开",
-                  }}
-                  style={{
-                    margin: "0 0 10px 0px",
-                    fontSize: "16px",
-                    textIndent: "1em",
-                  }}
-                >
-                  {book.description}
-                </Paragraph>
-              </div>
-
-              <img
-                src={"/" + book.image}
-                alt="Book Cover"
-                style={{
-                  alignSelf: "center",
-                  width: "12%",
-                  minWidth: 120,
-                  aspectRatio: "0.75/1",
-                  borderRadius: "10px",
-                  objectFit: "cover",
-                  flex: "none",
-                }}
-              />
-            </Link>
-          </Card>
+          <BookListItem book={book} />
         </List.Item>
       )}
     />
   );
 };
-// 块状布局组件
+
 export const BlockLayout = ({ books }) => {
   return (
     <List
@@ -125,113 +39,13 @@ export const BlockLayout = ({ books }) => {
       dataSource={books}
       renderItem={(book) => (
         <List.Item style={{ margin: "0" }}>
-          <div
-            style={{
-              width: "90%",
-              minWidth: 100,
-              aspectRatio: "0.6",
-              margin: "0 auto",
-              paddingBottom: "5px",
-              marginTop: "15px",
-              borderRadius: "10px",
-              //border: "1px solid #f0f0f0",
-              backgroundColor: "#f5f5f5",
-            }}
-          >
-            <Link href={`/details/${book.id}`}>
-              <Card
-                hoverable
-                key={book.id}
-                style={{
-                  width: "100%",
-                  aspectRatio: "0.75/1",
-                }}
-                bodyStyle={{ display: "none" }}
-                cover={
-                  <>
-                    <img
-                      alt="Book Cover"
-                      src={book.image}
-                      style={{
-                        width: "100%",
-                        aspectRatio: "3/4",
-                        objectFit: "cover",
-                        borderRadius: "7px",
-                      }}
-                    />
-                    <div
-                      style={{
-                        fontSize: "20px",
-                        width: "40px",
-                        position: "absolute",
-                        bottom: 3,
-                        right: 5,
-                        color: "yellow",
-                        textAlign: "right",
-                      }}
-                    >
-                      {book.rating.toFixed(1)}
-                    </div>
-                  </>
-                }
-              ></Card>
-            </Link>
-            <div style={{ height: "70px" }}>
-              <Link href={`/details/${book.id}`}>
-                <Title
-                  style={{
-                    color: "blue",
-                    paddingBottom: "3px",
-                    margin: "3px 0px 0px 5px",
-                    fontSize: "14px",
-                  }}
-                  ellipsis={{ rows: 3 }}
-                >
-                  {book.title}
-                </Title>
-              </Link>
-              <Title
-                style={{
-                  margin: "0 0 0px 5px",
-                  fontSize: "12px",
-                  paddingBottom: "3px",
-                }}
-                ellipsis={{ rows: 1 }}
-              >
-                {book.author}
-              </Title>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "15px",
-                  fontWeight: "bold",
-                  marginLeft: "5px",
-                }}
-              >
-                {book.price.toFixed(2) + "¥"}
-              </span>
-              <Button
-                icon={<ShoppingCartOutlined />}
-                style={{
-                  backgroundColor: "#f0f0f0",
-                  borderRadius: "5px",
-                  marginRight: "5px",
-                }}
-              />
-            </div>
-          </div>
+          <BookInfoCard book={book} />
         </List.Item>
       )}
     />
   );
 };
+
 export const DetailLayout = ({ book }) => {
   const handleAddToCart = () => {
     // 处理加入购物车逻辑
@@ -241,13 +55,14 @@ export const DetailLayout = ({ book }) => {
     // 处理立即购买逻辑
   };
   return (
-    <div style={{ background: "pink", display: "flex" }}>
-      <img
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <Image
         alt="Book Cover"
         src={"/" + book.image}
         style={{
-          width: "30%",
+          width: "300px",
           aspectRatio: "3/4",
+          margin: "0 auto",
           margin: "5px",
           borderRadius: "10px",
           objectFit: "cover",
@@ -255,36 +70,63 @@ export const DetailLayout = ({ book }) => {
       />
       <Card
         bodyStyle={{
-          background: "yellow",
-          height: "100%",
+          // background: "yellow",
+          minHeight: "400px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          padding: "5px 25px",
         }}
       >
-        <Title level={1}>{book.title}</Title>
-        <Divider orientation="left">
-          <strong>作者：</strong>
+        <Title style={{ margin: "5px" }} level={2}>
+          {book.title}
+        </Title>
+        <Divider orientation="left" style={{ margin: "0px" }}>
+          <strong>作者</strong>
         </Divider>
-        <Paragraph>{book.author}</Paragraph>
-        <Divider orientation="left">
-          <strong>简介：</strong>
+        <Paragraph style={{ textIndent: "2em" }}>{book.author}</Paragraph>
+        <Divider orientation="left" style={{ margin: "0px" }}>
+          <strong>简介</strong>
         </Divider>
-        <Paragraph>{book.description}</Paragraph>
-        
-        <div>
+        <Paragraph
+          style={{ textIndent: "2em" }}
+          ellipsis={{
+            rows: 4,
+            expandable: true,
+            symbol: "展开",
+          }}
+        >
+          {book.description}
+        </Paragraph>
+
+        <div style={{ minHeight: "60px" }}>
           <Paragraph>
             价格：
             {book.price.toFixed(2) + "¥"}
           </Paragraph>
         </div>
 
-        <Divider />
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button type="primary" onClick={handleAddToCart}>
+        <Divider style={{ margin: "0 0 5px 0" }} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            // background: "red",
+          }}
+        >
+          <Button
+            type="primary"
+            icon={<ShoppingCartOutlined />}
+            onClick={handleAddToCart}
+            style={{ marginRight: "10px" }}
+          >
             加入购物车
           </Button>
-          <Button type="primary" onClick={handleBuyNow}>
+          <Button
+            type="primary"
+            icon={<PayCircleOutlined />}
+            onClick={handleBuyNow}
+          >
             立即购买
           </Button>
         </div>
@@ -294,15 +136,29 @@ export const DetailLayout = ({ book }) => {
 };
 
 export const CommentLayout = ({ comments }) => {
+  const { TabPane } = Tabs;
+
+  const [activeTab, setActiveTab] = useState("latest");
+
+  const handleTabChange = (key) => {
+    setActiveTab(key);
+  };
+
   return (
-    <div style={{ background: "lightblue", padding: "10px" }}>
-      <Title level={3}>评论</Title>
-      {comments.map((comment, index) => (
-        <Card key={index} style={{ margin: "10px 0" }}>
-          <Title level={5}>{comment.user}</Title>
-          <Paragraph>{comment.content}</Paragraph>
-        </Card>
-      ))}
+    <div style={{ padding: "10px" }}>
+      <Divider>书籍评论</Divider>
+      <CommentBox />
+      <Tabs activeKey={activeTab} onChange={handleTabChange}>
+        <TabPane tab="最新评论" key="latest">
+          <CommentList comments={comments} />
+        </TabPane>
+        <TabPane tab="最热评论" key="hottest">
+          <CommentList comments={comments} />
+        </TabPane>
+        <TabPane tab="最多回复" key="mostReplies">
+          <CommentList comments={comments} />
+        </TabPane>
+      </Tabs>
     </div>
   );
 };
