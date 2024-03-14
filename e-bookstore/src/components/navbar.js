@@ -1,54 +1,80 @@
 import React from "react";
-import { Menu,Button } from "antd";
+import { Menu, Layout, Row } from "antd";
 import { Link } from "react-router-dom";
 import {
   BookOutlined,
   HomeOutlined,
   ShoppingCartOutlined,
   UnorderedListOutlined,
-  OrderedListOutlined,
   ReadOutlined,
-  ProfileOutlined,
   BarChartOutlined,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
+import SearchBox from "./searchbox";
+const { Header } = Layout;
+
+const Items = [
+  { key: "logo", icon: <BookOutlined />, label: "BOOKSTORE", link: "/" },
+  { key: "home", icon: <HomeOutlined />, label: "首页", link: "/" },
+  {
+    key: "allBooks",
+    icon: <ReadOutlined />,
+    label: "所有书籍",
+    link: "/allbooks",
+  },
+  {
+    key: "cart",
+    icon: <ShoppingCartOutlined />,
+    label: "购物车",
+    link: "/cart",
+  },
+  {
+    key: "order",
+    icon: <UnorderedListOutlined />,
+    label: "订单",
+    link: "/order",
+  },
+  { key: "stats", icon: <BarChartOutlined />, label: "统计", link: "/rank" },
+];
+
+const navItems = Items.map((item) => ({
+  key: item.key,
+  icon: item.icon,
+  label: <Link to={item.link}>{item.label}</Link>,
+}));
 
 const Navbar = () => {
   return (
-    <Menu
-      mode="horizontal"
+    <Header
       style={{
-        minWidth: "1000px",
-        height: "60px",
-        display: "flex",
-        alignItems: "center",
         backgroundColor: "#f5f5f5",
+        position: "sticky",
+        top: 0,
+        zIndex: 999,
+        padding: "0",
       }}
     >
-      <Menu.Item key="logo" icon={<BookOutlined />}>
-        BOOKSTORE
-      </Menu.Item>
-      <Menu.Item key="home" icon={<HomeOutlined />}>
-        <Link to="/">首页</Link>
-      </Menu.Item>
-      <Menu.Item key="allBooks" icon={<ReadOutlined />}>
-        <Link to="/allbooks">所有书籍</Link>
-      </Menu.Item>
-      <Menu.Item key="cart" icon={<ShoppingCartOutlined />}>
-        <Link to="/cart">购物车</Link>
-      </Menu.Item>
-      <Menu.Item key="order" icon={<OrderedListOutlined />}>
-        <Link to="/order">订单</Link>
-      </Menu.Item>
-      <Menu.Item key="stats" icon={<BarChartOutlined />}>
-        <Link to="/rank">统计</Link>
-      </Menu.Item>
-      <Menu.Item
-        key="profile"
-        icon={<UserOutlined />}
-      ></Menu.Item>
-
-    </Menu>
+      <Row justify={"space-between"}>
+        <Menu
+          mode="horizontal"
+          style={{
+            width: "600px",
+            backgroundColor: "#f5f5f5",
+          }}
+          items={navItems}
+        ></Menu>
+        <Row>
+          <Row align="middle">
+            <SearchBox />
+          </Row>
+          <Menu mode="horizontal" style={{ backgroundColor: "#f5f5f5" }}>
+            <Menu.Item key="user" icon={<UserOutlined />}>
+              <Link to="/user">用户</Link>
+            </Menu.Item>
+          </Menu>
+        </Row>
+      </Row>
+    </Header>
   );
 };
 

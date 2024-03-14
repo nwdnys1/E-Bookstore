@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
-import { Button } from 'antd';
+import React, { useState } from "react";
+import { Button, Segmented } from "antd";
+import { Link } from "react-router-dom";
+import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
-const SwitchButton = () => {
-  const [layout, setLayout] = useState('list');
-
-  const toggleLayout = (newLayout) => {
-    setLayout(newLayout);
-  };
-
+const SwitchButton = ({ handleChange }) => {
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Button onClick={() => toggleLayout('list')} style={{ opacity: layout === 'list' ? 1 : 0.5 }}>
-        List
-      </Button>
-      <Button onClick={() => toggleLayout('block')} style={{ opacity: layout === 'block' ? 1 : 0.5 }}>
-        Block
-      </Button>
-    </div>
+    <Segmented
+      defaultValue="list"
+      onChange={handleChange}
+      size="large"
+      options={[
+        {
+          value: "list",
+          icon: <BarsOutlined />,
+        },
+        {
+          value: "block",
+          icon: <AppstoreOutlined />,
+        },
+      ]}
+    />
   );
 };
 

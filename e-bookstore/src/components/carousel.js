@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Carousel, Card, Button, Typography } from "antd";
+import { Carousel, Card, Button, Typography, Row } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { getRecommendedBooks } from "../services/bookService"; // 导入书籍相关的服务函数
+import CarouselButton from "./carousel_btn";
+import CarouselCard from "./carousel_card";
+import { Link } from "react-router-dom";
 
 const { Paragraph } = Typography;
 
@@ -28,84 +31,28 @@ const BookCarousel = () => {
   return (
     <div
       style={{
-        width: "40vw",
-        minWidth: "400px",
-        aspectRatio: "4/3",
-        marginBottom: "20px",
-        padding: "0px",
+        maxWidth: "600px",
+        width: "40%",
         position: "relative",
       }}
     >
-      <Carousel
-        id="carousel"
-        effect="fade"
-        ref={carouselRef}
-        autoplay
-        style={{
-          width: "100%",
-          aspectRatio: "4/3",
-          display: "grid",
-          alignItems: "center",
-        }}
-      >
+      <Carousel effect="fade" ref={carouselRef} autoplay>
         {recommendedBooks.map((book) => (
-          <div key={book.id}>
-            <a href={`/details/${book.id}`} >
-            <Card
-              hoverable
-              bodyStyle={{
-                width: "100%",
-                aspectRatio: "4/3",
-                padding: "0px",
-                display: "flex",
-                alignItems: "center",
-                border: "none",
-              }}
-              style={{
-                width: "98%",
-                aspectRatio: "4/3",
-                margin: "0 auto",
-                backgroundColor: "grey",
-              }}
-            >
-              <img
-                src={book.image}
-                alt={book.title}
-                style={{
-                  width: "100%",
-                  aspectRatio: "4/3",
-                  objectFit: "cover",
-                  margin: "0 auto",
-                  borderRadius: "7px",
-                }}
-              />
-            </Card>
-            </a>
-          </div>
+          <CarouselCard book={book} />
         ))}
       </Carousel>
-      <div style={{ position: "absolute", bottom: "2%", right: "2%" }}>
-        <Button
-          onClick={handlePrev}
-          style={{
-            left: "-5px",
-            width: "5vw",
-            maxWidth: "30px",
-            opacity: "0.5",
-          }}
-          icon={<LeftOutlined />}
-        />
-        <Button
-          onClick={handleNext}
-          style={{
-            right: "0px",
-            width: "5vw", 
-            maxWidth: "30px",
-            opacity: "0.5",
-          }}
-          icon={<RightOutlined />}
-        />
-      </div>
+      <CarouselButton handlePrev={handlePrev} handleNext={handleNext} />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          height: "40px",
+          background: `rgba(255, 255, 255, 0)`,
+          backdropFilter: "blur(2px)",
+          zIndex: 1,
+        }}
+      ></div>
     </div>
   );
 };

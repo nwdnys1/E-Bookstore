@@ -16,7 +16,7 @@ import "./css/global.css";
 const App = () => {
   return (
     <Router>
-      <Navbar />
+
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={ <HomePage/>} />
@@ -26,7 +26,7 @@ const App = () => {
         <Route path="/order" element={<OrderPage />} />
         <Route path="/rank" element={<RankPage />} />
       </Routes>
-      <Footer />
+
     </Router>
   );
 };

@@ -1,29 +1,25 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import booksData from "../books.json";
-import { Layout } from "antd";
-import { DetailLayout, CommentLayout } from "../layouts";
+import { Flex, Layout } from "antd";
+import { BookDetails } from "../components/book_details";
+import { BookComments } from "../components/book_comments";
+import { BasicLayout } from "../layouts";
 
 const DetailPage = () => {
   let { id } = useParams();
 
-  const book = booksData.books.find((book) => book.id === parseInt(id, 10));
+  const book = booksData.books.find((book) => book.id === parseInt(id, 10)); //同步方法
   const comments = booksData.comments.filter(
     (comment) => comment.bookId === parseInt(id, 10)
   );
   return (
-    <Layout
-      style={{
-        width: "70vw",
-        minWidth: "1000px",
-        padding: "10px",
-        margin: "auto",
-        backgroundColor: "white",
-      }}
-    >
-      <DetailLayout book={book} />
-      <CommentLayout comments={comments} />
-    </Layout>
+    <BasicLayout>
+      <Flex vertical align="center">
+        <BookDetails book={book} />
+        <BookComments comments={comments} />
+      </Flex>
+    </BasicLayout>
   );
 };
 

@@ -7,13 +7,7 @@ const CustomFooter = () => {
   return (
     <Footer
       style={{
-        backgroundColor: "white",
         textAlign: "center",
-        padding: "0",
-        margin: "0 auto",
-        marginBottom: "40px",
-        height: "20px",
-        minWidth: "1000px",
       }}
     >
       <p>© 2024 E-BOOKSTORE</p>

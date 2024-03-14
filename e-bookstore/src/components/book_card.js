@@ -1,112 +1,99 @@
-import React from 'react';
-import { Card, Button } from 'antd';
-import { ShoppingCartOutlined } from '@ant-design/icons';
-import Link from "antd/es/typography/Link";
-import { Typography } from 'antd';
+import React from "react";
+import { Card, Button, Flex, Row } from "antd";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+
+import { Typography } from "antd";
+import { Link } from "react-router-dom";
 
 const { Title } = Typography;
 
-const BookInfoCard = ({ book }) => {
+const BookCard = ({ book }) => {
   return (
-    <div
-      style={{
-        width: '90%',
-        minWidth: 100,
-        aspectRatio: '0.6',
-        margin: '0 auto',
-        paddingBottom: '5px',
-        marginTop: '15px',
-        borderRadius: '10px',
-        backgroundColor: '#f5f5f5',
-      }}
-    >
-      <Link href={`/details/${book.id}`}>
+    <Flex vertical>
+      <Link to={`/details/${book.id}`}>
         <Card
-          hoverable
-          key={book.id}
-          style={{ width: '100%', aspectRatio: '0.75/1' }}
-          bodyStyle={{ display: 'none' }}
+          bordered={false}
+          bodyStyle={{ display: "none" }}
           cover={
             <>
               <img
-                alt="Book Cover"
+                alt={book.title}
                 src={book.image}
                 style={{
-                  width: '100%',
-                  aspectRatio: '3/4',
-                  objectFit: 'cover',
-                  borderRadius: '7px',
+                  aspectRatio: "3/4",
+                  objectFit: "cover",
+                  borderRadius: "5px",
                 }}
               />
-              <div
+              <Button
+                type="primary"
+                icon={<ShoppingCartOutlined />}
                 style={{
-                  fontSize: '20px',
-                  width: '40px',
-                  position: 'absolute',
+                  width: "30px",
+                  position: "absolute",
+                  left: 0,
+                  bottom: 0,
+                  zIndex: 1,
+                }}
+              />
+              <Row
+                style={{
+                  width: "100%",
+                  position: "absolute",
                   bottom: 3,
                   right: 5,
-                  color: 'yellow',
-                  textAlign: 'right',
+                  color: "orange",
+                  fontSize: "20px",
+                  textAlign: "right",
+                  zIndex: 1,
                 }}
               >
                 {book.rating.toFixed(1)}
-              </div>
+              </Row>
             </>
           }
-        ></Card>
+        />
       </Link>
-      <div style={{ height: '70px' }}>
-        <Link href={`/details/${book.id}`}>
+      <Flex vertical style={{ height: "80px", padding: 3 }}>
+        <Link to={`/details/${book.id}`}>
+          <Row>
+            <Title
+              style={{
+                color: "blue",
+                fontSize: "14px",
+                margin: 0,
+              }}
+              ellipsis={{ rows: 2 }}
+            >
+              {book.title}
+            </Title>
+          </Row>
+        </Link>
+        <Row>
           <Title
             style={{
-              color: 'blue',
-              paddingBottom: '3px',
-              margin: '3px 0px 0px 5px',
-              fontSize: '14px',
+              fontSize: "12px",
+              margin: "0",
             }}
-            ellipsis={{ rows: 3 }}
+            ellipsis={{ rows: 1 }}
           >
-            {book.title}
+            {book.author}
           </Title>
-        </Link>
-        <Title
-          style={{
-            margin: '0 0 0px 5px',
-            fontSize: '12px',
-            paddingBottom: '3px',
-          }}
-          ellipsis={{ rows: 1 }}
-        >
-          {book.author}
-        </Title>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <span
-          style={{
-            fontSize: '15px',
-            fontWeight: 'bold',
-            marginLeft: '5px',
-          }}
-        >
-          {book.price.toFixed(2) + '¥'}
-        </span>
-        <Button
-          icon={<ShoppingCartOutlined />}
-          style={{
-            backgroundColor: '#f0f0f0',
-            borderRadius: '5px',
-            marginRight: '5px',
-          }}
-        />
-      </div>
-    </div>
+        </Row>
+        <Row>
+          <span
+            style={{
+              fontSize: "14px",
+              fontWeight: "bold",
+              margin: 0,
+            }}
+          >
+            {book.price.toFixed(2) + "¥"}
+          </span>
+        </Row>
+      </Flex>
+    </Flex>
   );
 };
 
-export default BookInfoCard;
+export default BookCard;
