@@ -4,7 +4,6 @@ import { UserOutlined, LikeOutlined, MessageOutlined } from "@ant-design/icons";
 const { Panel } = Collapse;
 
 const CommentList = ({ comments }) => {
-//   const { user, content, time, likes, replies } = comment;
   return (
     <List
       dataSource={comments}

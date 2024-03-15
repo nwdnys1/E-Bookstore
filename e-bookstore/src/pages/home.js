@@ -14,7 +14,7 @@ const Home = () => {
 
   return (
     <BasicLayout>
-      <Flex vertical align="center" style={{ marginTop: 20 }}>
+      <Flex vertical align="center">
         <BookCarousel books={recommendedBooks} />
         <BookDisplay books={recommendedBooks} withButton />
       </Flex>

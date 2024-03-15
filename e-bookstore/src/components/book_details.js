@@ -1,7 +1,8 @@
 import { PayCircleOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Divider, Flex, Image, Row, Typography } from "antd";
 import BookInfo from "./book_info";
-import BookRating from "./book_rating";
+
+const { Title, Paragraph } = Typography;
 
 export const BookDetails = ({ book }) => {
   const handleAddToCart = () => {
@@ -12,13 +13,23 @@ export const BookDetails = ({ book }) => {
     // 处理立即购买逻辑
   };
   return (
-    <Flex vertical style={{ width: "75%" }}>
+    <Flex vertical style={{ width: "65%", minWidth: 800 }}>
       <BookInfo book={book} />
-      <Divider orientation="left" style={{ margin: "10px 0" }} />
-      <Row justify={"center"}>
-        {book.description}
+      <Divider style={{ margin: "5px 0" }} />
+      <Row>
+        <Paragraph
+          style={{ textIndent: "2em" }}
+          ellipsis={{
+            rows: 4,
+            expandable: true,
+            symbol: "展开",
+          }}
+        >
+          {book.description}
+        </Paragraph>
       </Row>
-      <Row justify={"center"}>
+      <Divider style={{ margin: "10px 0" }} />
+      <Row justify={"end"}>
         <Button
           type="primary"
           icon={<ShoppingCartOutlined />}

@@ -14,7 +14,8 @@ const BookDisplay = ({ books, withButton }) => {
       vertical
       style={{
         padding: "0 30px",
-        maxWidth: "1200px",
+        width: "65%",
+        minWidth: 800,
       }}
       gap={20}
     >

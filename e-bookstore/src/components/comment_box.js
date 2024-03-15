@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, Avatar, Rate } from "antd";
+import { Input, Button, Avatar, Rate, Row, Col, Space } from "antd";
 
 const CommentBox = ({ onAddComment }) => {
   const [commentText, setCommentText] = useState("");
@@ -26,24 +26,20 @@ const CommentBox = ({ onAddComment }) => {
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <Avatar src="https://example.com/avatar.jpg" size="large" />
+    <Row align={"middle"} justify={"space-evenly"}>
+      <Avatar src="/1.jpg" size="large" />
       <Input.TextArea
         rows={2}
         placeholder="请输入您的评论"
         value={commentText}
         onChange={handleInputChange}
-        style={{ marginLeft: 16, flex: 1 }}
+        style={{ flex: 1 }}
       />
-      <Rate
-        value={rating}
-        onChange={handleRatingChange}
-        style={{ marginLeft: 16 }}
-      />
-      <Button type="primary" onClick={handleSubmit} style={{ marginLeft: 16 }}>
+      <Rate value={rating} onChange={handleRatingChange} />
+      <Button type="primary" onClick={handleSubmit}>
         提交评论
       </Button>
-    </div>
+    </Row>
   );
 };
 

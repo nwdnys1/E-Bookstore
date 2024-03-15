@@ -21,5 +21,10 @@ export const getRecommendedBooks = async () => {
 // 在 services/bookService.js 文件中
 
 export const getAllBooks = async () => {
-    return Data.books; // 假设 allBooks.json 中的顶层属性名称为 books
-  };
+  return Data.books; // 假设 allBooks.json 中的顶层属性名称为 books
+};
+
+export const getBookComments = async (bookId) => {
+  // 模拟从本地 JSON 文件获取书籍评论数据
+  return Data.comments.filter((comment) => comment.bookId === parseInt(bookId));
+};
