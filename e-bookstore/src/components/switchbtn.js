@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import { Button, Segmented } from "antd";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Segmented } from "antd";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
 const SwitchButton = ({ handleChange }) => {
   return (
     <Segmented
-      defaultValue="list"
+      defaultValue="block"
       onChange={handleChange}
       size="large"
       options={[
         {
-          value: "list",
-          icon: <BarsOutlined />,
-        },
-        {
           value: "block",
           icon: <AppstoreOutlined />,
+        },
+        {
+          value: "list",
+          icon: <BarsOutlined />,
         },
       ]}
     />

@@ -52,8 +52,8 @@ const CommentList = ({ comments }) => {
       )}
       pagination={{
         pageSize: 5,
-        showSizeChanger: false,
-        position: "bottom",
+        showSizeChanger: true,
+        position: "top",
       }}
     />
   );

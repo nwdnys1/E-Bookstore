@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import booksData from "../books.json";
-import { Flex, Layout } from "antd";
+import { Flex } from "antd";
 import { BookDetails } from "../components/book_details";
 import { BookComments } from "../components/book_comments";
 import { BasicLayout } from "../layouts";

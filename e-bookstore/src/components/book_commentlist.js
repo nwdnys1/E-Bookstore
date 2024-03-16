@@ -3,7 +3,6 @@ import CommentList from "./comment_list";
 import { getBookComments } from "../services/bookService";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import data from "../books.json";
 
 const { TabPane } = Tabs;
 
@@ -16,7 +15,7 @@ const BookCommentList = ({ sortBy, handleTabChange }) => {
     });
   }, []);
   if (sortBy === "latest") {
-    comments.sort((a, b) => b.time - a.time);
+    comments.sort((a, b) => new Date(a.time) - new Date(b.time));
   }
   if (sortBy === "hottest") {
     comments.sort((a, b) => b.likes - a.likes);
@@ -27,12 +26,13 @@ const BookCommentList = ({ sortBy, handleTabChange }) => {
 
   return (
     <Tabs activeKey={sortBy} onChange={handleTabChange}>
-      <TabPane tab="最新评论" key="latest">
-        <CommentList comments={comments} />
-      </TabPane>
       <TabPane tab="最热评论" key="hottest">
         <CommentList comments={comments} />
       </TabPane>
+      <TabPane tab="最新评论" key="latest">
+        <CommentList comments={comments} />
+      </TabPane>
+
       <TabPane tab="最多回复" key="mostReplies">
         <CommentList comments={comments} />
       </TabPane>

@@ -5,15 +5,14 @@ import CommentBox from "./comment_box";
 import BookCommentList from "./book_commentlist";
 
 export const BookComments = () => {
-
-  const [sortBy, setSortBy] = useState("latest");
+  const [sortBy, setSortBy] = useState("hottest");
   const handleTabChange = (key) => {
     setSortBy(key);
   };
 
   return (
     <Flex vertical style={{ width: "65%", minWidth: 800 }}>
-      <Divider>书籍评论</Divider>
+      <Divider orientation="left">书籍评论</Divider>
       <CommentBox />
       <BookCommentList sortBy={sortBy} handleTabChange={handleTabChange} />
     </Flex>

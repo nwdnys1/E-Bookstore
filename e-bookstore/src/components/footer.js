@@ -3,7 +3,7 @@ import { Layout } from "antd";
 
 const { Footer } = Layout;
 
-const CustomFooter = () => {
+const MyFooter = () => {
   return (
     <Footer
       style={{
@@ -16,4 +16,4 @@ const CustomFooter = () => {
   );
 };
 
-export default CustomFooter;
+export default MyFooter;

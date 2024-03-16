@@ -1,4 +1,4 @@
-import { Col, Divider, Flex, Image, Row, Tag, Typography } from "antd";
+import { Divider, Flex, Image, Row, Typography } from "antd";
 import BookRating from "./book_rating";
 import TagBar from "./tagbar";
 const { Title, Paragraph } = Typography;

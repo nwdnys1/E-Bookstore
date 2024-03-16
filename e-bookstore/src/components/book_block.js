@@ -6,14 +6,19 @@ export const BlockLayout = ({ books }) => {
   return (
     <List
       grid={{
-        column: 6,
-        gutter: 30,
+        xxl: 6,
+        xl: 4,
+        lg: 4,
+        md: 4,
+        sm: 4,
+        xs: 4,
+        gutter: 20,
       }}
       pagination={{
         position: "bottom",
-        pageSize: 18,
+        pageSize: 24,
         showTotal: (total, range) =>
-          `${total} 项中的 ${range[0]}-${range[1]} 项 `,
+          `${total} 本中的 ${range[0]}-${range[1]} 本 `,
       }}
       dataSource={books}
       renderItem={(book) => (

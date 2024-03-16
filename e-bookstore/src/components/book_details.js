@@ -1,8 +1,8 @@
 import { PayCircleOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Divider, Flex, Image, Row, Typography } from "antd";
+import { Button, Divider, Flex, Row, Typography } from "antd";
 import BookInfo from "./book_info";
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 export const BookDetails = ({ book }) => {
   const handleAddToCart = () => {

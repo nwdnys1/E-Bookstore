@@ -15,7 +15,7 @@ export const searchBooks = async (keyword, pageIndex, pageSize) => {
 
 export const getRecommendedBooks = async () => {
   // 模拟从本地 JSON 文件获取推荐书籍数据
-  return Data.books.slice(0, 6); // 假设前三本书为推荐书籍
+  return Data.books.slice(0, 12); // 假设前三本书为推荐书籍
 };
 
 // 在 services/bookService.js 文件中

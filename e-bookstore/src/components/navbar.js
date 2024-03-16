@@ -1,5 +1,5 @@
-import React from "react";
-import { Menu, Layout, Row } from "antd";
+import React, { useState } from "react";
+import { Menu, Layout, Row, Button, Modal } from "antd";
 import { Link } from "react-router-dom";
 import {
   BookOutlined,
@@ -11,6 +11,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import SearchBox from "./searchbox";
+import LoginModal from "../pages/login";
 const { Header } = Layout;
 
 const Items = [
@@ -44,6 +45,15 @@ const navItems = Items.map((item) => ({
 }));
 
 const Navbar = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const showLogin = () => {
+    setShowModal(true);
+  };
+  const handleCancel = () => {
+    setShowModal(false);
+  };
+
   return (
     <Header
       style={{
@@ -68,10 +78,20 @@ const Navbar = () => {
             <SearchBox />
           </Row>
           <Menu mode="horizontal" style={{ backgroundColor: "#f5f5f5" }}>
-            <Menu.Item key="user" icon={<UserOutlined />}>
-              <Link to="/user">用户</Link>
+            <Menu.Item key="user" icon={<UserOutlined />} onClick={showLogin}>
+              用户
             </Menu.Item>
           </Menu>
+          <Modal
+            open={showModal}
+            onCancel={handleCancel}
+            footer={null}
+            centered
+            keyboard
+            width={"auto"}
+          >
+            <LoginModal />
+          </Modal>
         </Row>
       </Row>
     </Header>

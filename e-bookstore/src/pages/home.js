@@ -3,7 +3,7 @@ import BookCarousel from "../components/carousel";
 import BookDisplay from "../components/book_display";
 import { getRecommendedBooks } from "../services/bookService";
 import { BasicLayout } from "../layouts";
-import { Flex, Row } from "antd";
+import { Flex } from "antd";
 
 const Home = () => {
   const [recommendedBooks, setRecommendedBooks] = useState([]);

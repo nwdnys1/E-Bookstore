@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Button, Flex, Row } from "antd";
-
 import SwitchButton from "./switchbtn";
 import { ListLayout } from "./book_list";
 import { BlockLayout } from "./book_block";
 import { Link } from "react-router-dom";
 
 const BookDisplay = ({ books, withButton }) => {
-  const [layout, setLayout] = useState("list");
+  const [layout, setLayout] = useState("block");
 
   return (
     <Flex

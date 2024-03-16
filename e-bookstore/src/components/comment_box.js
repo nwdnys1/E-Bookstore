@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, Avatar, Rate, Row, Col, Space } from "antd";
+import { Input, Button, Avatar, Rate, Row } from "antd";
 
 const CommentBox = ({ onAddComment }) => {
   const [commentText, setCommentText] = useState("");

@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Carousel, Card, Button, Typography, Row } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Carousel } from "antd";
 import { getRecommendedBooks } from "../services/bookService"; // 导入书籍相关的服务函数
 import CarouselButton from "./carousel_btn";
 import CarouselCard from "./carousel_card";
-import { Link } from "react-router-dom";
-
-const { Paragraph } = Typography;
 
 const BookCarousel = () => {
   const [recommendedBooks, setRecommendedBooks] = useState([]);
@@ -19,14 +15,6 @@ const BookCarousel = () => {
     };
     fetchRecommendedBooks();
   }, []);
-
-  const handlePrev = () => {
-    carouselRef.current.prev();
-  };
-
-  const handleNext = () => {
-    carouselRef.current.next();
-  };
 
   return (
     <div
@@ -41,7 +29,14 @@ const BookCarousel = () => {
           <CarouselCard book={book} />
         ))}
       </Carousel>
-      <CarouselButton handlePrev={handlePrev} handleNext={handleNext} />
+      <CarouselButton
+        handlePrev={() => {
+          carouselRef.current.prev();
+        }}
+        handleNext={() => {
+          carouselRef.current.next();
+        }}
+      />
       <div
         style={{
           position: "absolute",
