@@ -7,6 +7,9 @@ import AllBooksPage from "./pages/allbooks";
 import DetailsPage from "./pages/details";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ErrorPage from "./pages/error";
+import OrdersPage from "./pages/orders";
+import StasticsPage from "./pages/stastics";
+import CartPage from "./pages/cart";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +23,28 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: "/allbooks/keyword=:keyword",
+    element: <AllBooksPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
     path: "/details/:id",
     element: <DetailsPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/cart",
+    element: <CartPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/orders",
+    element: <OrdersPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/stastics",
+    element: <StasticsPage />,
     errorElement: <ErrorPage />,
   },
   {

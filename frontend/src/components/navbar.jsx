@@ -11,7 +11,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import SearchBox from "./searchbox";
-import LoginModal from "../pages/login";
+import LoginModal from "./login";
 const { Header } = Layout;
 
 const Items = [
@@ -30,12 +30,17 @@ const Items = [
     link: "/cart",
   },
   {
-    key: "order",
+    key: "orders",
     icon: <UnorderedListOutlined />,
     label: "订单",
-    link: "/order",
+    link: "/orders",
   },
-  { key: "stats", icon: <BarChartOutlined />, label: "统计", link: "/rank" },
+  {
+    key: "stastics",
+    icon: <BarChartOutlined />,
+    label: "统计",
+    link: "/stastics",
+  },
 ];
 
 const navItems = Items.map((item) => ({
