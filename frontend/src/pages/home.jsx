@@ -5,7 +5,7 @@ import { getRecommendedBooks } from "../services/bookService";
 import { BasicLayout } from "../layouts";
 import { Flex } from "antd";
 
-const Home = () => {
+const HomePage = () => {
   const [recommendedBooks, setRecommendedBooks] = useState([]);
 
   useEffect(() => {
@@ -22,4 +22,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

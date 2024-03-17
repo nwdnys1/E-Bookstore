@@ -6,7 +6,7 @@ import { BookDetails } from "../components/book_details";
 import { BookComments } from "../components/book_comments";
 import { BasicLayout } from "../layouts";
 
-const DetailPage = () => {
+const DetailsPage = () => {
   let { id } = useParams();
 
   const book = booksData.books.find((book) => book.id === parseInt(id, 10)); //同步方法
@@ -23,4 +23,4 @@ const DetailPage = () => {
   );
 };
 
-export default DetailPage;
+export default DetailsPage;
