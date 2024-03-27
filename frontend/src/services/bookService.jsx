@@ -1,6 +1,7 @@
 // bookService.js
 
 import Data from "../books.json"; // 导入本地的书籍数据
+import { BASEURL, get } from "./requestService";
 
 export const searchBooks = async (keyword, pageIndex, pageSize) => {
   // 模拟从本地 JSON 文件获取书籍数据
@@ -20,9 +21,29 @@ export const getRecommendedBooks = async () => {
 
 // 在 services/bookService.js 文件中
 
-export const getAllBooks = async () => {
-  return Data.books; // 假设 allBooks.json 中的顶层属性名称为 books
-};
+export async function getAllBooks() {
+  const url = `${BASEURL}/api/book/list`;
+  let result;
+  try {
+    result = await get(url);
+    return result;
+  } catch (e) {
+    console.log(e);
+    alert(e);
+  }
+}
+
+export async function getBookById(bookId) {
+  const url = `${BASEURL}/api/book/get/${bookId}`;
+  let result;
+  try {
+    result = await get(url);
+    return result;
+  } catch (e) {
+    console.log(e);
+    alert(e);
+  }
+}
 
 export const getBookComments = async (bookId) => {
   // 模拟从本地 JSON 文件获取书籍评论数据

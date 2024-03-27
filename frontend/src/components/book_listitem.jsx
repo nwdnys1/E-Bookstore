@@ -22,7 +22,11 @@ const BookListItem = ({ book }) => {
       <List.Item>
         <Card
           hoverable
-          bodyStyle={{ padding: "15px" }}
+          styles={{
+            body: {
+              padding: "15px",
+            },
+          }}
           actions={[
             <IconText
               icon={ShoppingCartOutlined}

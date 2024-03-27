@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import booksData from "../books.json";
 import { Flex } from "antd";
 import { BookDetails } from "../components/book_details";
 import { BookComments } from "../components/book_comments";
 import { BasicLayout } from "../layouts";
+import { getBookById } from "../services/bookService";
 
 const DetailsPage = () => {
   let { id } = useParams();
+  const [book, setBook] = React.useState({});
+  useEffect(() => {
+    getBookById(id).then((book) => setBook(book));
+  }, []);
 
-  const book = booksData.books.find((book) => book.id === parseInt(id, 10)); //同步方法
   const comments = booksData.comments.filter(
     (comment) => comment.bookId === parseInt(id, 10)
   );

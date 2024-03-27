@@ -24,9 +24,9 @@ const BookCarousel = () => {
         position: "relative",
       }}
     >
-      <Carousel effect="fade" ref={carouselRef} autoplay>
+      <Carousel effect="fade" ref={carouselRef} autoplay  >
         {recommendedBooks.map((book) => (
-          <CarouselCard book={book} />
+          <CarouselCard key={book.id} book={book} />
         ))}
       </Carousel>
       <CarouselButton

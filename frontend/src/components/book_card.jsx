@@ -13,7 +13,11 @@ const BookCard = ({ book }) => {
       <Link to={`/details/${book.id}`}>
         <Card
           bordered={false}
-          bodyStyle={{ display: "none" }}
+          styles={{
+            body: {
+              display: "none",
+            },
+          }}
           cover={
             <>
               <img

@@ -6,12 +6,14 @@ import {
   EyeTwoTone,
   EyeInvisibleOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/loginService";
+
 const { Title, Paragraph } = Typography;
 
 const LoginModal = () => {
   return (
-    <Form initialValues={{ remember: true }}>
+    <Form initialValues={{ remember: true }} onFinish={login}>
       <Flex
         vertical
         align="center"
@@ -26,6 +28,7 @@ const LoginModal = () => {
           电子书城
         </Paragraph>
         <Form.Item
+          id="username"
           name="username"
           rules={[{ required: true, message: "请输入您的用户名!" }]}
           style={{ width: "100%", margin: 0 }}
@@ -38,6 +41,7 @@ const LoginModal = () => {
           />
         </Form.Item>
         <Form.Item
+          id="password"
           name="password"
           rules={[{ required: true, message: "请输入您的密码!" }]}
           style={{ width: "100%", margin: 0 }}

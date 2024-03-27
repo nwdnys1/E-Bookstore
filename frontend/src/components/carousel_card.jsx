@@ -5,6 +5,11 @@ const CarouselCard = ({ book }) => {
   return (
     <Link to={`/details/${book.id}`}>
       <Card
+        styles={{
+          body: {
+            display: "none",
+          },
+        }}
         cover={
           <img
             src={book.image}
@@ -16,9 +21,6 @@ const CarouselCard = ({ book }) => {
             }}
           />
         }
-        bodyStyle={{
-          display: "none",
-        }}
       />
     </Link>
   );

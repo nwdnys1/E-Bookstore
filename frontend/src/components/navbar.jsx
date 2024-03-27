@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, Layout, Row, Button, Modal } from "antd";
 import { Link } from "react-router-dom";
 import {
@@ -12,6 +12,8 @@ import {
 } from "@ant-design/icons";
 import SearchBox from "./searchbox";
 import LoginModal from "./login";
+import { getUserName } from "../services/userService";
+import { logout } from "../services/loginService";
 const { Header } = Layout;
 
 const Items = [
@@ -52,6 +54,7 @@ const navItems = Items.map((item) => ({
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
 
+
   const showLogin = () => {
     setShowModal(true);
   };
@@ -82,11 +85,28 @@ const Navbar = () => {
           <Row align="middle">
             <SearchBox />
           </Row>
-          <Menu mode="horizontal" style={{ backgroundColor: "#f5f5f5" }}>
-            <Menu.Item key="user" icon={<UserOutlined />} onClick={showLogin}>
-              用户
-            </Menu.Item>
-          </Menu>
+          <Menu
+            mode="horizontal"
+            style={{ backgroundColor: "#f5f5f5" }}
+            items={[
+              {
+                key: "user",
+                icon: <UserOutlined />,
+                label: "登录",
+                onClick: showLogin,
+              },
+              // {
+              //   key: "register",
+              //   label: <Link to="/register">注册</Link>,
+              // },
+              {
+                key: "logout",
+                label: "登出",
+                onClick:logout,
+              }
+            ]}
+          />
+
           <Modal
             open={showModal}
             onCancel={handleCancel}
