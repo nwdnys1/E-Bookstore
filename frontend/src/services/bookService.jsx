@@ -1,7 +1,6 @@
-// bookService.js
-
-import Data from "../books.json"; // 导入本地的书籍数据
+import Data from "../books.json";
 import { BASEURL, get } from "./requestService";
+const PREFIX = `${BASEURL}/api/book`;
 
 export const searchBooks = async (keyword, pageIndex, pageSize) => {
   // 模拟从本地 JSON 文件获取书籍数据
@@ -15,14 +14,21 @@ export const searchBooks = async (keyword, pageIndex, pageSize) => {
 };
 
 export const getRecommendedBooks = async () => {
-  // 模拟从本地 JSON 文件获取推荐书籍数据
-  return Data.books.slice(0, 12); // 假设前三本书为推荐书籍
+  const url = `${PREFIX}/recommend/4`;
+  let result;
+  try {
+    result = await get(url);
+    return result;
+  } catch (e) {
+    console.log(e);
+    alert(e);
+  }
 };
 
 // 在 services/bookService.js 文件中
 
 export async function getAllBooks() {
-  const url = `${BASEURL}/api/book/list`;
+  const url = `${PREFIX}/list`;
   let result;
   try {
     result = await get(url);
@@ -34,7 +40,7 @@ export async function getAllBooks() {
 }
 
 export async function getBookById(bookId) {
-  const url = `${BASEURL}/api/book/get/${bookId}`;
+  const url = `${PREFIX}/get/${bookId}`;
   let result;
   try {
     result = await get(url);

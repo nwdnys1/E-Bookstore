@@ -3,7 +3,6 @@ import { getAllBooks, searchBooks } from "../services/bookService";
 import BookDisplay from "../components/book_display";
 import { BasicLayout } from "../layouts";
 import { Flex } from "antd";
-import { useParams } from "react-router-dom";
 
 const AllBooksPage = () => {
   const [allBooks, setAllBooks] = useState([]);
@@ -15,10 +14,7 @@ const AllBooksPage = () => {
   return (
     <BasicLayout>
       <Flex vertical align="center" style={{ marginTop: 20 }}>
-        <BookDisplay
-          books={allBooks}
-          withButton={false}
-        />
+        <BookDisplay books={allBooks} withButton={false} />
       </Flex>
     </BasicLayout>
   );

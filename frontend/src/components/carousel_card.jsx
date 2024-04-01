@@ -12,7 +12,7 @@ const CarouselCard = ({ book }) => {
         }}
         cover={
           <img
-            src={book.image}
+            src={book.cover}
             alt={book.title}
             style={{
               aspectRatio: "4/3",

@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Menu, Layout, Row, Button, Modal } from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { Menu, Layout, Row, Button, Modal, Col } from "antd";
 import { Link } from "react-router-dom";
 import {
   BookOutlined,
   HomeOutlined,
-  ShoppingCartOutlined,
-  UnorderedListOutlined,
   ReadOutlined,
   BarChartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import SearchBox from "./searchbox";
 import LoginModal from "./login";
+import UserMenu from "./user_menu";
 import { getUserName } from "../services/userService";
-import { logout } from "../services/loginService";
+import { checkLogin } from "../services/loginService";
+import { AuthContext } from "../context/authContext";
 const { Header } = Layout;
 
 const Items = [
@@ -25,18 +25,7 @@ const Items = [
     label: "所有书籍",
     link: "/allbooks",
   },
-  {
-    key: "cart",
-    icon: <ShoppingCartOutlined />,
-    label: "购物车",
-    link: "/cart",
-  },
-  {
-    key: "orders",
-    icon: <UnorderedListOutlined />,
-    label: "订单",
-    link: "/orders",
-  },
+
   {
     key: "stastics",
     icon: <BarChartOutlined />,
@@ -52,16 +41,6 @@ const navItems = Items.map((item) => ({
 }));
 
 const Navbar = () => {
-  const [showModal, setShowModal] = useState(false);
-
-
-  const showLogin = () => {
-    setShowModal(true);
-  };
-  const handleCancel = () => {
-    setShowModal(false);
-  };
-
   return (
     <Header
       style={{
@@ -72,7 +51,7 @@ const Navbar = () => {
         padding: "0",
       }}
     >
-      <Row justify={"space-between"}>
+      <Row justify={"space-evenly"}>
         <Menu
           mode="horizontal"
           style={{
@@ -81,42 +60,10 @@ const Navbar = () => {
           }}
           items={navItems}
         ></Menu>
-        <Row>
-          <Row align="middle">
-            <SearchBox />
-          </Row>
-          <Menu
-            mode="horizontal"
-            style={{ backgroundColor: "#f5f5f5" }}
-            items={[
-              {
-                key: "user",
-                icon: <UserOutlined />,
-                label: "登录",
-                onClick: showLogin,
-              },
-              // {
-              //   key: "register",
-              //   label: <Link to="/register">注册</Link>,
-              // },
-              {
-                key: "logout",
-                label: "登出",
-                onClick:logout,
-              }
-            ]}
-          />
 
-          <Modal
-            open={showModal}
-            onCancel={handleCancel}
-            footer={null}
-            centered
-            keyboard
-            width={"auto"}
-          >
-            <LoginModal />
-          </Modal>
+        <Row align="middle">
+          <SearchBox />
+          <UserMenu />
         </Row>
       </Row>
     </Header>

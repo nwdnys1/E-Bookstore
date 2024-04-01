@@ -9,7 +9,7 @@ const CarouselButton = ({ handlePrev, handleNext }) => {
         width: "100%",
         position: "absolute",
         bottom: 4,
-        zIndex: 999,
+        zIndex: 100,
         right: 5,
       }}
     >

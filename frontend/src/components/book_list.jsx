@@ -13,14 +13,9 @@ export const ListLayout = ({ books }) => {
         showTotal: (total, range) =>
           `${total} 项中的 ${range[0]}-${range[1]} 项 `,
         position: "bottom",
-
       }}
       dataSource={books}
-      renderItem={(book) => (
-        <List.Item>
-          <BookListItem book={book} />
-        </List.Item>
-      )}
+      renderItem={(book) => <BookListItem book={book} />}
     />
   );
 };

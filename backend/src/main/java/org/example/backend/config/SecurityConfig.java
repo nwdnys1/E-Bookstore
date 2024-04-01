@@ -10,11 +10,17 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -57,7 +63,14 @@ public class SecurityConfig {
                         }
                 ).build();
     }
-
+    @Bean
+    public UserDetailsService userDetailsService(DataSource dataSource) {//配置用户信息
+        return new JdbcUserDetailsManager(dataSource);
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){//密码编码器
+        return NoOpPasswordEncoder.getInstance();
+    }
     private void handleProcess(
             HttpServletRequest request,
             HttpServletResponse response,

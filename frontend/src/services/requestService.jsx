@@ -48,6 +48,31 @@ export async function postUrlencoded(url, data) {
   return await res.json().then(handleResponse);
 }
 
+export async function Delete(url) {
+  let opts = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  };
+  let res = await fetch(url, opts);
+  return await res.json().then(handleResponse);
+}
+
+export async function put(url, data) {
+  let opts = {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  };
+  let res = await fetch(url, opts);
+  return await res.json().then(handleResponse);
+}
+
 export const BASEURL = "http://localhost:8081";
 export const PREFIX = `${BASEURL}/api`;
 //export const API_DOCS_URL = `${BASEURL}/api-docs`;

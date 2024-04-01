@@ -1,17 +1,16 @@
 import { PayCircleOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Divider, Flex, Row, Typography } from "antd";
 import BookInfo from "./book_info";
+import { addCartItem } from "../services/cartService";
 
 const { Paragraph } = Typography;
 
 export const BookDetails = ({ book }) => {
   const handleAddToCart = () => {
-    // 处理加入购物车逻辑
+    addCartItem(book.id);
   };
 
-  const handleBuyNow = () => {
-    // 处理立即购买逻辑
-  };
+  const handleBuyNow = () => {};
   return (
     <Flex vertical style={{ width: "65%", minWidth: 800 }}>
       <BookInfo book={book} />

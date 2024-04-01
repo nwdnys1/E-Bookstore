@@ -4,6 +4,7 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 
 import { Typography } from "antd";
 import { Link } from "react-router-dom";
+import { addCartItem } from "../services/cartService";
 
 const { Title } = Typography;
 
@@ -22,7 +23,7 @@ const BookCard = ({ book }) => {
             <>
               <img
                 alt={book.title}
-                src={book.image}
+                src={book.cover}
                 style={{
                   aspectRatio: "3/4",
                   objectFit: "cover",
@@ -37,7 +38,12 @@ const BookCard = ({ book }) => {
                   position: "absolute",
                   left: 0,
                   bottom: 0,
-                  zIndex: 1,
+                  zIndex: 100,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();//
+                  e.preventDefault();
+                  addCartItem(book.id);
                 }}
               />
               <Row

@@ -1,15 +1,18 @@
+import { BasicLayout } from "../layouts";
+import CartTable from "../components/cart_table";
+import { Flex } from "antd";
+import { checkAuth } from "../services/loginService";
 import { useEffect } from "react";
-import { checkLogin } from "../services/loginService";
 
 const CartPage = () => {
   useEffect(() => {
-    checkLogin();
+    checkAuth();
   }, []);
 
   return (
-    <div>
-      <h1>Cart Page</h1>
-    </div>
+    <BasicLayout>
+      <CartTable />
+    </BasicLayout>
   );
 };
 

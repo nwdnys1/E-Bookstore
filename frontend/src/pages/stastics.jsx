@@ -1,8 +1,12 @@
+import { useEffect } from "react";
+import { BasicLayout } from "../layouts";
+import { checkLogin } from "../services/loginService";
+
 const StasticsPage = () => {
   return (
-    <div>
-      <h1>Stastics Page</h1>
-    </div>
+    <BasicLayout>
+      <div>Stastics Page</div>
+    </BasicLayout>
   );
 };
 
