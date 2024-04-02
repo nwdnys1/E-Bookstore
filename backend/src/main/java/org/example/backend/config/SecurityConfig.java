@@ -43,6 +43,7 @@ public class SecurityConfig {
                         conf -> {
                             CorsConfiguration cors = new CorsConfiguration();
                             cors.addAllowedOrigin("http://localhost:5173");
+                            cors.addAllowedOrigin("http://localhost:5174");
                             cors.setAllowCredentials(true);//允许携带cookie
                             cors.addAllowedMethod("*");
                             cors.addAllowedHeader("*");
