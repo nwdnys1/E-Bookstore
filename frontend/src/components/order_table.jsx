@@ -1,43 +1,71 @@
-import { Table } from "antd";
+import { Avatar, Flex, Image, List, Table } from "antd";
+import { getOrders } from "../services/orderService";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function OrderTable() {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    getOrders().then((res) => {
+      setOrders(res);
+    });
+  }, []);
+
+  const computeTotalPrice = (order) => {
+    return `${order.items
+      .map((item) => item.book.price * item.quantity)
+      .reduce((prev, cur) => prev + cur)
+      .toFixed(2)}元`;
+  };
+
   const columns = [
     { title: "收货人", dataIndex: "receiver", key: "receiver" },
     { title: "联系方式", dataIndex: "tel", key: "tel" },
     { title: "收货地址", dataIndex: "address", key: "address" },
     {
-      title: "下单时间",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (time) => formatTime(time),
+      title: "总价",
+      key: "totalPrice",
+      render: (_, order) => computeTotalPrice(order),
     },
   ];
 
   return (
-    <Table
-      columns={columns}
-      expandable={{
-        expandedRowRender: (order) => (
-          <List
-            dataSource={order.items}
-            renderItem={(item, _) => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={
-                    <Avatar shape="square" size={80} src={item.book.cover} />
-                  }
-                  title={item.book.title}
-                  description={`数量：${item.number}`}
-                />
-              </List.Item>
-            )}
-          />
-        ),
-      }}
-      dataSource={orders.map((order) => ({
-        ...order,
-        key: order.id,
-      }))}
-    />
+    <Flex
+      style={{ width: "65%", minWidth: 800, margin: "0 auto" }}
+      vertical
+      justify="center"
+    >
+      <Table
+        columns={columns}
+        expandable={{
+          expandedRowRender: (order) => (
+            <List
+              dataSource={order.items}
+              renderItem={(item, _) => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Image
+                        src={item.book.cover}
+                        width={75}
+                        height={100}
+                        style={{ objectFit: "cover" }}
+                      />
+                    }
+                    title={item.book.title}
+                    description={`数量：${item.quantity} 价格：${item.book.price}元`}
+                  />
+                </List.Item>
+              )}
+            />
+          ),
+        }}
+        dataSource={orders.map((order) => ({
+          ...order,
+          key: order.id,
+        }))}
+      />
+    </Flex>
   );
 }

@@ -1,7 +1,7 @@
 import { BASEURL, get, post, postUrlencoded } from "./requestService";
-
+const PREFIX = `${BASEURL}/api/user`;
 export async function login({ username, password }) {
-  const url = `${BASEURL}/api/user/login`;
+  const url = `${PREFIX}/login`;
   let result;
   try {
     result = await postUrlencoded(url, { username, password });
@@ -14,12 +14,12 @@ export async function login({ username, password }) {
 }
 
 export async function logout() {
-  const url = `${BASEURL}/api/user/logout`;
+  const url = `${PREFIX}/logout`;
   let result;
   try {
     result = await get(url);
     alert("登出成功！");
-    location.href="/";
+    location.href = "/";
   } catch (e) {
     console.log(e);
     alert(e);
@@ -27,7 +27,7 @@ export async function logout() {
 }
 
 export async function checkAuth() {
-  const url = `${BASEURL}/api/user/check`;
+  const url = `${PREFIX}/check`;
   let result;
   try {
     result = await get(url);
@@ -40,7 +40,7 @@ export async function checkAuth() {
 }
 
 export async function checkLogin() {
-  const url = `${BASEURL}/api/user/check`;
+  const url = `${PREFIX}/check`;
   try {
     await get(url);
     return true;

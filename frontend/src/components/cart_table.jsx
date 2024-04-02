@@ -1,15 +1,4 @@
-import {
-  Button,
-  Col,
-  Flex,
-  Form,
-  Image,
-  Input,
-  InputNumber,
-  Modal,
-  Row,
-  Table,
-} from "antd";
+import { Button, Col, Flex, Image, InputNumber, Modal, Row, Table } from "antd";
 import { useEffect, useState } from "react";
 import {
   deleteCartItem,
@@ -18,7 +7,6 @@ import {
 } from "../services/cartService";
 import { Link } from "react-router-dom";
 import { DeleteOutlined } from "@ant-design/icons";
-import TextArea from "antd/es/input/TextArea";
 import OrderModal from "./order_modal";
 
 const CartTable = () => {
@@ -108,9 +96,6 @@ const CartTable = () => {
     },
   ];
 
-  const handleOrderSubmit = () => {
-    setShowModal(false);
-  };
 
   return (
     <Flex
@@ -127,7 +112,7 @@ const CartTable = () => {
           keyboard
           width={"auto"}
         >
-          <OrderModal />
+          <OrderModal selectedItems={selectedItems} />
         </Modal>
       )}
       <Table

@@ -18,7 +18,7 @@ public class CartItem {
     private int quantity;
     private BookInfo book;
 
-    public static CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public static CartItem mapRowWithInfo(ResultSet rs, int rowNum) throws SQLException {
         return new CartItem(
             rs.getInt("id"),
             rs.getInt("uid"),
@@ -27,7 +27,15 @@ public class CartItem {
             new BookInfo(rs.getString("title"), rs.getDouble("price"), rs.getString("cover"))
         );
     }
-
+    public static CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new CartItem(
+            rs.getInt("id"),
+            rs.getInt("uid"),
+            rs.getInt("bid"),
+            rs.getInt("quantity"),
+            null
+        );
+    }
     public Map<String, Object> toMap() {
         return Map.of(
             "id", id,

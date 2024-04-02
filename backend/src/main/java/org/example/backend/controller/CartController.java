@@ -36,7 +36,7 @@ public class CartController {
                         "JOIN books b ON ci.bid = b.id " +
                         "WHERE ci.uid = ?",
                 new Object[]{uid},
-                CartItem::mapRow
+                CartItem::mapRowWithInfo
         );
         return Result.success(items);
     }
