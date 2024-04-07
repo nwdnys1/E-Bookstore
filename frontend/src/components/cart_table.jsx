@@ -96,7 +96,6 @@ const CartTable = () => {
     },
   ];
 
-
   return (
     <Flex
       style={{ width: "65%", minWidth: 800, margin: "0 auto" }}
@@ -126,7 +125,7 @@ const CartTable = () => {
           expandedRowRender: (item) => (
             <Row justify={"space-between"} gutter={8}>
               <Col span={4}>
-                <Image src={item.book.cover} height={200} />
+                <Image src={item.book.cover} style={{ objectFit: "cover" }} />
               </Col>
               <Col span={20}>
                 <p>{item.book.title}</p>
