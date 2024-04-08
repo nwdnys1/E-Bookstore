@@ -57,7 +57,7 @@ const CartTable = () => {
       dataIndex: "book",
       key: "book_title",
       render: (book, item) => (
-        <Link to={`/details/${item.bid}`}>{book.title}</Link>
+        <Link to={`/details/${item.book.id}`}>{book.title}</Link>
       ),
     },
     {

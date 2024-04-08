@@ -1,5 +1,7 @@
 package org.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,31 +11,22 @@ import java.sql.SQLException;
 import java.util.Map;
 
 @Data
+@Entity
+@Table(name = "order_items")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","order"})//忽略order属性 并且解决order属性为null的问题
 public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int oid;
-    private int bid;
     private int quantity;
-    private BookInfo book;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bid")
+    @JsonIgnoreProperties("description")
+    private Book book;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "oid")
+    private Order order;
 
-    public static OrderItem mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new OrderItem(
-            rs.getInt("id"),
-            rs.getInt("oid"),
-            rs.getInt("bid"),
-            rs.getInt("quantity"),
-            new BookInfo(rs.getString("title"), rs.getDouble("price"), rs.getString("cover"))
-        );
-    }
-    public Map<String, Object> toMap() {
-        return Map.of(
-            "id", id,
-            "oid", oid,
-            "bid", bid,
-            "quantity", quantity,
-            "book", book
-        );
-    }
 }

@@ -1,5 +1,7 @@
 package org.example.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,41 +11,21 @@ import java.sql.SQLException;
 import java.util.Map;
 
 @Data
+@Entity
+@Table(name = "cart_items")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","user"})//忽略user属性 并且解决user属性为null的问题
 public class CartItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int uid;
-    private int bid;
     private int quantity;
-    private BookInfo book;
-
-    public static CartItem mapRowWithInfo(ResultSet rs, int rowNum) throws SQLException {
-        return new CartItem(
-            rs.getInt("id"),
-            rs.getInt("uid"),
-            rs.getInt("bid"),
-            rs.getInt("quantity"),
-            new BookInfo(rs.getString("title"), rs.getDouble("price"), rs.getString("cover"))
-        );
-    }
-    public static CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new CartItem(
-            rs.getInt("id"),
-            rs.getInt("uid"),
-            rs.getInt("bid"),
-            rs.getInt("quantity"),
-            null
-        );
-    }
-    public Map<String, Object> toMap() {
-        return Map.of(
-            "id", id,
-            "uid", uid,
-            "bid", bid,
-            "quantity", quantity,
-            "book", book
-        );
-    }
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uid")
+    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bid")
+    @JsonIgnoreProperties("description")
+    private Book book;
 }

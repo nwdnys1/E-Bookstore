@@ -13,7 +13,7 @@ export default function OrderTable() {
   }, []);
 
   const computeTotalPrice = (order) => {
-    return `${order.items
+    return `${order.orderItems
       .map((item) => item.book.price * item.quantity)
       .reduce((prev, cur) => prev + cur)
       .toFixed(2)}元`;
@@ -41,7 +41,7 @@ export default function OrderTable() {
         expandable={{
           expandedRowRender: (order) => (
             <List
-              dataSource={order.items}
+              dataSource={order.orderItems}
               renderItem={(item, _) => (
                 <List.Item>
                   <List.Item.Meta

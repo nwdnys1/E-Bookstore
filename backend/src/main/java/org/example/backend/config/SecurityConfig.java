@@ -28,9 +28,10 @@ import java.io.PrintWriter;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests((requests) -> requests
+        return http.authorizeHttpRequests((requests) ->{requests
                 .requestMatchers("/api/book/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated();
+                }
                 ).formLogin(
                         conf -> {
                             conf.loginProcessingUrl("/api/user/login");
@@ -63,10 +64,6 @@ public class SecurityConfig {
                             conf.logoutSuccessHandler(this::handleProcess);
                         }
                 ).build();
-    }
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {//配置用户信息
-        return new JdbcUserDetailsManager(dataSource);
     }
     @Bean
     public PasswordEncoder passwordEncoder(){//密码编码器
