@@ -38,4 +38,8 @@ public class OrderController {
     public Result<Order> deleteOrder(@PathVariable int id) {
         return service.deleteOrder(id);
     }
+    @GetMapping("/search")
+    public Result<List<Order>> searchOrderByBookTitle(@RequestParam String keyword) {
+        return service.getOrdersByBookTitle(keyword, getUid());
+    }
 }

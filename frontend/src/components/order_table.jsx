@@ -28,6 +28,12 @@ export default function OrderTable() {
       key: "totalPrice",
       render: (_, order) => computeTotalPrice(order),
     },
+    {
+      title: "下单时间",
+      dataIndex: "createTime",
+      key: "createTime",
+      render: (time) => new Date(time).toLocaleString(),
+    },
   ];
 
   return (
@@ -53,7 +59,11 @@ export default function OrderTable() {
                         style={{ objectFit: "cover" }}
                       />
                     }
-                    title={item.book.title}
+                    title={
+                      <Link to={`/details/${item.book.id}`}>
+                        {item.book.title}
+                      </Link>
+                    }
                     description={`数量：${item.quantity} 价格：${item.book.price}元`}
                   />
                 </List.Item>

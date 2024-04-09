@@ -10,4 +10,5 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Integer> {
     public Book getBookById(int id);
     public List<Book> getBooksByRatingGreaterThanOrderByRatingDesc(float rating);
+    public List<Book> getBooksByTitleLikeOrAuthorLike(String title, String author);
 }

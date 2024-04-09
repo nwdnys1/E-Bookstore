@@ -6,14 +6,9 @@ import {
   HomeOutlined,
   ReadOutlined,
   BarChartOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import SearchBox from "./searchbox";
-import LoginModal from "./login";
 import UserMenu from "./user_menu";
-import { getUserName } from "../services/userService";
-import { checkLogin } from "../services/loginService";
-import { AuthContext } from "../context/authContext";
 const { Header } = Layout;
 
 const Items = [

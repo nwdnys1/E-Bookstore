@@ -2,7 +2,7 @@ import { BASEURL, Delete, get, post, put } from "./requestService";
 const PREFIX = `${BASEURL}/api/cart`;
 
 export const getCartItems = async () => {
-  const url = `${PREFIX}/get`;
+  const url = `${PREFIX}/list`;
   let result;
   try {
     result = await get(url);

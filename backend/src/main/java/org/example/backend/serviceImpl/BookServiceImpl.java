@@ -46,4 +46,7 @@ public class BookServiceImpl implements BookService {
             return Result.error(404, "书籍不存在！");
         }
     }
+    public Result<List<Book>> searchBooks(String keyword){
+        return Result.success(repository.getBooksByTitleLikeOrAuthorLike("%"+keyword+"%", "%"+keyword+"%"));
+    }
 }

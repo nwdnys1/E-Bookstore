@@ -1,17 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  DownOutlined,
   UserOutlined,
   ShoppingCartOutlined,
   OrderedListOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { Dropdown, Flex, Menu, Modal, Space } from "antd";
+import { Dropdown, Menu, Modal } from "antd";
 import { checkLogin, logout } from "../services/loginService";
 import { Link } from "react-router-dom";
 import LoginModal from "./login";
 import { AuthContext } from "../context/authContext";
-import { getUserName } from "../services/userService";
+import { getUser } from "../services/userService";
 
 const items = [
   {
@@ -49,8 +48,8 @@ const UserMenu = () => {
       })
       .then((res) => {
         if (res) {
-          getUserName().then((res) => {
-            setUsername(res);
+          getUser().then((res) => {
+            setUsername(res.username);
           });
         }
       });

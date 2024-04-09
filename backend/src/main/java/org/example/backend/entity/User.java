@@ -18,6 +18,8 @@ public class User {
     private String password;
     private String role;
     private String avatar;
+    private String email;
+    private int enabled;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)

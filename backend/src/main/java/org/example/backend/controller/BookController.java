@@ -39,7 +39,10 @@ public class BookController {
     public Result<Book> addBook(@RequestBody Book book) {
        return service.addBook(book);
     }
-
+    @GetMapping("/search")
+    public Result<List<Book>> searchBooks(@RequestParam String keyword) {
+        return service.searchBooks(keyword);
+    }
 
 
 

@@ -29,7 +29,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((requests) ->{requests
-                .requestMatchers("/api/book/**").permitAll()
+                .requestMatchers("/api/book/**").permitAll().requestMatchers("/api/comment/list/**").permitAll()
                 .anyRequest().authenticated();
                 }
                 ).formLogin(
@@ -76,9 +76,9 @@ public class SecurityConfig {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
         if (exceptionOrAuthentication instanceof AccessDeniedException exception) {
-            writer.write(Result.error(403, exception.getMessage()).asJsonString());//权限不足
+            writer.write(Result.error(403, "您没有权限访问！").asJsonString());//权限不足
         } else if (exceptionOrAuthentication instanceof Exception exception) {
-            writer.write(Result.error(401, exception.getMessage()).asJsonString());//未登录
+            writer.write(Result.error(401, "请先登录！").asJsonString());//未登录
         } else if (exceptionOrAuthentication instanceof Authentication authentication) {
             writer.write(Result.success(authentication).asJsonString());
         }

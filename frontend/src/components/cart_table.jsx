@@ -128,7 +128,7 @@ const CartTable = () => {
                 <Image src={item.book.cover} style={{ objectFit: "cover" }} />
               </Col>
               <Col span={20}>
-                <p>{item.book.title}</p>
+                <p>{item.book.description}</p>
               </Col>
             </Row>
           ),

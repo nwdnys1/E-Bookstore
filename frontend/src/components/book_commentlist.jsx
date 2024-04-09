@@ -1,8 +1,8 @@
 import { Tabs } from "antd";
 import CommentList from "./comment_list";
-import { getBookComments } from "../services/bookService";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { getCommentsByBookId } from "../services/commentService";
 
 const { TabPane } = Tabs;
 
@@ -10,12 +10,12 @@ const BookCommentList = ({ sortBy, handleTabChange }) => {
   let { id } = useParams();
   const [comments, setComments] = useState([]);
   useEffect(() => {
-    getBookComments(id).then((data) => {
-      setComments(data);
+    getCommentsByBookId(id).then((res) => {
+      setComments(res);
     });
   }, []);
   if (sortBy === "latest") {
-    comments.sort((a, b) => new Date(a.time) - new Date(b.time));
+    comments.sort((a, b) => new Date(b.time) - new Date(a.time));
   }
   if (sortBy === "hottest") {
     comments.sort((a, b) => b.likes - a.likes);

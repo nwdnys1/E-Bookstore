@@ -20,10 +20,10 @@ public class UserController {
         User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Result.success("已登录");
     }
-    @GetMapping("/name")
-    public Result<String> name() {
+    @GetMapping("/get")
+    public Result<org.example.backend.entity.User> name() {
         User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return Result.success(user.getUsername());
+        return Result.success(service.getUserByUsername(user.getUsername()));
     }
     @DeleteMapping("/delete/{id}")
     public Result<org.example.backend.entity.User> delete(@PathVariable int id) {

@@ -5,6 +5,7 @@ import org.example.backend.repository.CartItemRepository;
 import org.example.backend.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class OrderService {
         order.setAddress(request.getAddress());
         order.setTel(request.getTel());
         order.setReceiver(request.getReceiver());
+        order.setCreateTime(LocalDateTime.now());
         order.setUser(new User());
         order.getUser().setId(uid);
         List<OrderItem> orderItems = new ArrayList<>();
@@ -74,5 +76,33 @@ public class OrderService {
             return Result.error(404, "订单不存在！");
         }
     }
+    public Result<List<Order>> getOrdersByBookTitle(String title, int uid) {
+        List<Order> orders = repository.getOrdersByUserId(uid);
+        List<Order> result = new ArrayList<>();
+
+        // 将查询关键字转换为小写字母
+        String lowercaseTitle = title.toLowerCase();
+
+        for (Order order : orders) {
+            boolean found = false; // 用于标记是否找到符合条件的订单项
+            for (OrderItem orderItem : order.getOrderItems()) {
+                // 将书籍标题转换为小写字母进行比较
+                String lowercaseBookTitle = orderItem.getBook().getTitle().toLowerCase();
+                if (lowercaseBookTitle.contains(lowercaseTitle)) {
+                    result.add(order);
+                    found = true;
+                    break; // 找到符合条件的订单项后立即跳出内层循环
+                }
+            }
+            if (found) {
+                // 如果找到符合条件的订单项，则跳出外层循环
+                break;
+            }
+        }
+
+        return Result.success(result);
+    }
+
+
 
 }

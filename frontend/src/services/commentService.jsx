@@ -1,4 +1,3 @@
-import { compareVersions } from "@ant-design/pro-components";
 import { BASEURL, get, post, postText } from "./requestService";
 const PREFIX = `${BASEURL}/api/comment`;
 
@@ -29,6 +28,17 @@ export const deleteComment = async (id) => {
   let result;
   try {
     result = await post(url);
+    return result;
+  } catch (e) {
+    console.log(e);
+    alert(e);
+  }
+}
+export const addReply = async ({cid,content}) => {
+  const url = `${PREFIX}/reply/${cid}`;
+  let result;
+  try {
+    result = await postText(url, content);
     return result;
   } catch (e) {
     console.log(e);

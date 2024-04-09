@@ -38,5 +38,7 @@ public class MyUserDetails implements UserDetailsService {
             return Result.error(404, "用户不存在！");
         }
     }
-
+    public User getUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
 }

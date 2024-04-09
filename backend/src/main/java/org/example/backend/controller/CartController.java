@@ -22,7 +22,7 @@ public class CartController {
         return userRepository.findUserByUsername(username).getId();
 
     }
-    @GetMapping("/get")
+    @GetMapping("/list")
     public Result<List<CartItem>> getCartItems() {
         int uid = getUid();
         return service.getCartItems(uid);

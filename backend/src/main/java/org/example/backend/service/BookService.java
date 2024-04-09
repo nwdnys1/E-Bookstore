@@ -13,5 +13,6 @@ public interface BookService {
     public Result<Book> addBook(Book book);
     public Result<Book> updateBook(int id, Book book);
     public Result<Book> deleteBook(int id);
+    public Result<List<Book>> searchBooks(String keyword);
 }
 

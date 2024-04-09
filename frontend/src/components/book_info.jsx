@@ -37,9 +37,7 @@ const BookInfo = ({ book }) => {
           <Paragraph style={ParagraphStyle}>
             {"价格：" + book.price + "元  "}
             <br />
-            {
-              "狀態：連載 地區：日本 語言：繁體 最後出版：2023 更新：2023-03 版本：東立 訂閱：526 　收藏：1402 　讀過：23 　熱度：9626"
-            }
+            {`ISBN: ${book.isbn} 库存: ${book.stock}本`}
           </Paragraph>
           <Divider style={DividerStyle} />
           <TagBar tags={book.tags} />

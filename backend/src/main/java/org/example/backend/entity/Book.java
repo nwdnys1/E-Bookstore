@@ -27,6 +27,8 @@ public class Book {
     private float rating;
     private float price;
     private String cover;
+    private int stock;
+    private int ISBN;
     @OneToMany(mappedBy = "book",cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
 
