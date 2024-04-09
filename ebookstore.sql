@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : MySQL
+ Source Server         : mysql
  Source Server Type    : MySQL
  Source Server Version : 80036 (8.0.36)
  Source Host           : localhost:3306
@@ -11,11 +11,30 @@
  Target Server Version : 80036 (8.0.36)
  File Encoding         : 65001
 
- Date: 09/04/2024 13:36:45
+ Date: 09/04/2024 17:43:34
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for authorities
+-- ----------------------------
+DROP TABLE IF EXISTS `authorities`;
+CREATE TABLE `authorities`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `authority` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `username`(`username` ASC) USING BTREE,
+  CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of authorities
+-- ----------------------------
+INSERT INTO `authorities` VALUES (1, 'zh', 'ROLE_USER');
+INSERT INTO `authorities` VALUES (2, 'admin', 'ROLE_ADMIN');
 
 -- ----------------------------
 -- Table structure for books
@@ -59,7 +78,7 @@ CREATE TABLE `cart_items`  (
   INDEX `FKsa9oia6v2qv02lim3gxk2hmdq`(`bid` ASC) USING BTREE,
   CONSTRAINT `FKn86teseb73mlpl86xh5ikp6sw` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKsa9oia6v2qv02lim3gxk2hmdq` FOREIGN KEY (`bid`) REFERENCES `books` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 91 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 92 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart_items
@@ -69,6 +88,7 @@ INSERT INTO `cart_items` VALUES (84, 3, 2, 1);
 INSERT INTO `cart_items` VALUES (86, 3, 20, 1);
 INSERT INTO `cart_items` VALUES (89, 2, 3, 1);
 INSERT INTO `cart_items` VALUES (90, 2, 2, 1);
+INSERT INTO `cart_items` VALUES (91, 2, 1, 1);
 
 -- ----------------------------
 -- Table structure for comments
@@ -76,21 +96,26 @@ INSERT INTO `cart_items` VALUES (90, 2, 2, 1);
 DROP TABLE IF EXISTS `comments`;
 CREATE TABLE `comments`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `time` datetime(6) NULL DEFAULT NULL,
-  `bid` int NULL DEFAULT NULL,
-  `uid` int NULL DEFAULT NULL,
+  `bid` int NOT NULL,
+  `uid` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FKkbth5o6nwvdhphqmkn4n9mww6`(`bid` ASC) USING BTREE,
   INDEX `FKquluhan0rqmtk5x8v3178ypd6`(`uid` ASC) USING BTREE,
   CONSTRAINT `FKkbth5o6nwvdhphqmkn4n9mww6` FOREIGN KEY (`bid`) REFERENCES `books` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKquluhan0rqmtk5x8v3178ypd6` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comments
 -- ----------------------------
 INSERT INTO `comments` VALUES (8, ' \"一本关于JavaScript优点的书。它涵盖了函数、对象、数组等各个方面。作者深入讲解了JavaScript的核心概念，并强调了编写高效可靠代码的最佳实践。\"\r\n    \r\n', '2024-04-09 13:31:10.772016', 1, 2);
+INSERT INTO `comments` VALUES (9, '11', '2024-04-09 14:32:57.356081', 1, 2);
+INSERT INTO `comments` VALUES (10, '11', '2024-04-09 14:33:12.750939', 1, 2);
+INSERT INTO `comments` VALUES (11, '1123', '2024-04-09 14:34:21.393963', 1, 2);
+INSERT INTO `comments` VALUES (12, '但是分', '2024-04-09 14:35:14.849385', 20, 2);
+INSERT INTO `comments` VALUES (13, 'sad', '2024-04-09 14:42:04.030561', 1, 2);
 
 -- ----------------------------
 -- Table structure for order_items
@@ -154,6 +179,28 @@ INSERT INTO `orders` VALUES (45, 3, '1', '１', '1');
 INSERT INTO `orders` VALUES (46, 3, 'ふゆ', 'あき', 'なつ');
 
 -- ----------------------------
+-- Table structure for replies
+-- ----------------------------
+DROP TABLE IF EXISTS `replies`;
+CREATE TABLE `replies`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
+  `time` datetime(6) NULL DEFAULT NULL,
+  `cid` int NULL DEFAULT NULL,
+  `uid` int NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `FKbq9kgpy1ldyjko15n0r7bf157`(`cid` ASC) USING BTREE,
+  INDEX `FKt202gd81iqyu8dkc3jteqa2q8`(`uid` ASC) USING BTREE,
+  CONSTRAINT `FKbq9kgpy1ldyjko15n0r7bf157` FOREIGN KEY (`cid`) REFERENCES `comments` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FKt202gd81iqyu8dkc3jteqa2q8` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of replies
+-- ----------------------------
+INSERT INTO `replies` VALUES (1, 'asdasd', '2024-04-09 14:50:38.000000', 8, 2);
+
+-- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
@@ -163,6 +210,7 @@ CREATE TABLE `users`  (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `enabled` int NOT NULL,
   `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username`(`username` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
@@ -170,7 +218,7 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (2, 'admin', '123', 1, 'admin');
-INSERT INTO `users` VALUES (3, 'zh', '123', 1, 'user');
+INSERT INTO `users` VALUES (2, 'admin', '123', 1, 'admin', '\\logo.jpg');
+INSERT INTO `users` VALUES (3, 'zh', '123', 1, 'user', '\\1.jpg');
 
 SET FOREIGN_KEY_CHECKS = 1;
