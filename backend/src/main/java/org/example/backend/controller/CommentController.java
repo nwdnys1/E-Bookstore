@@ -36,4 +36,9 @@ public class CommentController {
     public Result<Comment> deleteComment(@PathVariable int id) {
         return service.deleteComment(id);
     }
+    @PostMapping("/reply/{cid}")
+    public Result<Comment> addReply(@PathVariable int cid,@RequestBody String content) {
+        int uid = getUid();
+        return service.addReply(cid, uid, content);
+    }
 }

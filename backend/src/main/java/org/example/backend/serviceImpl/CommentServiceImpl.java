@@ -1,9 +1,6 @@
 package org.example.backend.serviceImpl;
 
-import org.example.backend.entity.Book;
-import org.example.backend.entity.Comment;
-import org.example.backend.entity.Result;
-import org.example.backend.entity.User;
+import org.example.backend.entity.*;
 import org.example.backend.repository.CommentRepository;
 import org.example.backend.service.CommentService;
 import org.springframework.stereotype.Service;
@@ -38,5 +35,19 @@ public class CommentServiceImpl implements CommentService {
         }
         return Result.error(404,"评论不存在");
     }
-
+    public Result<Comment> addReply(int cid, int uid, String content) {
+        Comment comment = repository.findById(cid).orElse(null);
+        if (comment == null) {
+            return Result.error(404,"评论不存在");
+        }
+        Reply reply = new Reply();
+        reply.setComment(comment);
+        reply.setUser(new User());
+        reply.getUser().setId(uid);
+        reply.setContent(content);
+        reply.setTime(LocalDateTime.now());
+        comment.getReplies().add(reply);
+        repository.save(comment);
+        return Result.success(comment);
+    }
 }

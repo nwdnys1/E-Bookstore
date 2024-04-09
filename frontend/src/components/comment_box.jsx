@@ -1,28 +1,31 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { Input, Button, Avatar, Rate, Row } from "antd";
+import { addCartItem } from "../services/cartService";
+import { addComment } from "../services/commentService";
+import { useParams } from "react-router-dom";
 
 const CommentBox = ({ onAddComment }) => {
-  const [commentText, setCommentText] = useState("");
+  const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
+  let { id } = useParams();
 
   const handleInputChange = (e) => {
-    setCommentText(e.target.value);
-  };
+    setContent(e.target.value);
+  }
 
   const handleRatingChange = (value) => {
     setRating(value);
   };
 
-  const handleSubmit = () => {
-    if (commentText.trim() !== "") {
-      onAddComment({
-        text: commentText,
-        avatar: "https://example.com/avatar.jpg", // 替换成用户的头像地址
-        rating: rating,
-      });
-      setCommentText("");
-      setRating(0);
+  const handleSubmit = async() => {
+    if (!content || !rating) {
+      alert("请填写评论内容和评分");
+      return;
     }
+    await addComment({ bid: id, content: content }).then((res) => {
+      alert("评论成功！");
+      location.reload();
+    });
   };
 
   return (
@@ -31,7 +34,7 @@ const CommentBox = ({ onAddComment }) => {
       <Input.TextArea
         rows={2}
         placeholder="请输入您的评论"
-        value={commentText}
+        value={content}
         onChange={handleInputChange}
         style={{ flex: 1 }}
       />

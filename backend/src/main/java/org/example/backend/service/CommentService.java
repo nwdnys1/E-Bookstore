@@ -10,5 +10,6 @@ public interface CommentService {
     public Result<List<Comment>> getCommentsByBid(int bid);
     public Result<Comment> addComment(int bid, int uid, String content);
     public Result<Comment> deleteComment(int id);
+    public Result<Comment> addReply(int cid, int uid, String content);
 
 }

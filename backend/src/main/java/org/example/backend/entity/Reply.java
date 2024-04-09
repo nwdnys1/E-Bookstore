@@ -7,15 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "comments")
+@Table(name = "replies")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","book"})//忽略cartItems属性 并且解决cartItems属性为null的问题
-public class Comment {
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","comment"})//忽略cartItems属性 并且解决cartItems属性为null的问题
+public class Reply {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,8 +24,7 @@ public class Comment {
     @JoinColumn(name = "uid")
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bid")
-    private Book book;
-    @OneToMany(mappedBy = "comment",cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.LAZY)
-    private List<Reply> replies;
+    @JoinColumn(name = "cid")
+    private Comment comment;
+
 }
