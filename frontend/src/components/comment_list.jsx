@@ -7,9 +7,9 @@ const { Panel } = Collapse;
 
 const CommentList = () => {
   const [comments, setComments] = useState([]);
-  let { bookId } = useParams();
+  let { id } = useParams();
   useEffect(() => {
-    getCommentsByBookId(bookId).then((res) => {
+    getCommentsByBookId(id).then((res) => {
       setComments(res);
     });
   }, []);
@@ -35,7 +35,7 @@ const CommentList = () => {
               description={comment.content}
             />
             <p style={{ fontSize: 12, textAlign: "right" }}>{comment.time}</p>
-            {comment.replies.length > 0 && (
+            {0 && (
               <Collapse ghost size="small">
                 {/* <Panel header={`回复 (${comment.replies.length})`} key="1">
                   {comment.replies.map((reply, index) => (
