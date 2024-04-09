@@ -30,7 +30,18 @@ export async function post(url, data) {
   let res = await fetch(url, opts);
   return await res.json().then(handleResponse);
 }
-
+export async function postText(url, data) {
+  let opts = {
+    method: "POST",
+    body: data,
+    headers: {
+      "Content-Type": "text/plain",
+    },
+    credentials: "include",
+  };
+  let res = await fetch(url, opts);
+  return await res.json().then(handleResponse);
+}
 export async function postUrlencoded(url, data) {
   let formData = new URLSearchParams();
   for (let key in data) {

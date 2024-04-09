@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Avatar, Collapse, Button, List } from "antd";
 import { UserOutlined, LikeOutlined, MessageOutlined } from "@ant-design/icons";
+import { useParams } from "react-router-dom";
+import { getCommentsByBookId } from "../services/commentService";
 const { Panel } = Collapse;
 
-const CommentList = ({ comments }) => {
+const CommentList = () => {
+  const [comments, setComments] = useState([]);
+  let { bookId } = useParams();
+  useEffect(() => {
+    getCommentsByBookId(bookId).then((res) => {
+      setComments(res);
+    });
+  }, []);
   return (
     <List
       dataSource={comments}
@@ -12,23 +21,23 @@ const CommentList = ({ comments }) => {
           <Card
             style={{ margin: 0, width: "100%" }}
             actions={[
-              <Button icon={<LikeOutlined />} key="like">
-                点赞 ({comment.likes})
-              </Button>,
-              <Button icon={<MessageOutlined />} key="reply">
-                回复 ({comment.replies.length})
-              </Button>,
+              // <Button icon={<LikeOutlined />} key="like">
+              //   点赞 ({comment.likes})
+              // </Button>,
+              // <Button icon={<MessageOutlined />} key="reply">
+              //   回复 ({comment.replies.length})
+              // </Button>,
             ]}
           >
             <Card.Meta
               avatar={<Avatar icon={<UserOutlined />} size="large" />}
-              title={comment.user}
+              title={comment.user.username}
               description={comment.content}
             />
             <p style={{ fontSize: 12, textAlign: "right" }}>{comment.time}</p>
             {comment.replies.length > 0 && (
               <Collapse ghost size="small">
-                <Panel header={`回复 (${comment.replies.length})`} key="1">
+                {/* <Panel header={`回复 (${comment.replies.length})`} key="1">
                   {comment.replies.map((reply, index) => (
                     <div
                       key={index}
@@ -44,7 +53,7 @@ const CommentList = ({ comments }) => {
                       </div>
                     </div>
                   ))}
-                </Panel>
+                </Panel> */}
               </Collapse>
             )}
           </Card>
