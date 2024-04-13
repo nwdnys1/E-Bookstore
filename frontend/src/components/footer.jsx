@@ -7,7 +7,7 @@ const MyFooter = () => {
   return (
     <Footer
       style={{
-        textAlign: "center",
+        textAlign: "center"
       }}
     >
       <p>© 2024 E-BOOKSTORE</p>

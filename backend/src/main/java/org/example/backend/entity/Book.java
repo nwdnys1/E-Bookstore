@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,9 +24,12 @@ public class Book {
     private int id;
     private String title;
     private String author;
+    @Lob
     private String description;
-    private float rating;
-    private float price;
+    @Column(precision = 3,scale = 1)
+    private BigDecimal rating;
+    @Column(precision = 5,scale = 2)
+    private BigDecimal price;
     private String cover;
     private int stock;
     private int ISBN;

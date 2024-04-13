@@ -1,11 +1,11 @@
 package org.example.backend.controller;
 
-import jakarta.annotation.Resource;
 import org.example.backend.entity.Result;
+import org.example.backend.entity.UserRequest;
 import org.example.backend.service.MyUserDetails;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,9 +21,17 @@ public class UserController {
         return Result.success("已登录");
     }
     @GetMapping("/get")
-    public Result<org.example.backend.entity.User> name() {
+    public Result<org.example.backend.entity.User> get() {
         User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Result.success(service.getUserByUsername(user.getUsername()));
+    }
+    @GetMapping("/get/{username}")
+    public Result<org.example.backend.entity.User> get(@PathVariable String username) {
+        return Result.success(service.getUserByUsername(username));
+    }
+    @PutMapping("/update")
+    public Result<org.example.backend.entity.User> update(@RequestBody UserRequest request) {
+        return service.updateUser(request);
     }
     @DeleteMapping("/delete/{id}")
     public Result<org.example.backend.entity.User> delete(@PathVariable int id) {

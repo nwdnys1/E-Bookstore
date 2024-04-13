@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems","orders"})//忽略cartItems属性 并且解决cartItems属性为null的问题
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems","orders","password"})//忽略cartItems属性 并且解决cartItems属性为null的问题
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,10 @@ public class User {
     private String avatar;
     private String email;
     private int enabled;
+    private int level;
+    private String tel;
+    @Lob
+    private String aboutMe;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)

@@ -12,6 +12,8 @@ import CartPage from "./pages/cart";
 import { AuthProvider } from "./context/authContext";
 import ScrollToTop from "./components/scrollToTop";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ProfilePage } from "./pages/profile";
+import { UserPage } from "./pages/user";
 
 const App = () => (
   <ConfigProvider locale={zhCN}>
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/cart" element={<CartPage />} />
           <Route path="/orders" element={<OrdersPage />} />
           <Route path="/stastics" element={<StasticsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/user/:username" element={<UserPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>

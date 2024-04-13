@@ -6,9 +6,11 @@ const { Header, Content, Footer } = Layout;
 
 export const BasicLayout = ({ children }) => {
   return (
-    <Layout style={{ minWidth: "1000px",background:"white"}}>
+    <Layout
+      style={{ minWidth: "1000px", background: "white", minHeight: "100vh" }}
+    >
       <Navbar />
-      <Content style={{margin:"20px 0"}}>{children}</Content>
+      <Content style={{ margin: "20px 0" }}>{children}</Content>
       <CustomFooter />
     </Layout>
   );

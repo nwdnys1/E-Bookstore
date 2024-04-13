@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import booksData from "../books.json";
 import { Flex } from "antd";
 import { BookDetails } from "../components/book_details";
 import { BookComments } from "../components/book_comments";
@@ -14,14 +13,11 @@ const DetailsPage = () => {
     getBookById(id).then((book) => setBook(book));
   }, []);
 
-  const comments = booksData.comments.filter(
-    (comment) => comment.bookId === parseInt(id, 10)
-  );
   return (
     <BasicLayout>
       <Flex vertical align="center">
         <BookDetails book={book} />
-        <BookComments comments={comments} />
+        <BookComments />
       </Flex>
     </BasicLayout>
   );

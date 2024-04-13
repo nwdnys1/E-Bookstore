@@ -2,6 +2,7 @@ package org.example.backend.service;
 
 import org.example.backend.entity.Result;
 import org.example.backend.entity.User;
+import org.example.backend.entity.UserRequest;
 import org.example.backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,6 +31,20 @@ public class MyUserDetails implements UserDetailsService {
         authorities.add((GrantedAuthority) () -> "ROLE_" + user.getRole());
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
+    public Result<User> updateUser(UserRequest request) {
+        int id = getUid();
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return Result.error(404, "用户不存在！");
+        }
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setTel(request.getTel());
+        user.setAboutMe(request.getAboutMe());
+        userRepository.save(user);
+        return Result.success(user);
+
+    }
     public Result<User> deleteUser(int id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
@@ -40,5 +55,10 @@ public class MyUserDetails implements UserDetailsService {
     }
     public User getUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
+    }
+    public int getUid() {//从数据库里查询id
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return userRepository.findUserByUsername(username).getId();
+
     }
 }

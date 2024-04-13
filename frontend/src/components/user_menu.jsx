@@ -15,7 +15,7 @@ import { getUser } from "../services/userService";
 const items = [
   {
     key: "userPage",
-    label: <Link to="/user">个人中心</Link>,
+    label: <Link to="/profile">个人中心</Link>,
     icon: <UserOutlined />,
   },
   {

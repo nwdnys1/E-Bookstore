@@ -1,6 +1,7 @@
 package org.example.backend.controller;
 
 import org.example.backend.entity.Comment;
+import org.example.backend.entity.Reply;
 import org.example.backend.entity.Result;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.CommentService;
@@ -37,7 +38,7 @@ public class CommentController {
         return service.deleteComment(id);
     }
     @PostMapping("/reply/{cid}")
-    public Result<Comment> addReply(@PathVariable int cid,@RequestBody String content) {
+    public Result<Reply> addReply(@PathVariable int cid, @RequestBody String content) {
         int uid = getUid();
         return service.addReply(cid, uid, content);
     }

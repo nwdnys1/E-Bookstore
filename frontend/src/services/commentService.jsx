@@ -12,17 +12,15 @@ export const getCommentsByBookId = async (bookId) => {
     alert(e);
   }
 };
-export const addComment = async ({bid,content}) => {
+export const addComment = async ({ bid, content }) => {
   const url = `${PREFIX}/add/${bid}`;
   let result;
-  try {
-    result = await postText(url, content);
-    return result;
-  } catch (e) {
-    console.log(e);
-    alert(e);
-  }
-}
+
+  result = await postText(url, content);
+  return result;
+
+
+};
 export const deleteComment = async (id) => {
   const url = `${PREFIX}/delete/${id}`;
   let result;
@@ -33,15 +31,12 @@ export const deleteComment = async (id) => {
     console.log(e);
     alert(e);
   }
-}
-export const addReply = async ({cid,content}) => {
+};
+export const addReply = async ({ cid, content }) => {
   const url = `${PREFIX}/reply/${cid}`;
   let result;
-  try {
-    result = await postText(url, content);
-    return result;
-  } catch (e) {
-    console.log(e);
-    alert(e);
-  }
-}
+
+  result = await postText(url, content);
+  return result;
+
+};

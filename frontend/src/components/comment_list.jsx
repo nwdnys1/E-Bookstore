@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Card, Avatar, Collapse, Button, List, Input, Row, Flex } from "antd";
-import { UserOutlined, LikeOutlined, MessageOutlined } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
-import { getCommentsByBookId } from "../services/commentService";
+import { Card, Avatar, Button, List, Row, Flex, Typography } from "antd";
 import ReplyBox from "./reply_box";
-const { Panel } = Collapse;
-
-const CommentList = ({ comments }) => {
+import { getCommentsByBookId } from "../services/commentService";
+import { Link, useParams } from "react-router-dom";
+import { ReplyList } from "./reply_list";
+const { Text, Paragraph } = Typography;
+const CommentList = ({ comments, setComments }) => {
   const [replying, setReplying] = useState(null);
-
   const handleReply = (id) => {
     setReplying(replying === id ? null : id);
   };
   const handleCancel = () => {
     setReplying(null);
   };
+
   return (
     <List
       dataSource={comments}
@@ -41,46 +40,38 @@ const CommentList = ({ comments }) => {
               }
             >
               <Card.Meta
-                avatar={<Avatar src={comment.user.avatar} size="large" />}
+                avatar={
+                  <Link to={`/user/${comment.user.username}`}>
+                    <Avatar src={comment.user.avatar} size="large" />
+                  </Link>
+                }
                 title={comment.user.username}
-                description={comment.content}
+                description={<Paragraph>{comment.content}</Paragraph>}
               />
-              <Row justify="end" align={"middle"}>
-                <p style={{ fontSize: 12, textAlign: "right" }}>
-                  {new Date(comment.time).toLocaleString()}
-                </p>
-                {!replying && (
-                  <Button
-                    type={"primary"}
-                    onClick={() => handleReply(comment.id)}
-                  >
-                    回复
-                  </Button>
-                )}
-              </Row>
+
+              <p style={{ fontSize: 14, textAlign: "right" }}>
+                {new Date(comment.time).toLocaleString()}
+              </p>
+              {!(replying === comment.id) && (
+                <Button
+                  type={"primary"}
+                  onClick={() => handleReply(comment.id)}
+                  style={{ float: "right" }}
+                >
+                  回复
+                </Button>
+              )}
+
               {comment.id === replying && (
-                <ReplyBox handleCancel={handleCancel} id={comment.id} />
+                <ReplyBox
+                  handleCancel={handleCancel}
+                  id={comment.id}
+                  setComments={setComments}
+                  comments={comments}
+                />
               )}
               {comment.replies.length > 0 && (
-                <Collapse ghost size="small">
-                  <Panel header={`回复 (${comment.replies.length})`} key="1">
-                    {comment.replies.map((reply, index) => (
-                      <div
-                        key={index}
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
-                        <Avatar
-                          src={reply.user.avatar}
-                          style={{ marginRight: 8 }}
-                        />
-                        <div>
-                          <p>{reply.user.username}</p>
-                          <p>{reply.content}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </Panel>
-                </Collapse>
+                <ReplyList replies={comment.replies} />
               )}
             </Card>
           </Flex>
