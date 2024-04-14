@@ -1,9 +1,24 @@
 import { Avatar, Button, Input, Row } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addReply } from "../services/commentService";
+import { useParams } from "react-router-dom";
+import { getUser } from "../services/userService";
 
 const ReplyBox = ({ id, handleCancel, setComments }) => {
   const [content, setContent] = useState("");
+  const [avatar, setAvatar] = useState(
+    "https://img.moegirl.org.cn/common/b/b7/Transparent_Akkarin.jpg"
+  );
+  useEffect(() => {
+    const get = async () => {
+      try {
+        await getUser().then((res) => {
+          setAvatar(res.avatar);
+        });
+      } catch (e) {}
+    };
+    get();
+  }, []);
   const handleInputChange = (e) => {
     setContent(e.target.value);
   };
@@ -35,7 +50,7 @@ const ReplyBox = ({ id, handleCancel, setComments }) => {
 
   return (
     <Row align={"middle"} justify={"space-evenly"}>
-      <Avatar src="/1.jpg" size="large" />
+      <Avatar src={avatar} size="large" />
       <div style={{ width: 20 }} />
       <Input.TextArea
         rows={2}

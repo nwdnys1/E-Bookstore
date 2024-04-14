@@ -1,9 +1,9 @@
-import { Button, Form, Input, Modal } from "antd";
+import { Button, Form, Input, Flex, Row } from "antd";
 import React from "react";
 import { placeOrder } from "../services/orderService";
 
 const { TextArea } = Input;
-export default function OrderModal({ selectedItems }) {
+export default function OrderModal({ selectedItems, totalPrice }) {
   const handleSubmit = async ({ address, receiver, tel }) => {
     if (!address || !receiver || !tel) {
       alert("请填写完整信息！");
@@ -21,20 +21,40 @@ export default function OrderModal({ selectedItems }) {
   };
   return (
     <Form layout="vertical" preserve={false} onFinish={handleSubmit}>
-      <Form.Item name="receiver" label="收货人" required>
-        <Input />
-      </Form.Item>
-      <Form.Item name="tel" label="联系电话" required>
-        <Input />
-      </Form.Item>
-      <Form.Item name="address" label="收货地址" required>
-        <TextArea rows={2} maxLength={817} />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          提交
-        </Button>
-      </Form.Item>
+      <Flex vertical justify="space-around" style={{ width: 300, height: 400 }}>
+        <Form.Item
+          name="receiver"
+          label="收货人"
+          required
+          style={{ width: "100%", margin: 0 }}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="tel"
+          label="联系电话"
+          required
+          style={{ width: "100%", margin: 0 }}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="address"
+          label="收货地址"
+          required
+          style={{ width: "100%", margin: 0 }}
+        >
+          <TextArea rows={4} />
+        </Form.Item>
+        <Form.Item>
+          <Row justify="end" align={"middle"}>
+            <p>合计：￥{totalPrice}</p>
+            <Button type="primary" htmlType="submit">
+              提交订单
+            </Button>
+          </Row>
+        </Form.Item>
+      </Flex>
     </Form>
   );
 }

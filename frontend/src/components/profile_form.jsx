@@ -1,16 +1,8 @@
-import {
-  Avatar,
-  Button,
-  Col,
-  Form,
-  Input,
-  Row,
-  Select,
-  Space,
-  Typography,
-} from "antd";
+import { Avatar, Button, Col, Form, Input, Row, Select } from "antd";
 const { Option } = Select;
-export const ProfileForm = ({ user, form, handleSave, handleCancel }) => {
+export const ProfileForm = ({ user, handleSave, handleCancel }) => {
+  const [form] = Form.useForm();
+  form.setFieldsValue(user);
   return (
     <Form
       form={form}
@@ -54,7 +46,6 @@ export const ProfileForm = ({ user, form, handleSave, handleCancel }) => {
           </Row>
         </Col>
       </Row>
-
       <Form.Item name="aboutMe" label="个人简介">
         <Input.TextArea size="large" rows={10} style={{ width: "100%" }} />
       </Form.Item>

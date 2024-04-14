@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Card, Avatar, Button, List, Row, Flex, Typography } from "antd";
+import React, { useState } from "react";
+import { Card, Avatar, Button, List, Flex, Typography } from "antd";
 import ReplyBox from "./reply_box";
-import { getCommentsByBookId } from "../services/commentService";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ReplyList } from "./reply_list";
-const { Text, Paragraph } = Typography;
+const { Paragraph } = Typography;
 const CommentList = ({ comments, setComments }) => {
   const [replying, setReplying] = useState(null);
   const handleReply = (id) => {
@@ -80,7 +79,7 @@ const CommentList = ({ comments, setComments }) => {
       pagination={{
         pageSize: 5,
         showSizeChanger: true,
-        position: "top",
+        position: "bottom",
       }}
     />
   );

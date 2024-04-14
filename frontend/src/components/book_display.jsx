@@ -9,15 +9,7 @@ const BookDisplay = ({ books, withButton }) => {
   const [layout, setLayout] = useState("block");
 
   return (
-    <Flex
-      vertical
-      style={{
-        padding: "0 30px",
-        width: "65%",
-        minWidth: 800,
-      }}
-      gap={20}
-    >
+    <Flex vertical gap={20}>
       <Row justify={"space-between"}>
         <SwitchButton handleChange={setLayout} />
         {withButton && (

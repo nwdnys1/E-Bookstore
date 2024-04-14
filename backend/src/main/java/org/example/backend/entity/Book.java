@@ -1,6 +1,7 @@
 package org.example.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems"})//忽略cartItems属性 并且解决cartItems属性为null的问题
+
 public class Book {
     @Id
     @GeneratedValue( strategy = jakarta.persistence.GenerationType.IDENTITY)
@@ -33,7 +35,10 @@ public class Book {
     private String cover;
     private int stock;
     private int ISBN;
-    @OneToMany(mappedBy = "book",cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
+    @JsonIgnoreProperties("replies")
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
 }

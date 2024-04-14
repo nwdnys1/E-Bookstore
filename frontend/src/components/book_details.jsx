@@ -12,7 +12,7 @@ export const BookDetails = ({ book }) => {
 
   const handleBuyNow = () => {};
   return (
-    <Flex vertical style={{ width: "65%", minWidth: 800 }}>
+    <Flex vertical>
       <BookInfo book={book} />
       <Divider style={{ margin: "5px 0" }} />
       <Row>

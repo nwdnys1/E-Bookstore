@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Avatar, Form, Input, Button, Select, Typography } from "antd";
+import { Form } from "antd";
 import { ProfileForm } from "./profile_form";
 import ProfileInfo from "./profile_info";
 import { getUser, updateUser } from "../services/userService";
@@ -7,8 +7,6 @@ import { getUser, updateUser } from "../services/userService";
 export const Profile = () => {
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [form] = Form.useForm();
-  form.setFieldsValue(user);
   useEffect(() => {
     getUser().then((res) => {
       setUser(res);
@@ -17,8 +15,10 @@ export const Profile = () => {
   const handleEdit = () => {
     setIsEditing(true);
   };
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
   const handleSave = async (user) => {
-    console.log(user);
     try {
       await updateUser(user).then((res) => {
         setUser(res);
@@ -29,13 +29,9 @@ export const Profile = () => {
     }
     setIsEditing(false);
   };
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
 
   return isEditing ? (
     <ProfileForm
-      form={form}
       handleSave={handleSave}
       handleCancel={handleCancel}
       user={user}

@@ -1,4 +1,14 @@
-import { Button, Col, Flex, Image, InputNumber, Modal, Row, Table } from "antd";
+import {
+  Button,
+  Col,
+  Flex,
+  Image,
+  InputNumber,
+  Modal,
+  Row,
+  Table,
+  Typography,
+} from "antd";
 import { useEffect, useState } from "react";
 import {
   deleteCartItem,
@@ -8,7 +18,7 @@ import {
 import { Link } from "react-router-dom";
 import { DeleteOutlined } from "@ant-design/icons";
 import OrderModal from "./order_modal";
-
+const { Text } = Typography;
 const CartTable = () => {
   const [items, setItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -56,9 +66,7 @@ const CartTable = () => {
       title: "书名",
       dataIndex: "book",
       key: "book_title",
-      render: (book, item) => (
-        <Link to={`/details/${item.book.id}`}>{book.title}</Link>
-      ),
+      render: (book) => <Link to={`/details/${book.id}`}>{book.title}</Link>,
     },
     {
       title: "数量",
@@ -67,7 +75,7 @@ const CartTable = () => {
       render: (number, item) => (
         <InputNumber
           min={1}
-          defaultValue={number}
+          max={item.book.stock}
           value={item.quantity}
           onChange={(newNumber) => {
             handleNumberChange(item.id, newNumber);
@@ -97,11 +105,7 @@ const CartTable = () => {
   ];
 
   return (
-    <Flex
-      style={{ width: "65%", minWidth: 800, margin: "0 auto" }}
-      vertical
-      justify="center"
-    >
+    <Flex vertical justify="center">
       {showModal && (
         <Modal
           open={showModal}
@@ -111,7 +115,10 @@ const CartTable = () => {
           keyboard
           width={"auto"}
         >
-          <OrderModal selectedItems={selectedItems} />
+          <OrderModal
+            selectedItems={selectedItems}
+            totalPrice={computeTotalPrice()}
+          />
         </Modal>
       )}
       <Table
@@ -124,11 +131,17 @@ const CartTable = () => {
         expandable={{
           expandedRowRender: (item) => (
             <Row justify={"space-between"} gutter={8}>
-              <Col span={4}>
+              <Col span={3}>
                 <Image src={item.book.cover} style={{ objectFit: "cover" }} />
               </Col>
               <Col span={20}>
-                <p>{item.book.description}</p>
+                <Text> {item.book.description} </Text>
+                <br />
+                <Text> 作者：{item.book.author} </Text>
+                <br />
+                <Text> 库存：{item.book.stock} </Text>
+                <br />
+                <Text> ISBN: {item.book.isbn} </Text>
               </Col>
             </Row>
           ),
@@ -138,14 +151,16 @@ const CartTable = () => {
           key: item.id,
         }))}
       />
-      <p>总价：{computeTotalPrice()}元</p>
-      <Button
-        type="primary"
-        disabled={selectedItems.length === 0}
-        onClick={openModal}
-      >
-        立刻下单
-      </Button>
+      <Row justify="end" align={"middle"}>
+        <p>合计：￥{computeTotalPrice()}</p>
+        <Button
+          type="primary"
+          disabled={selectedItems.length === 0}
+          onClick={openModal}
+        >
+          立刻下单
+        </Button>
+      </Row>
     </Flex>
   );
 };

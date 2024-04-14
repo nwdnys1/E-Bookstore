@@ -20,6 +20,7 @@ export const BookComments = () => {
     setSortBy(key);
   };
   if (sortBy === "latest") {
+    //理论上应该做到后端业务逻辑里
     comments.sort((a, b) => new Date(b.time) - new Date(a.time));
   }
   if (sortBy === "hottest") {
@@ -28,22 +29,32 @@ export const BookComments = () => {
   if (sortBy === "mostReplies") {
     comments.sort((a, b) => b.replies.length - a.replies.length);
   }
-
+  const TabPanes = [
+    {
+      label: "最热评论",
+      key: "hottest",
+      children: <CommentList comments={comments} setComments={setComments} />,
+    },
+    {
+      label: "最新评论",
+      key: "latest",
+      children: <CommentList comments={comments} setComments={setComments} />,
+    },
+    {
+      label: "最多回复",
+      key: "mostReplies",
+      children: <CommentList comments={comments} setComments={setComments} />,
+    },
+  ];
   return (
-    <Flex vertical style={{ width: "65%", minWidth: 800 }}>
+    <Flex vertical>
       <Divider orientation="left">书籍评论</Divider>
-      <CommentBox setComments={setComments}/>
-      <Tabs activeKey={sortBy} onChange={handleTabChange}>
-        <TabPane tab="最热评论" key="hottest">
-          <CommentList comments={comments} setComments={setComments} />
-        </TabPane>
-        <TabPane tab="最新评论" key="latest">
-          <CommentList comments={comments} setComments={setComments} />
-        </TabPane>
-        <TabPane tab="最多回复" key="mostReplies">
-          <CommentList comments={comments} setComments={setComments} />
-        </TabPane>
-      </Tabs>
+      <CommentBox setComments={setComments} />
+      <Tabs
+        activeKey={sortBy}
+        onChange={handleTabChange}
+        items={TabPanes}
+      ></Tabs>
     </Flex>
   );
 };
