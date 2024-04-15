@@ -21,7 +21,6 @@ export async function logout() {
     alert("登出成功！");
     location.href = "/";
   } catch (e) {
-    console.log(e);
     alert(e);
   }
 }
@@ -33,7 +32,6 @@ export async function checkAuth() {
     result = await get(url);
     return result;
   } catch (e) {
-    console.log(e);
     location.href = "/";
     alert(e);
   }

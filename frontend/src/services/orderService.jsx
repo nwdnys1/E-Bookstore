@@ -3,13 +3,8 @@ const PREFIX = `${BASEURL}/api/order`;
 export const getOrders = async () => {
   const url = `${PREFIX}/list`;
   let result;
-  try {
-    result = await get(url);
-    return result;
-  } catch (e) {
-    console.log(e);
-    alert(e);
-  }
+  result = await get(url);
+  return result;
 };
 
 export const placeOrder = async (orderRequest) => {

@@ -1,11 +1,11 @@
 package org.example.backend.controller;
 
+import org.example.backend.entity.RegisterRequest;
 import org.example.backend.entity.Result;
-import org.example.backend.entity.UserRequest;
+import org.example.backend.entity.UserProfile;
 import org.example.backend.service.MyUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,11 +29,15 @@ public class UserController {
     public Result<org.example.backend.entity.User> get(@PathVariable String username) {
         return Result.success(service.getUserByUsername(username));
     }
-    @PutMapping("/update")
-    public Result<org.example.backend.entity.User> update(@RequestBody UserRequest request) {
+    @PostMapping("/register")
+    public Result<org.example.backend.entity.User> register(@RequestBody RegisterRequest request) {
+        return service.addUser(request);
+    }
+    @PutMapping("/admin/update")
+    public Result<org.example.backend.entity.User> update(@RequestBody UserProfile request) {
         return service.updateUser(request);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public Result<org.example.backend.entity.User> delete(@PathVariable int id) {
         return service.deleteUser(id);
     }

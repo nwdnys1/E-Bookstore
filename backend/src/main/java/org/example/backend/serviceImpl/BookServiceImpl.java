@@ -2,6 +2,7 @@ package org.example.backend.serviceImpl;
 
 import org.example.backend.entity.Book;
 import org.example.backend.entity.Result;
+import org.example.backend.entity.User;
 import org.example.backend.repository.BookRepository;
 import org.example.backend.service.BookService;
 import org.springframework.stereotype.Service;
@@ -30,13 +31,19 @@ public class BookServiceImpl implements BookService {
         return Result.success(repository.save(book));
     }
     public Result<Book> updateBook(int id, Book book){
-        if(repository.existsById(id)){
-            book.setId(id);
-            book.setCartItems(repository.getBookById(id).getCartItems());//保留购物车信息 不然cart_items表会被清空
-            return Result.success(repository.save(book));
-        } else {
+        Book oldBook = repository.findById(id).orElse(null);
+        if(oldBook == null){
             return Result.error(404, "书籍不存在！");
         }
+        oldBook.setTitle(book.getTitle());
+        oldBook.setAuthor(book.getAuthor());
+        oldBook.setDescription(book.getDescription());
+        oldBook.setPrice(book.getPrice());
+        oldBook.setRating(book.getRating());
+        oldBook.setCover(book.getCover());
+        oldBook.setStock(book.getStock());
+        oldBook.setISBN(book.getISBN());
+        return Result.success(repository.save(oldBook));
     }
     public Result<Book> deleteBook(int id){
         if(repository.existsById(id)){

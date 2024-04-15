@@ -19,7 +19,7 @@ public class User {
     private String role;
     private String avatar;
     private String email;
-    private int enabled;
+    private boolean enabled;
     private int level;
     private String tel;
     @Lob

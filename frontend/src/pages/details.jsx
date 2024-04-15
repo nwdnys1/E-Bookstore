@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BookDetails } from "../components/book_details";
 import { BookComments } from "../components/book_comments";
-import { BasicLayout } from "../layouts";
+import { BasicLayout } from "../components/layout";
 import { getBookById } from "../services/bookService";
 
 const DetailsPage = () => {

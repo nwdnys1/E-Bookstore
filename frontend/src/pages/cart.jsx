@@ -1,17 +1,11 @@
-import { BasicLayout } from "../layouts";
+import { LoginLayout } from "../components/layout";
 import CartTable from "../components/cart_table";
-import { checkAuth } from "../services/loginService";
-import { useEffect } from "react";
 
 const CartPage = () => {
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
   return (
-    <BasicLayout>
+    <LoginLayout>
       <CartTable />
-    </BasicLayout>
+    </LoginLayout>
   );
 };
 

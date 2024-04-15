@@ -1,10 +1,11 @@
 package org.example.backend.service;
 
+import org.example.backend.entity.RegisterRequest;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.User;
-import org.example.backend.entity.UserRequest;
+import org.example.backend.entity.UserProfile;
 import org.example.backend.repository.UserRepository;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,16 +23,16 @@ public class MyUserDetails implements UserDetailsService {
         this.userRepository = userRepository;
     }
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException{
         User user = userRepository.findUserByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("未找到用户");
         }
         List< GrantedAuthority > authorities = new ArrayList<>();
         authorities.add((GrantedAuthority) () -> "ROLE_" + user.getRole());
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),  user.isEnabled(), true, true, true, authorities);
     }
-    public Result<User> updateUser(UserRequest request) {
+    public Result<User> updateUser(UserProfile request) {
         int id = getUid();
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {
@@ -44,6 +45,20 @@ public class MyUserDetails implements UserDetailsService {
         userRepository.save(user);
         return Result.success(user);
 
+    }
+    public Result<User> addUser(RegisterRequest request) {
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
+        user.setRole("user");
+        user.setEnabled(true);
+        user.setLevel(1);
+        user.setAvatar("https://img.moegirl.org.cn/common/b/b7/Transparent_Akkarin.jpg");
+        user.setTel("");
+        user.setAboutMe("");
+        userRepository.save(user);
+        return Result.success(user);
     }
     public Result<User> deleteUser(int id) {
         if (userRepository.existsById(id)) {

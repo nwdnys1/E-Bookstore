@@ -3,6 +3,7 @@ package org.example.backend.controller;
 import org.example.backend.entity.Book;
 import org.example.backend.entity.Result;
 import org.example.backend.service.BookService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,15 +28,16 @@ public class BookController {
     public Result<List<Book>> getRecommendations(@PathVariable int nums) {//依据rating进行推荐 选取rating最高的前6本书
        return service.getRecommendations(nums);
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/admin/update/{id}")
+    @PreAuthorize("hasRole('admin')")
     public Result<Book> updateBook(@PathVariable int id, @RequestBody Book book) {
         return service.updateBook(id, book);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public Result<Book> deleteBook(@PathVariable int id) {
          return service.deleteBook(id);
     }
-    @PostMapping("/add")
+    @PostMapping("/admin/add")
     public Result<Book> addBook(@RequestBody Book book) {
        return service.addBook(book);
     }

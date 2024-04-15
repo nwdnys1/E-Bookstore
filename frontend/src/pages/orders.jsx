@@ -1,16 +1,11 @@
-import { useEffect } from "react";
-import { checkAuth } from "../services/loginService";
-import { BasicLayout } from "../layouts";
+import { LoginLayout } from "../components/layout";
 import OrderTable from "../components/order_table";
 
 const OrdersPage = () => {
-  useEffect(() => {
-    checkAuth();
-  }, []);
   return (
-    <BasicLayout>
+    <LoginLayout>
       <OrderTable />
-    </BasicLayout>
+    </LoginLayout>
   );
 };
 

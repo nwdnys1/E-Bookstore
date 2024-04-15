@@ -6,6 +6,7 @@ import org.example.backend.repository.UserRepository;
 import org.example.backend.service.CartItemService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootTest
 class BackendApplicationTests {
@@ -15,8 +16,11 @@ class BackendApplicationTests {
 
     @Test
     void contextLoads() {
-        cartItemService = new CartItemService(cartItemRepository);
-        cartItemService.getCartItems(2);
+
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            System.out.println(encoder.encode("123"));
+
+
     }
 
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BookCarousel from "../components/carousel";
 import BookDisplay from "../components/book_display";
 import { getRecommendedBooks } from "../services/bookService";
-import { BasicLayout } from "../layouts";
+import { BasicLayout } from "../components/layout";
 import { Flex } from "antd";
 
 const HomePage = () => {

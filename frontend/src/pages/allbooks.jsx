@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllBooks, searchBooks } from "../services/bookService";
 import BookDisplay from "../components/book_display";
-import { BasicLayout } from "../layouts";
+import { BasicLayout } from "../components/layout";
 import { Flex } from "antd";
 import {useSearchParams } from "react-router-dom";
 

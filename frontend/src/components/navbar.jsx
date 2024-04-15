@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Menu, Layout, Row, Button, Modal, Col } from "antd";
+import React from "react";
+import { Menu, Layout, Row } from "antd";
 import { Link } from "react-router-dom";
 import {
   BookOutlined,
@@ -50,7 +50,7 @@ const Navbar = () => {
         <Menu
           mode="horizontal"
           style={{
-            width: "600px",
+            width: "450px",
             backgroundColor: "#f5f5f5",
           }}
           items={navItems}
