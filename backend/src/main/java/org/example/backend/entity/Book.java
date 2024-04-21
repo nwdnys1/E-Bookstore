@@ -34,7 +34,7 @@ public class Book {
     private BigDecimal price;
     private String cover;
     private int stock;
-    private int ISBN;
+    private String ISBN;
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
     @JsonIgnoreProperties("replies")

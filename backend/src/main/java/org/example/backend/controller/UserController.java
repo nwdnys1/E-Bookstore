@@ -33,7 +33,7 @@ public class UserController {
     public Result<org.example.backend.entity.User> register(@RequestBody RegisterRequest request) {
         return service.addUser(request);
     }
-    @PutMapping("/admin/update")
+    @PutMapping("/update")
     public Result<org.example.backend.entity.User> update(@RequestBody UserProfile request) {
         return service.updateUser(request);
     }

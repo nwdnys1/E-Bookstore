@@ -15,7 +15,7 @@ export const searchBooks = async ( keyword ) => {
 };
 
 export const getRecommendedBooks = async () => {
-  const url = `${PREFIX}/recommend/6`;
+  const url = `${PREFIX}/recommend/4`;
   let result;
   try {
     result = await get(url);
