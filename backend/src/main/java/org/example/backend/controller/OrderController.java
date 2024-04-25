@@ -1,17 +1,15 @@
 package org.example.backend.controller;
 
-import jakarta.annotation.Resource;
+
 import org.example.backend.entity.*;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.OrderService;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/order")
