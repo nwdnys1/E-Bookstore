@@ -1,10 +1,10 @@
 import React from "react";
-import { Avatar, Button, Col,  Row, Space, Tag, Typography } from "antd";
-
+import { Avatar, Button, Col, Row, Space, Tag, Typography } from "antd";
+import { useAuth } from "../context/authContext";
 const { Text, Title, Paragraph } = Typography;
 
 const ProfileInfo = ({ user, handleClick }) => {
-  return (
+  return user ? (
     <Row style={{ width: "65%", margin: "0 auto", minWidth: 800 }}>
       <Space direction="vertical" align="center">
         <Avatar src={user.avatar} size={200} />
@@ -44,7 +44,7 @@ const ProfileInfo = ({ user, handleClick }) => {
         </Paragraph>
       </Col>
     </Row>
-  );
+  ) : null; //防止渲染时user为空
 };
 
 export default ProfileInfo;

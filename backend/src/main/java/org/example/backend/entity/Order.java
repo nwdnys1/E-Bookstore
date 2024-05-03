@@ -17,7 +17,7 @@ import java.util.Map;
 @Table(name = "orders")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","user"})//忽略user属性 并且解决user属性为null的问题
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","user"})//忽略user属性
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

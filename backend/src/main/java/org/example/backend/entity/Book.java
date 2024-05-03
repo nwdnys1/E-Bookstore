@@ -18,15 +18,14 @@ import java.util.Map;
 @Table(name = "books")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems"})//忽略cartItems属性 并且解决cartItems属性为null的问题
-
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems"})//忽略cartItems属性 并且解决某一字段可能为null的问题
 public class Book {
     @Id
-    @GeneratedValue( strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String author;
-    @Lob
+    @Lob//长文本类型
     private String description;
     @Column(precision = 3,scale = 1)
     private BigDecimal rating;
@@ -37,7 +36,7 @@ public class Book {
     private String ISBN;
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
-    @JsonIgnoreProperties("replies")
+    @JsonIgnoreProperties({"id","content","user","time","replies"})//忽略所有属性 但是要返回comments数组来获得评论数量
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Comment> comments;
 

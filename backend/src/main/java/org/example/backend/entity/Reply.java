@@ -23,6 +23,7 @@ public class Reply {
     private LocalDateTime time;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
+    @JsonIgnoreProperties({"comments","aboutMe","role","email","tel","enabled","level"})
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cid")

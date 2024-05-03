@@ -1,17 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Form } from "antd";
+import React, { useState } from "react";
 import { ProfileForm } from "./profile_form";
 import ProfileInfo from "./profile_info";
-import { getUser, updateUser } from "../services/userService";
+import { useAuth } from "../context/authContext";
+import { updateUser } from "../services/userService";
 
 export const Profile = () => {
-  const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  useEffect(() => {
-    getUser().then((res) => {
-      setUser(res);
-    });
-  }, []);
+  const { user, setUser } = useAuth();
   const handleEdit = () => {
     setIsEditing(true);
   };
@@ -19,15 +14,20 @@ export const Profile = () => {
     setIsEditing(false);
   };
   const handleSave = async (user) => {
+    if (user.aboutMe.length > 3000) {
+      alert(`个人简介过长，当前字数${user.aboutMe.length}，请控制在3000字以内`);
+      return;
+    }
     try {
       await updateUser(user).then((res) => {
         setUser(res);
+        console.log(res);
         alert("修改成功！");
+        setIsEditing(false);
       });
     } catch (e) {
       alert(e);
     }
-    setIsEditing(false);
   };
 
   return isEditing ? (

@@ -38,6 +38,9 @@ public class MyUserDetails implements UserDetailsService {
         if (user == null) {
             return Result.error(404, "用户不存在！");
         }
+        if(userRepository.existsUserByUsername(request.getUsername()) && !request.getUsername().equals(user.getUsername())) {
+            return Result.error(400, "用户名已存在！");
+        }
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setTel(request.getTel());
@@ -54,7 +57,7 @@ public class MyUserDetails implements UserDetailsService {
         user.setRole("user");
         user.setEnabled(true);
         user.setLevel(1);
-        user.setAvatar("https://img.moegirl.org.cn/common/b/b7/Transparent_Akkarin.jpg");
+        user.setAvatar("https://img.moegirl.org.cn/common/b/b7/Transparent_Akkarin.jpg");//默认头像
         user.setTel("");
         user.setAboutMe("");
         userRepository.save(user);

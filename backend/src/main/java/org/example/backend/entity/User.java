@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems","orders","comments","password"})//忽略cartItems属性 并且解决cartItems属性为null的问题
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems","orders","comments","password"})//忽略cartItems,orders,comments属性
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -15,7 +15,7 @@ import java.util.Map;
 @Table(name = "order_items")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","order"})//忽略order属性 并且解决order属性为null的问题
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","order"})//忽略order属性
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

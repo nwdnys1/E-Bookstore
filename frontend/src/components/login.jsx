@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Form, Input, Button, Checkbox, Typography, Flex, Row } from "antd";
 import {
   UserOutlined,
@@ -6,14 +6,30 @@ import {
   EyeTwoTone,
   EyeInvisibleOutlined,
 } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { login } from "../services/loginService";
+import { useAuth } from "../context/authContext";
+import { getUser } from "../services/userService";
 
 const { Title, Paragraph } = Typography;
 
 const LoginModal = () => {
+  const { user, setUser } = useAuth();
+  const loginAndSetUser = async (values) => {
+    try {
+      await login(values);
+      const userRes = await getUser();
+      setUser(userRes);
+      console.log(userRes);
+      alert("登录成功！");
+      location.reload();
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
-    <Form initialValues={{ remember: true }} onFinish={login}>
+    <Form initialValues={{ remember: true }} onFinish={loginAndSetUser}>
       <Flex
         vertical
         align="center"

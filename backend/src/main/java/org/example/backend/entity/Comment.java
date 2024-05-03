@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "comments")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","book"})//忽略cartItems属性 并且解决cartItems属性为null的问题
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","book"})//忽略book属性，并解决replies属性为空的问题
 public class Comment {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Comment {
     private LocalDateTime time;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
-    @JsonIgnoreProperties({"comments","aboutMe"})
+    @JsonIgnoreProperties({"comments","aboutMe","role","email","tel","enabled","level"})
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bid")

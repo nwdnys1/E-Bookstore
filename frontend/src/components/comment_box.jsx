@@ -1,25 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Input, Button, Avatar, Rate, Row } from "antd";
 import { addComment } from "../services/commentService";
 import { useParams } from "react-router-dom";
-import { getUser } from "../services/userService";
+import { useAuth } from "../context/authContext";
+import { defaultAvatar } from "../utils/config";
 
 const CommentBox = ({ setComments }) => {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
-  const [avatar, setAvatar] = useState("https://img.moegirl.org.cn/common/b/b7/Transparent_Akkarin.jpg");
+  const { user, setUser } = useAuth();
   let { id } = useParams();
-  useEffect(() => {
-    const get = async () => {
-      try {
-        await getUser().then((res) => {
-          setAvatar(res.avatar);
-        });
-      } catch (e) {
-      }
-    };
-    get();
-  }, []);
+
   const handleInputChange = (e) => {
     setContent(e.target.value);
   };
@@ -29,6 +20,10 @@ const CommentBox = ({ setComments }) => {
   const handleSubmit = async () => {
     if (!content || !rating) {
       alert("请填写评论内容和评分");
+      return;
+    }
+    if (content.length > 3000) {
+      alert(`评论内容过长，当前字数${content.length}，请控制在3000字以内`);
       return;
     }
     try {
@@ -44,7 +39,7 @@ const CommentBox = ({ setComments }) => {
 
   return (
     <Row align={"middle"} justify={"space-evenly"}>
-      <Avatar src={avatar} size="large" />
+      <Avatar src={user ? user.avatar : defaultAvatar} size="large" />
       <div style={{ width: 20 }} />
       <Input.TextArea
         rows={2}

@@ -1,28 +1,18 @@
-import { BASEURL, get, post, postUrlencoded } from "./requestService";
+import { BASEURL, get, postUrlencoded } from "./requestService";
 const PREFIX = `${BASEURL}/api/user`;
+
 export async function login({ username, password }) {
   const url = `${PREFIX}/login`;
   let result;
-  try {
-    result = await postUrlencoded(url, { username, password });
-    alert("登录成功！");
-    location.reload();
-  } catch (e) {
-    console.log(e);
-    alert(e);
-  }
+  result = await postUrlencoded(url, { username, password });
+  return result;
 }
 
 export async function logout() {
   const url = `${PREFIX}/logout`;
   let result;
-  try {
-    result = await get(url);
-    alert("登出成功！");
-    location.href = "/";
-  } catch (e) {
-    alert(e);
-  }
+  result = await get(url);
+  return result;
 }
 
 export async function checkAuth() {
