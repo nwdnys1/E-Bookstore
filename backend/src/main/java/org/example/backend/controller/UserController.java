@@ -1,8 +1,8 @@
 package org.example.backend.controller;
 
-import org.example.backend.entity.RegisterRequest;
+import org.example.backend.DTO.RegisterRequest;
 import org.example.backend.entity.Result;
-import org.example.backend.entity.UserProfile;
+import org.example.backend.DTO.UserProfile;
 import org.example.backend.service.MyUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;

@@ -1,9 +1,9 @@
 package org.example.backend.service;
 
-import org.example.backend.entity.RegisterRequest;
+import org.example.backend.DTO.RegisterRequest;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.User;
-import org.example.backend.entity.UserProfile;
+import org.example.backend.DTO.UserProfile;
 import org.example.backend.repository.UserRepository;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;

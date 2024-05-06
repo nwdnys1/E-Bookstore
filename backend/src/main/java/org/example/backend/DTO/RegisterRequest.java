@@ -1,4 +1,4 @@
-package org.example.backend.entity;
+package org.example.backend.DTO;
 
 
 import lombok.AllArgsConstructor;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserProfile {
+public class RegisterRequest{
     private String username;
+    private String password;
     private String email;
-    private String tel;
-    private String aboutMe;
+
 }
