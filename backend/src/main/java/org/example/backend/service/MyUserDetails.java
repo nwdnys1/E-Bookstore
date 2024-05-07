@@ -54,6 +54,9 @@ public class MyUserDetails implements UserDetailsService {
         if(userRepository.existsUserByUsername(request.getUsername())) {
             return Result.error(400, "用户名已存在！");
         }
+        if(userRepository.existsUserByEmail(request.getEmail())) {
+            return Result.error(400, "邮箱已被占用！");
+        }
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));//加密密码
