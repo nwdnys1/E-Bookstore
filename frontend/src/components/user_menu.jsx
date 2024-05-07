@@ -7,15 +7,17 @@ import {
   TeamOutlined,
   DatabaseOutlined,
 } from "@ant-design/icons";
-import { Avatar, Dropdown, Menu, Modal } from "antd";
+import { Avatar, Dropdown, Menu, Modal, Row } from "antd";
 import { logout } from "../services/loginService";
 import { Link } from "react-router-dom";
 import LoginModal from "./login";
 import { useAuth } from "../context/authContext";
+import RegisterModal from "./register";
 
 const UserMenu = () => {
   const [showModal, setShowModal] = useState(false);
   const { user, setUser } = useAuth();
+  const [display, setDisplay] = useState("login");
 
   const logoutAndClearUser = () => {
     logout()
@@ -35,6 +37,14 @@ const UserMenu = () => {
   const closeModal = () => {
     setShowModal(false);
   };
+  const handleDisplay = () => {
+    if (display == "login") {
+      setDisplay("register");
+    } else {
+      setDisplay("login");
+    }
+  };
+
   const items = [
     {
       key: "userPage",
@@ -118,7 +128,18 @@ const UserMenu = () => {
         keyboard
         width={"auto"}
       >
-        <LoginModal />
+        {display == "login" ? <LoginModal /> : <RegisterModal />}
+        <Row justify={"end"} style={{ alignSelf: "end" }}>
+          {display == "login" ? (
+            <div>
+              没有账号？<a onClick={handleDisplay}>现在注册</a>
+            </div>
+          ) : (
+            <div>
+              已有账号？<a onClick={handleDisplay}>点击登录</a>
+            </div>
+          )}
+        </Row>
       </Modal>
     </>
   );

@@ -2,15 +2,17 @@
 import React, { useState } from "react";
 import { Col, Flex, Tag, Row, Button } from "antd";
 
-
-const TagBar = ({tags}) => {
+const TagBar = ({ tags }) => {
   return (
-    <Row>
-      <Tag color="blue">百合</Tag>
-      <Tag color="blue">轻松</Tag>
-      <Tag color="blue">日常</Tag>
-      <Tag color="blue">萌系</Tag>
-    </Row>
+    tags && (
+      <Row align={"middle"}>
+        {tags.map((tag) => (
+          <Tag key={tag.id} color="blue">
+            {tag.content}
+          </Tag>
+        ))}
+      </Row>
+    )
   );
 };
 export default TagBar;

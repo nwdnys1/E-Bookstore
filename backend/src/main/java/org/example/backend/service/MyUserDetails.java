@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -50,9 +51,12 @@ public class MyUserDetails implements UserDetailsService {
 
     }
     public Result<User> addUser(RegisterRequest request) {
+        if(userRepository.existsUserByUsername(request.getUsername())) {
+            return Result.error(400, "用户名已存在！");
+        }
         User user = new User();
         user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));//加密密码
         user.setEmail(request.getEmail());
         user.setRole("user");
         user.setEnabled(true);

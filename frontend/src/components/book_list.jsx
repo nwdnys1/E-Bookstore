@@ -3,9 +3,13 @@ import { List } from "antd";
 import BookListItem from "./book_listitem";
 
 export const ListLayout = ({ books }) => {
+  const handlePageChange = (page, pageSize) => {
+    navigate(`/allbooks?page=${page}&pageSize=${pageSize}`);
+  }
   return (
     <List
       pagination={{
+        
         defaultPageSize: 3,
         showQuickJumper: true,
         showSizeChanger: true,

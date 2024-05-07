@@ -1,8 +1,7 @@
-import Data from "../books.json";
 import { BASEURL, get } from "./requestService";
 const PREFIX = `${BASEURL}/api/book`;
 
-export const searchBooks = async ( keyword ) => {
+export const searchBooks = async (keyword) => {
   const url = `${PREFIX}/search?keyword=${keyword}`;
   let result;
   try {
@@ -22,7 +21,7 @@ export const getRecommendedBooks = async () => {
     return result;
   } catch (e) {
     console.log(e);
-    alert(e);
+    
   }
 };
 
@@ -36,7 +35,7 @@ export async function getAllBooks() {
     return result;
   } catch (e) {
     console.log(e);
-    alert(e);
+    
   }
 }
 
@@ -48,11 +47,6 @@ export async function getBookById(bookId) {
     return result;
   } catch (e) {
     console.log(e);
-    alert(e);
+    
   }
 }
-
-export const getBookComments = async (bookId) => {
-  // 模拟从本地 JSON 文件获取书籍评论数据
-  return Data.comments.filter((comment) => comment.bookId === parseInt(bookId));
-};

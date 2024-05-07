@@ -39,5 +39,9 @@ public class Book {
     @JsonIgnoreProperties({"id","content","user","time","replies"})//忽略所有属性 但是要返回comments数组来获得评论数量
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Comment> comments;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "book_tag",joinColumns = @JoinColumn(name = "bid"),inverseJoinColumns = @JoinColumn(name = "tid"))
+    @JsonIgnoreProperties({"id","books"})
+    private List<Tag> tags;
 
 }

@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   // 在组件加载时从 localStorage 中加载用户状态
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
+    const savedUser = sessionStorage.getItem("user");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
@@ -17,7 +17,8 @@ export const AuthProvider = ({ children }) => {
 
   // 在用户状态变化时保存到 localStorage 中
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(user));
+    
+    sessionStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
   return (

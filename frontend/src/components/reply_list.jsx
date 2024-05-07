@@ -15,7 +15,7 @@ export const ReplyList = ({ replies }) => {
           description={<Paragraph>{reply.content}</Paragraph>}
         />
         <p style={{ fontSize: 12, textAlign: "right" }}>
-          {new Date(reply.time).toLocaleString()}
+          {new Date(reply.time).toDateString()}
         </p>
       </Card>
     ));

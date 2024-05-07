@@ -32,7 +32,7 @@ export default function OrderTable() {
       title: "下单时间",
       dataIndex: "createTime",
       key: "createTime",
-      render: (time) => new Date(time).toLocaleString(),
+      render: (time) => new Date(time).toDateString(),
     },
   ];
 

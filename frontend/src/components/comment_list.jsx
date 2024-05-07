@@ -49,7 +49,7 @@ const CommentList = ({ comments, setComments }) => {
               />
 
               <p style={{ fontSize: 14, textAlign: "right" }}>
-                {new Date(comment.time).toLocaleString()}
+                {new Date(comment.time).toDateString()}
               </p>
               {!(replying === comment.id) && (
                 <Button

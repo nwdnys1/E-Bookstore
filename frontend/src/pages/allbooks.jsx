@@ -9,6 +9,8 @@ const AllBooksPage = () => {
   const [books, setBooks] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
+  const page = searchParams.get("page") || 1;
+  const pageSize = searchParams.get("pageSize") || 10;//url: /allbooks?keyword=xxx&page=1&pageSize=10
 
   useEffect(() => {
     if (keyword !== "") {

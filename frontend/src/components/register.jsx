@@ -1,35 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Form, Input, Button, Checkbox, Typography, Flex, Row } from "antd";
 import {
   UserOutlined,
   LockOutlined,
   EyeTwoTone,
   EyeInvisibleOutlined,
+  MailOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { login } from "../services/loginService";
-import { useAuth } from "../context/authContext";
-import { getUser } from "../services/userService";
+import {  register } from "../services/loginService";
 
 const { Title, Paragraph } = Typography;
 
-const LoginModal = () => {
-  const { user, setUser } = useAuth();
-  const loginAndSetUser = async (values) => {
-    try {
-      await login(values);
-      const userRes = await getUser();
-      setUser(userRes);
-      console.log(userRes);
-      alert("登录成功！");
-      location.reload();
-    } catch (error) {
-      alert(error);
-    }
-  };
-
+const RegisterModal = () => {
+  
   return (
-    <Form initialValues={{ remember: true }} onFinish={loginAndSetUser}>
+    <Form initialValues={{ remember: true }} onFinish={register}>
       <Flex
         vertical
         align="center"
@@ -72,18 +57,25 @@ const LoginModal = () => {
             }
           />
         </Form.Item>
-        <Row justify={"space-between"} style={{ width: "100%" }}>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>记住我</Checkbox>
-          </Form.Item>
-          <Link to="/forgotpassword">忘记密码？</Link>
-        </Row>
+        <Form.Item
+          id="email"
+          name="email"
+          rules={[{ required: true, message: "请输入您的邮箱!" }]}
+          style={{ width: "100%", margin: 0 }}
+        >
+          <Input
+            size="large"
+            prefix={<MailOutlined />}
+            placeholder="邮箱"
+            allowClear
+          />
+        </Form.Item>
         <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-          登录
+          注册
         </Button>
       </Flex>
     </Form>
   );
 };
 
-export default LoginModal;
+export default RegisterModal;

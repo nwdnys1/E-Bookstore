@@ -3,7 +3,7 @@ import BookRating from "./book_rating";
 import TagBar from "./tagbar";
 const { Title, Paragraph } = Typography;
 const DividerStyle = {
-  margin: "5px 0",
+  margin: "0px 0",
 };
 const ParagraphStyle = {
   margin: "0",

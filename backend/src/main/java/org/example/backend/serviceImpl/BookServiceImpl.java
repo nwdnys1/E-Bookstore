@@ -7,6 +7,7 @@ import org.example.backend.repository.BookRepository;
 import org.example.backend.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
@@ -25,7 +26,7 @@ public class BookServiceImpl implements BookService {
         }
     }
     public Result<List<Book>> getRecommendations(int nums){
-        return Result.success(repository.getBooksByRatingGreaterThanOrderByRatingDesc(0).subList(0, nums));
+        return Result.success(repository.getBooksByRatingGreaterThanOrderByRatingDesc(BigDecimal.valueOf(0)).subList(0, nums));
     }
     public Result<Book> addBook(Book book){
         return Result.success(repository.save(book));
