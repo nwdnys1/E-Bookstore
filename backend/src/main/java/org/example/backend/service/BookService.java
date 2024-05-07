@@ -1,5 +1,6 @@
 package org.example.backend.service;
 
+import org.example.backend.DTO.BookPageResponse;
 import org.example.backend.entity.Book;
 import org.example.backend.entity.Result;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public interface BookService {
     public Result<Book> addBook(Book book);
     public Result<Book> updateBook(int id, Book book);
     public Result<Book> deleteBook(int id);
-    public Result<List<Book>> searchBooks(String keyword);
+    public Result<BookPageResponse> searchBooks(String keyword, int page, int pageSize);
+    public Result<BookPageResponse> categorySearch(int tid, int page, int pageSize);
 }
 

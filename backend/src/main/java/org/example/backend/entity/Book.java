@@ -41,7 +41,7 @@ public class Book {
     private List<Comment> comments;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "book_tag",joinColumns = @JoinColumn(name = "bid"),inverseJoinColumns = @JoinColumn(name = "tid"))
-    @JsonIgnoreProperties({"id","books"})
+    @JsonIgnoreProperties({"books"})
     private List<Tag> tags;
 
 }

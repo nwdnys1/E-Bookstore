@@ -2,9 +2,10 @@ import React from "react";
 import { Segmented } from "antd";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
-const SwitchButton = ({ handleChange }) => {
+const SwitchButton = ({ handleChange, layout }) => {
   return (
     <Segmented
+      value={layout}
       defaultValue="block"
       onChange={handleChange}
       size="large"

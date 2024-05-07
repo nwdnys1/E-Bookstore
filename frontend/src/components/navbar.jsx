@@ -18,7 +18,7 @@ const Items = [
     key: "allBooks",
     icon: <ReadOutlined />,
     label: "所有书籍",
-    link: "/allbooks",
+    link: "/allbooks/list",
   },
 
   {

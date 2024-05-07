@@ -1,13 +1,19 @@
 package org.example.backend.serviceImpl;
 
+import org.example.backend.DTO.BookPageResponse;
 import org.example.backend.entity.Book;
 import org.example.backend.entity.Result;
+import org.example.backend.entity.Tag;
 import org.example.backend.entity.User;
 import org.example.backend.repository.BookRepository;
 import org.example.backend.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
@@ -54,7 +60,26 @@ public class BookServiceImpl implements BookService {
             return Result.error(404, "书籍不存在！");
         }
     }
-    public Result<List<Book>> searchBooks(String keyword){
-        return Result.success(repository.getBooksByTitleLikeOrAuthorLike("%"+keyword+"%", "%"+keyword+"%"));
+    public Result<BookPageResponse> searchBooks(String keyword, int page, int pageSize){
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Book> books = repository.getBooksByTitleLikeOrAuthorLike("%" + keyword + "%", "%" + keyword + "%", pageable);
+        BookPageResponse response = new BookPageResponse(
+                books.getTotalElements(),
+                books.getTotalPages(),
+                books.getContent()
+        );
+        return Result.success(response);
+    }
+    public Result<BookPageResponse> categorySearch(int tid, int page, int pageSize){
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Tag tag = new Tag();
+        tag.setId(tid);
+        Page<Book> books = repository.findBooksByTagsContains(tag, pageable);
+        BookPageResponse response = new BookPageResponse(
+                books.getTotalElements(),
+                books.getTotalPages(),
+                books.getContent()
+        );
+        return Result.success(response);
     }
 }

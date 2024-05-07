@@ -1,11 +1,11 @@
 import React from "react";
 import { Input } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 const { Search } = Input;
 const SearchBox = () => {
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const handleSearch = (value) => {
-    navigate('/search?keyword=' + value);
+    setSearchParams({ keyword: value });
   };
   return (
     <Search

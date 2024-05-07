@@ -1,8 +1,20 @@
 import { BASEURL, get } from "./requestService";
 const PREFIX = `${BASEURL}/api/book`;
 
-export const searchBooks = async (keyword) => {
-  const url = `${PREFIX}/search?keyword=${keyword}`;
+export const searchBooks = async ({ keyword, page, pageSize }) => {
+  const url = `${PREFIX}/search?keyword=${keyword}&page=${page}&pageSize=${pageSize}`;
+  let result;
+  try {
+    result = await get(url);
+    return result;
+  } catch (e) {
+    console.log(e);
+    alert(e);
+  }
+};
+
+export const categoryBooks = async ({ tag, page, pageSize }) => {
+  const url = `${PREFIX}/category?tag=${tag}&page=${page}&pageSize=${pageSize}`;
   let result;
   try {
     result = await get(url);
@@ -21,23 +33,10 @@ export const getRecommendedBooks = async () => {
     return result;
   } catch (e) {
     console.log(e);
-    
   }
 };
 
 // 在 services/bookService.js 文件中
-
-export async function getAllBooks() {
-  const url = `${PREFIX}/list`;
-  let result;
-  try {
-    result = await get(url);
-    return result;
-  } catch (e) {
-    console.log(e);
-    
-  }
-}
 
 export async function getBookById(bookId) {
   const url = `${PREFIX}/get/${bookId}`;
@@ -47,6 +46,5 @@ export async function getBookById(bookId) {
     return result;
   } catch (e) {
     console.log(e);
-    
   }
 }

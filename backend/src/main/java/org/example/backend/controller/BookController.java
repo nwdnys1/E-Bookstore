@@ -1,5 +1,6 @@
 package org.example.backend.controller;
 
+import org.example.backend.DTO.BookPageResponse;
 import org.example.backend.entity.Book;
 import org.example.backend.entity.Result;
 import org.example.backend.service.BookService;
@@ -42,8 +43,12 @@ public class BookController {
        return service.addBook(book);
     }
     @GetMapping("/search")
-    public Result<List<Book>> searchBooks(@RequestParam String keyword) {
-        return service.searchBooks(keyword);
+    public Result<BookPageResponse> searchBooks(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize){
+        return service.searchBooks(keyword, page, pageSize);
+    }
+    @GetMapping("/category")
+    public Result<BookPageResponse> categorySearch(@RequestParam(defaultValue = "") int tag, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize){
+        return service.categorySearch(tag, page, pageSize);
     }
 
 
