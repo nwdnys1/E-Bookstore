@@ -4,6 +4,7 @@ package org.example.backend.controller;
 import org.example.backend.DTO.OrderRequest;
 import org.example.backend.entity.*;
 import org.example.backend.repository.UserRepository;
+import org.example.backend.service.MyUserDetailsService;
 import org.example.backend.service.OrderService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,22 +17,18 @@ import java.util.*;
 @RequestMapping("/api/order")
 public class OrderController {
     private final OrderService service;
-    private final UserRepository userRepository;
-    public OrderController(OrderService service, UserRepository userRepository) {
+    private final MyUserDetailsService userService;
+    public OrderController(OrderService service, MyUserDetailsService userService) {
         this.service = service;
-        this.userRepository = userRepository;
-    }
-    private int getUid() {//从数据库里查询id
-        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userRepository.findUserByUsername(username).getId();
+        this.userService = userService;
     }
     @GetMapping("/list")
     public Result<List<Order>> getOrders() {
-       return service.getOrders(getUid());
+       return service.getOrders(userService.getUid());
     }
     @PostMapping("/add")
     public Result<Order> addOrder(@RequestBody OrderRequest request) {
-       return service.addOrder(request, getUid());
+       return service.addOrder(request, userService.getUid());
     }
     @DeleteMapping("/delete/{id}")
     public Result<Order> deleteOrder(@PathVariable int id) {
@@ -39,6 +36,6 @@ public class OrderController {
     }
     @GetMapping("/search")
     public Result<List<Order>> searchOrderByBookTitle(@RequestParam String keyword) {
-        return service.getOrdersByBookTitle(keyword, getUid());
+        return service.getOrdersByBookTitle(keyword, userService.getUid());
     }
 }

@@ -20,7 +20,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import OrderModal from "./order_modal";
 const { Text } = Typography;
 const CartTable = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const handleDeleteItem = async (id) => {
@@ -105,63 +105,65 @@ const CartTable = () => {
   ];
 
   return (
-    <Flex vertical justify="center">
-      {showModal && (
-        <Modal
-          open={showModal}
-          onCancel={closeModal}
-          footer={null}
-          centered
-          keyboard
-          width={"auto"}
-        >
-          <OrderModal
-            selectedItems={selectedItems}
-            totalPrice={computeTotalPrice()}
-          />
-        </Modal>
-      )}
-      <Table
-        columns={columns}
-        rowSelection={{
-          onChange: (_, selectedItems) => {
-            setSelectedItems(selectedItems);
-          },
-        }}
-        expandable={{
-          expandedRowRender: (item) => (
-            <Row justify={"space-between"} gutter={8}>
-              <Col span={3}>
-                <Image src={item.book.cover} style={{ objectFit: "cover" }} />
-              </Col>
-              <Col span={20}>
-                <Text> {item.book.description} </Text>
-                <br />
-                <Text> 作者：{item.book.author} </Text>
-                <br />
-                <Text> 库存：{item.book.stock} </Text>
-                <br />
-                <Text> ISBN: {item.book.isbn} </Text>
-              </Col>
-            </Row>
-          ),
-        }}
-        dataSource={items.map((item) => ({
-          ...item,
-          key: item.id,
-        }))}
-      />
-      <Row justify="end" align={"middle"}>
-        <p>合计：￥{computeTotalPrice()}</p>
-        <Button
-          type="primary"
-          disabled={selectedItems.length === 0}
-          onClick={openModal}
-        >
-          立刻下单
-        </Button>
-      </Row>
-    </Flex>
+    items && (
+      <Flex vertical justify="center">
+        {showModal && (
+          <Modal
+            open={showModal}
+            onCancel={closeModal}
+            footer={null}
+            centered
+            keyboard
+            width={"auto"}
+          >
+            <OrderModal
+              selectedItems={selectedItems}
+              totalPrice={computeTotalPrice()}
+            />
+          </Modal>
+        )}
+        <Table
+          columns={columns}
+          rowSelection={{
+            onChange: (_, selectedItems) => {
+              setSelectedItems(selectedItems);
+            },
+          }}
+          expandable={{
+            expandedRowRender: (item) => (
+              <Row justify={"space-between"} gutter={8}>
+                <Col span={3}>
+                  <Image src={item.book.cover} style={{ objectFit: "cover" }} />
+                </Col>
+                <Col span={20}>
+                  <Text> {item.book.description} </Text>
+                  <br />
+                  <Text> 作者：{item.book.author} </Text>
+                  <br />
+                  <Text> 库存：{item.book.stock} </Text>
+                  <br />
+                  <Text> ISBN: {item.book.isbn} </Text>
+                </Col>
+              </Row>
+            ),
+          }}
+          dataSource={items.map((item) => ({
+            ...item,
+            key: item.id,
+          }))}
+        />
+        <Row justify="end" align={"middle"}>
+          <p>合计：￥{computeTotalPrice()}</p>
+          <Button
+            type="primary"
+            disabled={selectedItems.length === 0}
+            onClick={openModal}
+          >
+            立刻下单
+          </Button>
+        </Row>
+      </Flex>
+    )
   );
 };
 

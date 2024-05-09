@@ -3,7 +3,7 @@ package org.example.backend.controller;
 import org.example.backend.DTO.RegisterRequest;
 import org.example.backend.entity.Result;
 import org.example.backend.DTO.UserProfile;
-import org.example.backend.service.MyUserDetails;
+import org.example.backend.service.MyUserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    private final MyUserDetails service;
-    public UserController(MyUserDetails service) {
+    private final MyUserDetailsService service;
+    public UserController(MyUserDetailsService service) {
         this.service = service;
     }
     @GetMapping("/check")

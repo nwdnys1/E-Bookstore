@@ -7,7 +7,7 @@ import { getBookById } from "../services/bookService";
 
 const DetailsPage = () => {
   let { id } = useParams();
-  const [book, setBook] = useState({});
+  const [book, setBook] = useState(null);
   useEffect(() => {
     getBookById(id).then((book) => setBook(book));
   }, []);

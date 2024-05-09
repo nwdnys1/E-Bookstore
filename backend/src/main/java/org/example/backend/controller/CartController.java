@@ -3,6 +3,7 @@ package org.example.backend.controller;
 import org.example.backend.entity.*;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.CartItemService;
+import org.example.backend.service.MyUserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -12,24 +13,20 @@ import java.util.List;
 @RequestMapping("/api/cart")
 public class CartController {
     private final CartItemService service;
-    private final UserRepository userRepository;
-    public CartController(CartItemService service, UserRepository userRepository) {
+    private final MyUserDetailsService userService;
+    public CartController(CartItemService service, MyUserDetailsService userService) {
         this.service = service;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
-    private int getUid() {//从数据库里查询id
-        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userRepository.findUserByUsername(username).getId();
 
-    }
     @GetMapping("/list")
     public Result<List<CartItem>> getCartItems() {
-        int uid = getUid();
+        int uid = userService.getUid();
         return service.getCartItems(uid);
     }
     @PostMapping("/add/{bid}")
     public Result<CartItem> addCartItem(@PathVariable int bid) {
-        int uid = getUid();
+        int uid = userService.getUid();
         return service.addCartItem(uid, bid);
     }
     @DeleteMapping("/delete/{id}")

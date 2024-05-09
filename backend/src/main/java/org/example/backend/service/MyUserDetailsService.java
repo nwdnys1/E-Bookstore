@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MyUserDetails implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
     UserRepository userRepository;
-    public MyUserDetails(UserRepository userRepository) {
+    public MyUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     @Override
@@ -84,6 +84,5 @@ public class MyUserDetails implements UserDetailsService {
     public int getUid() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userRepository.findUserByUsername(username).getId();
-
     }
 }

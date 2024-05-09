@@ -5,6 +5,7 @@ import org.example.backend.entity.Reply;
 import org.example.backend.entity.Result;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.CommentService;
+import org.example.backend.service.MyUserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -15,22 +16,19 @@ import java.util.List;
 @RequestMapping("/api/comment")
 public class CommentController {
     private final CommentService service;
-    private final UserRepository userRepository;
-    public CommentController(CommentService service, UserRepository userRepository) {
+    private final MyUserDetailsService userService;
+    public CommentController(CommentService service, MyUserDetailsService userService) {
         this.service = service;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
-    private int getUid() {//从数据库里查询id
-        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userRepository.findUserByUsername(username).getId();
-    }
+
     @GetMapping("/list/{bid}")
     public Result<List<Comment>> getCommentsByBid(@PathVariable int bid) {
         return service.getCommentsByBid(bid);
     }
     @PostMapping("/add/{bid}")
     public Result<Comment> addComment(@PathVariable int bid,@RequestBody String content) {
-        int uid = getUid();
+        int uid = userService.getUid();
         return service.addComment(bid, uid, content);
     }
     @DeleteMapping("/delete/{id}")
@@ -39,7 +37,7 @@ public class CommentController {
     }
     @PostMapping("/reply/{cid}")
     public Result<Reply> addReply(@PathVariable int cid, @RequestBody String content) {
-        int uid = getUid();
+        int uid = userService.getUid();
         return service.addReply(cid, uid, content);
     }
 }
