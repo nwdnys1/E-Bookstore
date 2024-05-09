@@ -3,9 +3,10 @@ package org.example.backend.controller;
 import org.example.backend.DTO.RegisterRequest;
 import org.example.backend.entity.Result;
 import org.example.backend.DTO.UserProfile;
+import org.example.backend.entity.User;
 import org.example.backend.service.MyUserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,18 +17,18 @@ public class UserController {
         this.service = service;
     }
     @GetMapping("/check")
-    public Result<String> check() {
-        User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public Result<String> check() {//检查是否登录
+        UserDetails user =(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Result.success("已登录");
     }
-    @GetMapping("/get")
-    public Result<org.example.backend.entity.User> get() {
-        User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return Result.success(service.getUserByUsername(user.getUsername()));
+    @GetMapping("/get")//获取当前登录用户的信息
+    public Result<User> get() {
+        UserDetails user =(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return service.getUserByUsername( user.getUsername());
     }
-    @GetMapping("/get/{username}")
+    @GetMapping("/get/{username}")//根据用户名获取用户信息 一般是用于查看别人的信息
     public Result<org.example.backend.entity.User> get(@PathVariable String username) {
-        return Result.success(service.getUserByUsername(username));
+        return service.getUserByUsername(username);
     }
     @PostMapping("/register")
     public Result<org.example.backend.entity.User> register(@RequestBody RegisterRequest request) {

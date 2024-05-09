@@ -4,6 +4,8 @@ import org.example.backend.entity.*;
 import org.example.backend.repository.CommentRepository;
 import org.example.backend.repository.UserRepository;
 import org.example.backend.service.CommentService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,11 +18,16 @@ public class CommentServiceImpl implements CommentService {
         this.repository = repository;
         this.userRepository = userRepository;
     }
+    public int getUid() {//从数据库里查询id
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return userRepository.findUserByUsername(username).getId();
+    }
     public Result<List<Comment>> getCommentsByBid(int bid) {
         List<Comment> comments = repository.getCommentsByBookId(bid);
         return Result.success(comments);
     }
-    public Result<Comment> addComment(int bid,int uid, String content) {
+    public Result<Comment> addComment(int bid, String content) {
+        int uid = getUid();
         Comment comment = new Comment();
         comment.setBook(new Book());
         comment.getBook().setId(bid);
@@ -34,12 +41,16 @@ public class CommentServiceImpl implements CommentService {
     }
     public Result<Comment> deleteComment(int id) {
        if (repository.existsById(id)) {
+           if(repository.getCommentById(id).getUser().getId() != getUid())
+               return Result.error(403,"无权删除");
             repository.deleteById(id);
             return Result.success(null);
         }
         return Result.error(404,"评论不存在");
     }
-    public Result<Reply> addReply(int cid, int uid, String content) {
+
+    public Result<Reply> addReply(int cid, String content) {
+        int uid = getUid();
         Comment comment = repository.findById(cid).orElse(null);
         if (comment == null) {
             return Result.error(404,"评论不存在");

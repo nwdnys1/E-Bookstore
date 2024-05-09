@@ -12,16 +12,12 @@ const AllBooksPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
   const page = searchParams.get("page") || 1;
-  const pageSize = searchParams.get("pageSize") || 12; //url: /allbooks?keyword=xxx&page=1&pageSize=10
+  const pageSize =
+    searchParams.get("pageSize") ||
+    (sessionStorage.getItem("layout") == "block" ? 12 : 4);
   const tag = searchParams.get("tag") || "";
   useEffect(() => {
-    setSearchParams({
-      keyword: keyword,
-      page: page,
-      pageSize: pageSize,
-      tag: tag,
-    });
-    if (keyword)
+    if (keyword) {
       searchBooks({
         keyword: keyword,
         page: page,
@@ -30,7 +26,7 @@ const AllBooksPage = () => {
         setBooks(res.books);
         setLength(res.total);
       });
-    else if (tag !== "")
+    } else if (tag !== "") {
       categoryBooks({
         tag: tag,
         page: page,
@@ -39,7 +35,7 @@ const AllBooksPage = () => {
         setBooks(res.books);
         setLength(res.total);
       });
-    else
+    } else
       searchBooks({
         keyword: "",
         page: page,
@@ -48,7 +44,7 @@ const AllBooksPage = () => {
         setBooks(res.books);
         setLength(res.total);
       });
-  }, [keyword, page, pageSize]);
+  }, [keyword, page, pageSize, tag]);
 
   return (
     <BasicLayout>

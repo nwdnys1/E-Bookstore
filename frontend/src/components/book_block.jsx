@@ -9,13 +9,19 @@ export const BlockLayout = ({ books, length }) => {
     setSearchParams({
       page: page,
       pageSize: pageSize,
-      keyword: searchParams.get("keyword"),
+      keyword: searchParams.get("keyword") || "",
+      tag: searchParams.get("tag") || "",
     });
   };
   useEffect(() => {
-    // 用于展示不同的pageSize 但是会请求两次 
+    // 用于展示不同的pageSize 但是会请求两次
     if (searchParams.get("pageSize"))
-      setSearchParams({ pageSize: 12, keyword: searchParams.get("keyword") });
+      setSearchParams({
+        page: 1,
+        pageSize: 12,
+        keyword: searchParams.get("keyword") || "",
+        tag: searchParams.get("tag") || "",
+      });
   }, []);
   return (
     <List
@@ -38,8 +44,8 @@ export const BlockLayout = ({ books, length }) => {
       <Row justify="center">
         <Pagination
           current={searchParams.get("page") || 1}
-          defaultPageSize={3}
-          pageSize={searchParams.get("pageSize") || 3}
+          defaultPageSize={12}
+          pageSize={searchParams.get("pageSize") || 12}
           onChange={handlePageChange}
           showQuickJumper
           showSizeChanger

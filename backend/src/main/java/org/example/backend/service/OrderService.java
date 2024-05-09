@@ -4,6 +4,9 @@ import org.example.backend.DTO.OrderRequest;
 import org.example.backend.entity.*;
 import org.example.backend.repository.CartItemRepository;
 import org.example.backend.repository.OrderRepository;
+import org.example.backend.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,14 +17,21 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository repository;
     private final CartItemRepository cartItemRepository;
-    public OrderService(OrderRepository repository,  CartItemRepository cartItemRepository) {
+    private final UserRepository userRepository;
+    public OrderService(OrderRepository repository,  CartItemRepository cartItemRepository, UserRepository userRepository) {
         this.repository = repository;
         this.cartItemRepository = cartItemRepository;
+        this.userRepository = userRepository;
     }
-    public Result<List<Order>> getOrders(int uid){
-        return Result.success(repository.getOrdersByUserId(uid));
+    public int getUid() {//从数据库里查询id
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return userRepository.findUserByUsername(username).getId();
     }
-    public Result<Order> addOrder(OrderRequest request, int uid){
+    public Result<List<Order>> getOrders(){
+        return Result.success(repository.getOrdersByUserId(getUid()));
+    }
+    public Result<Order> addOrder(OrderRequest request){
+        int uid = getUid();
         Order order = new Order();
         order.setAddress(request.getAddress());
         order.setTel(request.getTel());
@@ -71,13 +81,17 @@ public class OrderService {
 
     public Result<Order> deleteOrder(int id){
         if(repository.existsById(id)){
+            if(repository.getOrderById(id).getUser().getId() != getUid()){
+                return Result.error(403, "无权删除他人订单！");
+            }
             repository.deleteById(id);
             return Result.success(null);
         }else{
             return Result.error(404, "订单不存在！");
         }
     }
-    public Result<List<Order>> getOrdersByBookTitle(String title, int uid) {
+    public Result<List<Order>> getOrdersByBookTitle(String title) {
+        int uid = getUid();
         List<Order> orders = repository.getOrdersByUserId(uid);
         List<Order> result = new ArrayList<>();
 
@@ -103,7 +117,4 @@ public class OrderService {
 
         return Result.success(result);
     }
-
-
-
 }

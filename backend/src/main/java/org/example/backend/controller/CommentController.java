@@ -16,10 +16,8 @@ import java.util.List;
 @RequestMapping("/api/comment")
 public class CommentController {
     private final CommentService service;
-    private final MyUserDetailsService userService;
-    public CommentController(CommentService service, MyUserDetailsService userService) {
+    public CommentController(CommentService service) {
         this.service = service;
-        this.userService = userService;
     }
 
     @GetMapping("/list/{bid}")
@@ -28,8 +26,7 @@ public class CommentController {
     }
     @PostMapping("/add/{bid}")
     public Result<Comment> addComment(@PathVariable int bid,@RequestBody String content) {
-        int uid = userService.getUid();
-        return service.addComment(bid, uid, content);
+        return service.addComment(bid, content);
     }
     @DeleteMapping("/delete/{id}")
     public Result<Comment> deleteComment(@PathVariable int id) {
@@ -37,7 +34,6 @@ public class CommentController {
     }
     @PostMapping("/reply/{cid}")
     public Result<Reply> addReply(@PathVariable int cid, @RequestBody String content) {
-        int uid = userService.getUid();
-        return service.addReply(cid, uid, content);
+        return service.addReply(cid, content);
     }
 }

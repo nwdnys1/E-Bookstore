@@ -15,7 +15,14 @@ const CategoryBar = () => {
   const [selected, setSelected] = useState([]);
   const handleChange = (tag, checked) => {
     setSelected(checked ? [tag] : [""]);
-    setSearchParams({ tag: checked ? tag : "" });
+    setSearchParams({
+      page: 1,
+      pageSize:
+        searchParams.get("pageSize") ||
+        (sessionStorage.getItem("layout") === "block" ? 12 : 4),
+      keyword: "",
+      tag: checked ? tag : "",
+    });
   };
   return (
     tags && (

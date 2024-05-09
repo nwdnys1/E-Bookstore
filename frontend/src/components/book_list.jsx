@@ -9,12 +9,17 @@ export const ListLayout = ({ books, length }) => {
     setSearchParams({
       page: page,
       pageSize: pageSize,
-      keyword: searchParams.get("keyword"),
+      keyword: searchParams.get("keyword") || "",
+      tag: searchParams.get("tag") || "",
     });
   };
   useEffect(() => {
-    if (searchParams.get("pageSize"))
-      setSearchParams({ pageSize: 4, keyword: searchParams.get("keyword") });
+    setSearchParams({
+      page: 1,
+      pageSize: 4,
+      keyword: searchParams.get("keyword") || "",
+      tag: searchParams.get("tag") || "",
+    });
   }, []);
   return (
     <List
@@ -24,8 +29,8 @@ export const ListLayout = ({ books, length }) => {
       <Row justify="center">
         <Pagination
           current={searchParams.get("page") || 1}
-          defaultPageSize={3}
-          pageSize={searchParams.get("pageSize") || 3}
+          defaultPageSize={4}
+          pageSize={searchParams.get("pageSize") || 4}
           onChange={handlePageChange}
           showQuickJumper
           showSizeChanger

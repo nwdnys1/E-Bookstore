@@ -17,18 +17,16 @@ import java.util.*;
 @RequestMapping("/api/order")
 public class OrderController {
     private final OrderService service;
-    private final MyUserDetailsService userService;
-    public OrderController(OrderService service, MyUserDetailsService userService) {
+    public OrderController(OrderService service) {
         this.service = service;
-        this.userService = userService;
     }
     @GetMapping("/list")
     public Result<List<Order>> getOrders() {
-       return service.getOrders(userService.getUid());
+       return service.getOrders();
     }
     @PostMapping("/add")
     public Result<Order> addOrder(@RequestBody OrderRequest request) {
-       return service.addOrder(request, userService.getUid());
+       return service.addOrder(request);
     }
     @DeleteMapping("/delete/{id}")
     public Result<Order> deleteOrder(@PathVariable int id) {
@@ -36,6 +34,6 @@ public class OrderController {
     }
     @GetMapping("/search")
     public Result<List<Order>> searchOrderByBookTitle(@RequestParam String keyword) {
-        return service.getOrdersByBookTitle(keyword, userService.getUid());
+        return service.getOrdersByBookTitle(keyword);
     }
 }

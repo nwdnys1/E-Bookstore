@@ -18,8 +18,6 @@ export const addComment = async ({ bid, content }) => {
 
   result = await postText(url, content);
   return result;
-
-
 };
 export const deleteComment = async (id) => {
   const url = `${PREFIX}/delete/${id}`;
@@ -38,5 +36,4 @@ export const addReply = async ({ cid, content }) => {
 
   result = await postText(url, content);
   return result;
-
 };

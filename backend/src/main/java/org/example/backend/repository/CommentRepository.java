@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
     List<Comment> getCommentsByBookId(int bid);
+    Comment getCommentById(int id);
 }

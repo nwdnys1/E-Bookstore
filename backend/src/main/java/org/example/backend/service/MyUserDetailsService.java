@@ -78,8 +78,12 @@ public class MyUserDetailsService implements UserDetailsService {
             return Result.error(404, "用户不存在！");
         }
     }
-    public User getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+    public Result<User> getUserByUsername(String username) {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            return Result.error(404, "用户不存在！");
+        }
+        return Result.success(user);
     }
     public int getUid() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();

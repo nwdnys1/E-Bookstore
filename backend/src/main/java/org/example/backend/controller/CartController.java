@@ -13,21 +13,19 @@ import java.util.List;
 @RequestMapping("/api/cart")
 public class CartController {
     private final CartItemService service;
-    private final MyUserDetailsService userService;
-    public CartController(CartItemService service, MyUserDetailsService userService) {
+    public CartController(CartItemService service) {
         this.service = service;
-        this.userService = userService;
     }
 
     @GetMapping("/list")
     public Result<List<CartItem>> getCartItems() {
-        int uid = userService.getUid();
-        return service.getCartItems(uid);
+
+        return service.getCartItems();
     }
     @PostMapping("/add/{bid}")
     public Result<CartItem> addCartItem(@PathVariable int bid) {
-        int uid = userService.getUid();
-        return service.addCartItem(uid, bid);
+
+        return service.addCartItem(bid);
     }
     @DeleteMapping("/delete/{id}")
     public Result<CartItem> deleteCartItem(@PathVariable int id) {

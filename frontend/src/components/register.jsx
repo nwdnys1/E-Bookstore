@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Form, Input, Button, Checkbox, Typography, Flex, Row } from "antd";
+import React from "react";
+import { Form, Input, Button, Typography, Flex, Row } from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -7,12 +7,11 @@ import {
   EyeInvisibleOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import {  register } from "../services/loginService";
+import { register } from "../services/loginService";
 
 const { Title, Paragraph } = Typography;
 
 const RegisterModal = () => {
-  
   return (
     <Form initialValues={{ remember: true }} onFinish={register}>
       <Flex
