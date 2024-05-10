@@ -36,7 +36,7 @@ public class Book {
     private String ISBN;
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
-    @JsonIgnoreProperties({"id","content","user","time","replies"})//忽略所有属性 但是要返回comments数组来获得评论数量
+    @JsonIgnoreProperties({"id","content","user","time","replies","likes"})//忽略所有属性 但是要返回comments数组来获得评论数量
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Comment> comments;
     @ManyToMany(fetch = FetchType.LAZY)

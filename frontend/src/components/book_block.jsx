@@ -4,6 +4,7 @@ import BookCard from "./book_card";
 import { useSearchParams } from "react-router-dom";
 
 export const BlockLayout = ({ books, length }) => {
+  //这个子组件的回调是修改page和pageSize 其他都不变
   const [searchParams, setSearchParams] = useSearchParams();
   const handlePageChange = (page, pageSize) => {
     setSearchParams({
@@ -11,18 +12,10 @@ export const BlockLayout = ({ books, length }) => {
       pageSize: pageSize,
       keyword: searchParams.get("keyword") || "",
       tag: searchParams.get("tag") || "",
+      layout: searchParams.get("layout") || "block",
     });
   };
-  useEffect(() => {
-    // 用于展示不同的pageSize 但是会请求两次
-    if (searchParams.get("pageSize"))
-      setSearchParams({
-        page: 1,
-        pageSize: 12,
-        keyword: searchParams.get("keyword") || "",
-        tag: searchParams.get("tag") || "",
-      });
-  }, []);
+
   return (
     <List
       grid={{

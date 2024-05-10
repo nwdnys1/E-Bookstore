@@ -28,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((requests) ->{requests
                                 .requestMatchers("/api/book/admin/**","/api/user/admin/**").hasRole("admin")//只有管理员才能访问
-                                .requestMatchers("/api/book/**","/api/comment/list/**","/api/user/register","/api/tag/**").permitAll()
+                                .requestMatchers("/api/book/**","/api/comment/list/**","/api/user/register","/api/tag/**","/image/**").permitAll()
                                 .anyRequest().authenticated();
                 }
                 ).formLogin(

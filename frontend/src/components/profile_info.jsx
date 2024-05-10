@@ -1,13 +1,31 @@
 import React from "react";
-import { Avatar, Button, Col, Row, Space, Tag, Typography } from "antd";
-import { useAuth } from "../context/authContext";
+import { Avatar, Button, Col, Row, Space, Tag, Typography, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 const { Text, Title, Paragraph } = Typography;
 
-const ProfileInfo = ({ user, handleClick }) => {
+const ProfileInfo = ({ user, handleClick, setUser }) => {
+  const handleChange = (info) => {
+    console.log(info);
+    if (info.file.status === "done") {
+      if (info.file.response.code === 200)
+        setUser({ ...user, avatar: info.file.response.data });
+      else alert(info.file.response.message);
+    } else if (info.file.status === "error") {
+      
+    }
+  };
   return user ? (
     <Row style={{ width: "65%", margin: "0 auto", minWidth: 800 }}>
       <Space direction="vertical" align="center">
         <Avatar src={user.avatar} size={200} />
+        <Upload
+          name="avatar"
+          action={"http://localhost:8081/api/user/avatar"}
+          withCredentials
+          onChange={handleChange}
+        >
+          <Button icon={<UploadOutlined />}>上传头像</Button>
+        </Upload>
         <Title level={2} style={{ margin: "10px 0 0 0" }}>
           {user.username}
         </Title>

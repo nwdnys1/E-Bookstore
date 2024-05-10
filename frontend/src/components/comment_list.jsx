@@ -1,18 +1,51 @@
-import React, { useState } from "react";
-import { Card, Avatar, Button, List, Flex, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Avatar, Button, List, Flex, Typography, Row, Space } from "antd";
 import ReplyBox from "./reply_box";
 import { Link } from "react-router-dom";
 import { ReplyList } from "./reply_list";
+import {
+  CloseCircleOutlined,
+  LikeFilled,
+  LikeOutlined,
+  LikeTwoTone,
+  MessageOutlined,
+} from "@ant-design/icons";
+import { getCids, likeComment } from "../services/likeService";
+import { useAuth } from "../context/authContext";
 const { Paragraph } = Typography;
 const CommentList = ({ comments, setComments }) => {
+  const { user, setUser } = useAuth();
+  const [cids, setCids] = useState([]); //cids is an array of comment ids that the user has liked
   const [replying, setReplying] = useState(null);
+  useEffect(() => {
+    //get the comment ids that the user has liked
+    if (user) {
+      getCids().then((res) => {
+        setCids(res);
+      });
+    }
+  }, [user]);
+
   const handleReply = (id) => {
     setReplying(replying === id ? null : id);
   };
-  const handleCancel = () => {
-    setReplying(null);
+  
+  const handleLike = (comment) => {
+    const cid = comment.id;
+    try {
+      likeComment(cid).then((res) => {
+        if (cids.includes(cid)) {
+          setCids(cids.filter((c) => c !== cid));
+          comment.likes = comment.likes.filter((l) => l.user.id !== user.id);
+        } else {
+          setCids([...cids, cid]);
+          comment.likes.push({ user: { id: user.id } });
+        }
+      });
+    } catch (e) {
+      alert(e);
+    }
   };
-
   return (
     <List
       dataSource={comments}
@@ -21,22 +54,30 @@ const CommentList = ({ comments, setComments }) => {
           <Flex vertical style={{ width: "100%" }}>
             <Card
               style={{ margin: 0, width: "100%" }}
-              actions={
-                [
-                  // <Button icon={<LikeOutlined />} key="like">
-                  //   点赞 ({3})
-                  // </Button>,
-                  // <Button
-                  //   icon={<MessageOutlined />}
-                  //   onClick={() => {
-                  //     handleReply(comment.id);
-                  //   }}
-                  //   key="reply"
-                  // >
-                  //   回复 ({3})
-                  // </Button>,
-                ]
-              }
+              actions={[
+                cids.includes(comment.id) ? (
+                  <Space size={3} onClick={() => handleLike(comment)}>
+                    <LikeTwoTone key="like" />
+                    {` ${comment.likes.length}`}
+                  </Space>
+                ) : (
+                  <Space size={3} onClick={() => handleLike(comment)}>
+                    <LikeOutlined key="like" />
+                    {` ${comment.likes.length}`}
+                  </Space>
+                ),
+                !(replying === comment.id) ? (
+                  <Space size={3} onClick={() => handleReply(comment.id)}>
+                    <MessageOutlined key="like" />
+                    回复
+                  </Space>
+                ) : (
+                  <Space size={3} onClick={() => handleReply(comment.id)}>
+                    <CloseCircleOutlined key="like" />
+                    取消
+                  </Space>
+                ),
+              ]}
             >
               <Card.Meta
                 avatar={
@@ -51,19 +92,9 @@ const CommentList = ({ comments, setComments }) => {
               <p style={{ fontSize: 14, textAlign: "right" }}>
                 {new Date(comment.time).toDateString()}
               </p>
-              {!(replying === comment.id) && (
-                <Button
-                  type={"primary"}
-                  onClick={() => handleReply(comment.id)}
-                  style={{ float: "right" }}
-                >
-                  回复
-                </Button>
-              )}
 
               {comment.id === replying && (
                 <ReplyBox
-                  handleCancel={handleCancel}
                   id={comment.id}
                   setComments={setComments}
                   comments={comments}

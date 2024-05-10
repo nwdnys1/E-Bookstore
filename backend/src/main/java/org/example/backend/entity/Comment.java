@@ -31,4 +31,7 @@ public class Comment {
     private Book book;
     @OneToMany(mappedBy = "comment",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Reply> replies;
+    @OneToMany(mappedBy = "comment",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"comment","id"})
+    private List<Like> likes;
 }

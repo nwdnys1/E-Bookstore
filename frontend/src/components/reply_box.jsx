@@ -4,7 +4,7 @@ import { addReply } from "../services/commentService";
 import { useParams } from "react-router-dom";
 import { getUser } from "../services/userService";
 
-const ReplyBox = ({ id, handleCancel, setComments }) => {
+const ReplyBox = ({ id, setComments }) => {
   const [content, setContent] = useState("");
   const [avatar, setAvatar] = useState(
     "https://img.moegirl.org.cn/common/b/b7/Transparent_Akkarin.jpg"
@@ -64,7 +64,7 @@ const ReplyBox = ({ id, handleCancel, setComments }) => {
         回复
       </Button>
       <div style={{ width: 20 }} />
-      <Button onClick={handleCancel}>取消</Button>
+     
     </Row>
   );
 };

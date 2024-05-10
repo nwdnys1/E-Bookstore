@@ -4,6 +4,7 @@ import BookListItem from "./book_listitem";
 import { useSearchParams } from "react-router-dom";
 
 export const ListLayout = ({ books, length }) => {
+  //这个子组件的回调是修改page和pageSize 其他都不变
   const [searchParams, setSearchParams] = useSearchParams();
   const handlePageChange = (page, pageSize) => {
     setSearchParams({
@@ -11,16 +12,10 @@ export const ListLayout = ({ books, length }) => {
       pageSize: pageSize,
       keyword: searchParams.get("keyword") || "",
       tag: searchParams.get("tag") || "",
+      layout: searchParams.get("layout") || "block",
     });
   };
-  useEffect(() => {
-    setSearchParams({
-      page: 1,
-      pageSize: 4,
-      keyword: searchParams.get("keyword") || "",
-      tag: searchParams.get("tag") || "",
-    });
-  }, []);
+
   return (
     <List
       dataSource={books}

@@ -37,6 +37,6 @@ export const Profile = () => {
       user={user}
     />
   ) : (
-    <ProfileInfo user={user} handleClick={handleEdit} />
+    <ProfileInfo user={user} handleClick={handleEdit} setUser={setUser} />
   );
 };

@@ -26,15 +26,15 @@ const CommentBox = ({ setComments }) => {
       alert(`评论内容过长，当前字数${content.length}，请控制在3000字以内`);
       return;
     }
-    try {
-      await addComment({ bid: id, content: content }).then((res) => {
+    await addComment({ bid: id, content: content })
+      .then((res) => {
         setComments((comments) => [...comments, res]);
         setContent("");
         alert("评论成功！");
+      })
+      .catch((e) => {
+        alert(e);
       });
-    } catch (e) {
-      alert(e);
-    }
   };
 
   return (

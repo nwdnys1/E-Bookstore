@@ -13,15 +13,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
     UserRepository userRepository;
-    public MyUserDetailsService(UserRepository userRepository) {
+    UploadRepository uploadRepository;
+    public MyUserDetailsService(UserRepository userRepository, UploadRepository uploadRepository) {
         this.userRepository = userRepository;
+        this.uploadRepository = uploadRepository;
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException{
@@ -88,5 +92,21 @@ public class MyUserDetailsService implements UserDetailsService {
     public int getUid() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userRepository.findUserByUsername(username).getId();
+    }
+    public Result<String> updateAvatar(MultipartFile file)  {
+        int id = getUid();
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return Result.error(404, "用户不存在！");
+        }
+        try {
+            String url = uploadRepository.uploadFile(file, "image");
+            user.setAvatar(url);
+            userRepository.save(user);
+            return Result.success(url);
+        }
+        catch (IOException e) {
+            return Result.error(500, e.getMessage());
+        }
     }
 }

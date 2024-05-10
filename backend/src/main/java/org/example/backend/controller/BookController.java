@@ -30,7 +30,6 @@ public class BookController {
        return service.getRecommendations(nums);
     }
     @PutMapping("/admin/update/{id}")
-    @PreAuthorize("hasRole('admin')")
     public Result<Book> updateBook(@PathVariable int id, @RequestBody Book book) {
         return service.updateBook(id, book);
     }

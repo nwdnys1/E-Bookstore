@@ -8,6 +8,8 @@ import org.example.backend.service.MyUserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
@@ -41,5 +43,10 @@ public class UserController {
     @DeleteMapping("/admin/delete/{id}")
     public Result<org.example.backend.entity.User> delete(@PathVariable int id) {
         return service.deleteUser(id);
+    }
+    @PostMapping("/avatar")
+    public Result<String> uploadAvatar(@RequestParam("avatar") MultipartFile file) {
+
+        return service.updateAvatar(file);
     }
 }

@@ -20,9 +20,9 @@ const UserMenu = () => {
   const [display, setDisplay] = useState("login");
 
   const logoutAndClearUser = () => {
+    setUser(null);
     logout()
       .then(() => {
-        setUser(null);
         alert("登出成功！");
         location.href = "/";
       })
