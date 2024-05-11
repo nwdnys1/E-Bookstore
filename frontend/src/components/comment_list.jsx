@@ -29,7 +29,7 @@ const CommentList = ({ comments, setComments }) => {
   const handleReply = (id) => {
     setReplying(replying === id ? null : id);
   };
-  
+
   const handleLike = (comment) => {
     const cid = comment.id;
     try {
@@ -55,17 +55,14 @@ const CommentList = ({ comments, setComments }) => {
             <Card
               style={{ margin: 0, width: "100%" }}
               actions={[
-                cids.includes(comment.id) ? (
-                  <Space size={3} onClick={() => handleLike(comment)}>
+                <Space size={3} onClick={() => handleLike(comment)}>
+                  {cids.includes(comment.id) ? (
                     <LikeTwoTone key="like" />
-                    {` ${comment.likes.length}`}
-                  </Space>
-                ) : (
-                  <Space size={3} onClick={() => handleLike(comment)}>
+                  ) : (
                     <LikeOutlined key="like" />
-                    {` ${comment.likes.length}`}
-                  </Space>
-                ),
+                  )}
+                  {` ${comment.likes.length}`}
+                </Space>,
                 !(replying === comment.id) ? (
                   <Space size={3} onClick={() => handleReply(comment.id)}>
                     <MessageOutlined key="like" />

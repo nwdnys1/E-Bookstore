@@ -1,4 +1,4 @@
-package org.example.backend.service;
+package org.example.backend.repository;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
