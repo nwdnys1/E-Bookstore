@@ -5,7 +5,6 @@ const { Text, Title, Paragraph } = Typography;
 
 const ProfileInfo = ({ user, handleClick, setUser }) => {
   const handleChange = (info) => {
-    console.log(info);
     if (info.file.status === "done") {
       if (info.file.response.code === 200)
         setUser({ ...user, avatar: info.file.response.data });

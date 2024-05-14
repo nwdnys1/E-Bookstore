@@ -15,6 +15,5 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     public Book getBookById(int id);
     public List<Book> getBooksByRatingGreaterThanOrderByRatingDesc(BigDecimal rating);
     public Page<Book> getBooksByTitleLikeOrAuthorLike(String title, String author, Pageable pageable);
-    public Page<Book> findBooksByTags_Content(String content, Pageable pageable);
     public Page<Book> findBooksByTagsContains(Tag tag, Pageable pageable);
 }

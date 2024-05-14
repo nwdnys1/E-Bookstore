@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Empty, List, Pagination, Row } from "antd";
+import React from "react";
+import { List, Pagination, Row } from "antd";
 import BookListItem from "./book_listitem";
 import { useSearchParams } from "react-router-dom";
 
