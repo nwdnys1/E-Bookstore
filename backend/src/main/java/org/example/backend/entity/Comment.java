@@ -20,6 +20,7 @@ public class Comment {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private int id;
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
     private LocalDateTime time;
     @ManyToOne(fetch = FetchType.LAZY)

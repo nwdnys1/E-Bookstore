@@ -10,7 +10,6 @@ const ProfileInfo = ({ user, handleClick, setUser }) => {
         setUser({ ...user, avatar: info.file.response.data });
       else alert(info.file.response.message);
     } else if (info.file.status === "error") {
-      
     }
   };
   return user ? (
@@ -18,6 +17,7 @@ const ProfileInfo = ({ user, handleClick, setUser }) => {
       <Space direction="vertical" align="center">
         <Avatar src={user.avatar} size={200} />
         <Upload
+          showUploadList={false}
           name="avatar"
           action={"http://localhost:8081/api/user/avatar"}
           withCredentials
