@@ -20,7 +20,7 @@ export const Profile = () => {
     }
     try {
       await updateUser(user).then((res) => {
-        setUser(res);
+        setUser(res);// 更新会话中的用户信息
         console.log(res);
         alert("修改成功！");
         setIsEditing(false);

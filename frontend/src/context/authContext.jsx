@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
 
   // 在用户状态变化时保存到 localStorage 中
   useEffect(() => {
-    
     sessionStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
