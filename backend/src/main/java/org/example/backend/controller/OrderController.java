@@ -1,15 +1,12 @@
 package org.example.backend.controller;
 
 
-import org.example.backend.DTO.OrderRequest;
+import org.example.backend.entity.OrderRequest;
 import org.example.backend.entity.*;
-import org.example.backend.repository.UserRepository;
-import org.example.backend.service.MyUserDetailsService;
 import org.example.backend.service.OrderService;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -24,6 +21,10 @@ public class OrderController {
     public Result<List<Order>> getOrders() {
        return service.getOrders();
     }
+    @GetMapping("/admin/list")
+    public Result<List<Order>> getAllOrders() {
+        return service.getAllOrders();
+    }
     @PostMapping("/add")
     public Result<Order> addOrder(@RequestBody OrderRequest request) {
        return service.addOrder(request);
@@ -34,6 +35,10 @@ public class OrderController {
     }
     @GetMapping("/search")
     public Result<List<Order>> searchOrderByBookTitle(@RequestParam String keyword) {
-        return service.getOrdersByBookTitle(keyword);
+        return service.searchOrders(keyword);
+    }
+    @GetMapping("/filter")
+    public Result<List<Order>> filterOrders(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
+        return service.filterOrders(start, end);
     }
 }

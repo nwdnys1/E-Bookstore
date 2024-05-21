@@ -1,5 +1,5 @@
-import { Avatar, Flex, Image, List, Table } from "antd";
-import { getOrders } from "../services/orderService";
+import { Avatar, Flex, Image, Input, List, Table } from "antd";
+import { getOrders, searchOrders } from "../services/orderService";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -18,6 +18,11 @@ export default function OrderTable() {
       .reduce((prev, cur) => prev + cur)
       .toFixed(2)}元`;
   };
+  const handleSearch = (value) => {
+    searchOrders(value).then((res) => {
+      setOrders(res);
+    });
+  }
 
   const columns = [
     { title: "收货人", dataIndex: "receiver", key: "receiver" },
@@ -42,6 +47,11 @@ export default function OrderTable() {
       vertical
       justify="center"
     >
+      <Input.Search
+        onSearch={handleSearch}
+        placeholder="搜索订单"
+        style={{ width: 200, marginBottom: 20,alignSelf:"flex-end" }}  
+      />
       <Table
         columns={columns}
         expandable={{

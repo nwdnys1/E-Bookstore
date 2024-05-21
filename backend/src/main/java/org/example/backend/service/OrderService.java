@@ -1,6 +1,6 @@
 package org.example.backend.service;
 
-import org.example.backend.DTO.OrderRequest;
+import org.example.backend.entity.OrderRequest;
 import org.example.backend.entity.*;
 import org.example.backend.repository.CartItemRepository;
 import org.example.backend.repository.OrderRepository;
@@ -90,31 +90,16 @@ public class OrderService {
             return Result.error(404, "订单不存在！");
         }
     }
-    public Result<List<Order>> getOrdersByBookTitle(String title) {
+    public Result<List<Order>> searchOrders(String title) {
         int uid = getUid();
-        List<Order> orders = repository.getOrdersByUserId(uid);
-        List<Order> result = new ArrayList<>();
+        return Result.success(repository.getOrdersByOrderItemsBookTitleLikeAndUserId("%" + title + "%", uid));
+    }
 
-        // 将查询关键字转换为小写字母
-        String lowercaseTitle = title.toLowerCase();
-
-        for (Order order : orders) {
-            boolean found = false; // 用于标记是否找到符合条件的订单项
-            for (OrderItem orderItem : order.getOrderItems()) {
-                // 将书籍标题转换为小写字母进行比较
-                String lowercaseBookTitle = orderItem.getBook().getTitle().toLowerCase();
-                if (lowercaseBookTitle.contains(lowercaseTitle)) {
-                    result.add(order);
-                    found = true;
-                    break; // 找到符合条件的订单项后立即跳出内层循环
-                }
-            }
-            if (found) {
-                // 如果找到符合条件的订单项，则跳出外层循环
-                break;
-            }
-        }
-
-        return Result.success(result);
+    public Result<List<Order>> filterOrders(LocalDateTime start, LocalDateTime end) {
+        int uid = getUid();
+        return Result.success(repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end, uid));
+    }
+    public Result<List<Order>> getAllOrders() {
+        return Result.success(repository.findAll());
     }
 }

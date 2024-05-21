@@ -1,5 +1,16 @@
-import { BASEURL, get } from "./requestService";
+import { BASEURL, Delete, get } from "./requestService";
 const PREFIX = `${BASEURL}/api/book`;
+
+export const getAllBooks = async () => {
+  const url = `${PREFIX}/list`;
+  let result;
+  try {
+    result = await get(url);
+    return result;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export const searchBooks = async ({ keyword, page, pageSize }) => {
   const url = `${PREFIX}/search?keyword=${keyword}&page=${page}&pageSize=${pageSize}`;
@@ -47,4 +58,12 @@ export async function getBookById(bookId) {
   } catch (e) {
     console.log(e);
   }
+}
+
+export async function deleteBookById(bookId) {
+  const url = `${PREFIX}/admin/delete/${bookId}`;
+  let result;
+
+  result = await Delete(url);
+  return result;
 }

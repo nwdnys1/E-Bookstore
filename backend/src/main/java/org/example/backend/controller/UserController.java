@@ -1,15 +1,16 @@
 package org.example.backend.controller;
 
-import org.example.backend.DTO.RegisterRequest;
+import org.example.backend.entity.RegisterRequest;
 import org.example.backend.entity.Result;
-import org.example.backend.DTO.UserProfile;
+import org.example.backend.entity.UserProfile;
 import org.example.backend.entity.User;
 import org.example.backend.service.MyUserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -29,24 +30,35 @@ public class UserController {
         return service.getUserByUsername( user.getUsername());
     }
     @GetMapping("/get/{username}")//根据用户名获取用户信息 一般是用于查看别人的信息
-    public Result<org.example.backend.entity.User> get(@PathVariable String username) {
+    public Result<User> get(@PathVariable String username) {
         return service.getUserByUsername(username);
     }
+    @GetMapping("/admin/list")//获取所有用户信息
+    public Result<List<User>> list() {
+        return service.getAllUsers();
+    }
     @PostMapping("/register")
-    public Result<org.example.backend.entity.User> register(@RequestBody RegisterRequest request) {
+    public Result<User> register(@RequestBody RegisterRequest request) {
         return service.addUser(request);
     }
     @PutMapping("/update")
-    public Result<org.example.backend.entity.User> update(@RequestBody UserProfile request) {
+    public Result<User> update(@RequestBody UserProfile request) {
         return service.updateUser(request);
     }
+    @PutMapping("/admin/disable/{id}")
+    public Result<User> disable(@PathVariable int id) {
+        return service.disableUser(id);
+    }
+    @PutMapping("/admin/enable/{id}")
+    public Result<User> enable(@PathVariable int id) {
+        return service.enableUser(id);
+    }
     @DeleteMapping("/admin/delete/{id}")
-    public Result<org.example.backend.entity.User> delete(@PathVariable int id) {
+    public Result<User> delete(@PathVariable int id) {
         return service.deleteUser(id);
     }
     @PostMapping("/avatar")
     public Result<String> uploadAvatar(@RequestParam("avatar") MultipartFile file) {
-
         return service.updateAvatar(file);
     }
 }

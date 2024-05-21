@@ -1,9 +1,9 @@
 package org.example.backend.service;
 
-import org.example.backend.DTO.RegisterRequest;
+import org.example.backend.entity.RegisterRequest;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.User;
-import org.example.backend.DTO.UserProfile;
+import org.example.backend.entity.UserProfile;
 import org.example.backend.repository.UploadRepository;
 import org.example.backend.repository.UserRepository;
 import org.springframework.security.authentication.DisabledException;
@@ -109,5 +109,32 @@ public class MyUserDetailsService implements UserDetailsService {
         catch (IOException e) {
             return Result.error(500, e.getMessage());
         }
+    }
+
+    public Result<User> disableUser(int id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return Result.error(404, "用户不存在！");
+        }
+        if(user.getRole().equals("admin")) {
+            return Result.error(403, "无法禁用管理员！");
+        }
+        user.setEnabled(false);
+        userRepository.save(user);
+        return Result.success(user);
+    }
+
+    public Result<List<User>> getAllUsers() {
+        return Result.success(userRepository.findAll());
+    }
+
+    public Result<User> enableUser(int id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return Result.error(404, "用户不存在！");
+        }
+        user.setEnabled(true);
+        userRepository.save(user);
+        return Result.success(user);
     }
 }

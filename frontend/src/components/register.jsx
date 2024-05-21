@@ -51,6 +51,37 @@ const RegisterModal = () => {
             prefix={<LockOutlined />}
             type="password"
             placeholder="密码"
+            allowClear
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+          />
+        </Form.Item>
+        <Form.Item
+          style={{ width: "100%", margin: 0 }}
+          id="confirm_password"
+          name="confirm_password"
+          rules={[
+            {
+              required: true,
+              message: "请再次输入您的密码!",
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error("两次输入的密码不一致!"));
+              },
+            }),
+          ]}
+        >
+          <Input.Password
+            size="large"
+            prefix={<LockOutlined />}
+            type="password"
+            placeholder="确认密码"
+            allowClear
             iconRender={(visible) =>
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
@@ -63,6 +94,7 @@ const RegisterModal = () => {
           style={{ width: "100%", margin: 0 }}
         >
           <Input
+            type="email"
             size="large"
             prefix={<MailOutlined />}
             placeholder="邮箱"

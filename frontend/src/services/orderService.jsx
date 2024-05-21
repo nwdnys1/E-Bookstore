@@ -7,6 +7,13 @@ export const getOrders = async () => {
   return result;
 };
 
+export const searchOrders = async (keyword) => {
+  const url = `${PREFIX}/search?keyword=${keyword}`;
+  let result;
+  result = await get(url);
+  return result;
+};
+
 export const placeOrder = async (orderRequest) => {
   const url = `${PREFIX}/add`;
   let result;

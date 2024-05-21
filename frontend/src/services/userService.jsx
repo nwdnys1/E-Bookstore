@@ -8,6 +8,13 @@ export async function getUser() {
   return result;
 }
 
+export async function getAllUsers() {
+  const url = `${PREFIX}/admin/list`;
+  let result;
+  result = await get(url);
+  return result;
+}
+
 export async function updateUser(user) {
   const url = `${PREFIX}/update`;
   let result;
@@ -25,4 +32,18 @@ export async function getOtherUser(username) {
     console.log(e);
     return e;
   }
+}
+
+export async function disableUser(id) {
+  const url = `${PREFIX}/admin/disable/${id}`;
+  let result;
+  result = await put(url);
+  return result;
+}
+
+export async function enableUser(id) {
+  const url = `${PREFIX}/admin/enable/${id}`;
+  let result;
+  result = await put(url);
+  return result;
 }
