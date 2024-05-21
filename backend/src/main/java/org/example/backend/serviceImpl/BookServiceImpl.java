@@ -6,20 +6,25 @@ import org.example.backend.entity.Result;
 import org.example.backend.entity.Tag;
 import org.example.backend.entity.User;
 import org.example.backend.repository.BookRepository;
+import org.example.backend.repository.UploadRepository;
 import org.example.backend.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository repository;
-    public BookServiceImpl(BookRepository repository) {
+    private final UploadRepository uploadRepository;
+    public BookServiceImpl(BookRepository repository, UploadRepository uploadRepository) {
         this.repository = repository;
+        this.uploadRepository = uploadRepository;
     }
     public Result<List<Book>> getBooks(){
         return Result.success(repository.findAll());
@@ -44,10 +49,9 @@ public class BookServiceImpl implements BookService {
         }
         oldBook.setTitle(book.getTitle());
         oldBook.setAuthor(book.getAuthor());
-        oldBook.setDescription(book.getDescription());
-        oldBook.setPrice(book.getPrice());
-        oldBook.setRating(book.getRating());
-        oldBook.setCover(book.getCover());
+        //oldBook.setDescription(book.getDescription());
+        //oldBook.setPrice(book.getPrice());
+        //oldBook.setRating(book.getRating());
         oldBook.setStock(book.getStock());
         oldBook.setISBN(book.getISBN());
         return Result.success(repository.save(oldBook));
@@ -81,5 +85,20 @@ public class BookServiceImpl implements BookService {
                 books.getContent()
         );
         return Result.success(response);
+    }
+    public Result<String> updateCover(int id, MultipartFile file) {
+        Book book = repository.findById(id).orElse(null);
+        if (book == null) {
+            return Result.error(404, "书籍不存在！");
+        }
+        try {
+            String url = uploadRepository.uploadFile(file, "image");
+            book.setCover(url);
+            repository.save(book);
+            return Result.success(url);
+        }
+        catch (IOException e) {
+            return Result.error(500, e.getMessage());
+        }
     }
 }

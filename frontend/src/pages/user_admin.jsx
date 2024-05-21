@@ -1,4 +1,4 @@
-import { Button, Row, Table } from "antd";
+import { Button, Row, Space, Table } from "antd";
 import { AdminLayout } from "../components/layout";
 import { Column } from "@ant-design/plots";
 import { useEffect, useState } from "react";
@@ -33,7 +33,6 @@ const UserAdminPage = () => {
             else return item;
           })
         );
-        console.log(users);
         alert("用户已禁用");
       })
       .catch((e) => alert(e));
@@ -54,7 +53,7 @@ const UserAdminPage = () => {
           title="操作"
           key="action"
           render={(item) => (
-            <Row>
+            <Space>
               <Button
                 disabled={!item.enabled}
                 onClick={() => {
@@ -72,7 +71,7 @@ const UserAdminPage = () => {
               >
                 启用
               </Button>
-            </Row>
+            </Space>
           )}
         />
       </Table>

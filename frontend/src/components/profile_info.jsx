@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar, Button, Col, Row, Space, Tag, Typography, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { BASEURL } from "../services/requestService";
 const { Text, Title, Paragraph } = Typography;
 
 const ProfileInfo = ({ user, handleClick, setUser }) => {
@@ -19,7 +20,7 @@ const ProfileInfo = ({ user, handleClick, setUser }) => {
         <Upload
           showUploadList={false}
           name="avatar"
-          action={"http://localhost:8081/api/user/avatar"}
+          action={`${BASEURL}/api/user/avatar`}
           withCredentials
           onChange={handleChange}
         >

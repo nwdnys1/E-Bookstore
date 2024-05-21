@@ -6,6 +6,7 @@ import org.example.backend.entity.Result;
 import org.example.backend.service.BookService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -49,7 +50,10 @@ public class BookController {
     public Result<BookPageResponse> categorySearch(@RequestParam(defaultValue = "") int tag, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize){
         return service.categorySearch(tag, page, pageSize);
     }
-
+    @PostMapping("/cover/{id}")
+    public Result<String> uploadCover(@PathVariable int id, @RequestParam("file") MultipartFile file) {
+        return service.updateCover(id, file);
+    }
 
 
 }

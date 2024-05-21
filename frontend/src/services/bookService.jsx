@@ -1,4 +1,4 @@
-import { BASEURL, Delete, get } from "./requestService";
+import { BASEURL, Delete, get, post, put } from "./requestService";
 const PREFIX = `${BASEURL}/api/book`;
 
 export const getAllBooks = async () => {
@@ -65,5 +65,21 @@ export async function deleteBookById(bookId) {
   let result;
 
   result = await Delete(url);
+  return result;
+}
+
+export async function updateBook(book) {
+  const url = `${PREFIX}/admin/update/${book.id}`;
+  let result;
+
+  result = await put(url, book);
+  return result;
+}
+
+export async function addBook(book) {
+  const url = `${PREFIX}/admin/add`;
+  let result;
+
+  result = await post(url, book);
   return result;
 }
