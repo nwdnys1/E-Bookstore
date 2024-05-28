@@ -1,9 +1,11 @@
 package org.example.backend.controller;
 
 
+import org.example.backend.DTO.OrderPageResponse;
 import org.example.backend.entity.OrderRequest;
 import org.example.backend.entity.*;
 import org.example.backend.service.OrderService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -34,11 +36,15 @@ public class OrderController {
         return service.deleteOrder(id);
     }
     @GetMapping("/search")
-    public Result<List<Order>> searchOrderByBookTitle(@RequestParam String keyword) {
-        return service.searchOrders(keyword);
+    public Result<OrderPageResponse> searchOrders(@RequestParam String keyword, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        return service.searchOrders(keyword, start, end, page, pageSize);
+    }
+    @GetMapping("/admin/search")
+    public Result<List<Order>> searchAllOrdersByBookTitle(@RequestParam String keyword) {
+        return service.searchAllOrders(keyword);
     }
     @GetMapping("/filter")
-    public Result<List<Order>> filterOrders(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
+    public Result<List<Order>> filterOrders(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end) {
         return service.filterOrders(start, end);
     }
 }

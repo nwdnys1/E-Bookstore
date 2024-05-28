@@ -1,11 +1,7 @@
 package org.example.backend.controller;
 
 import org.example.backend.entity.*;
-import org.example.backend.repository.UserRepository;
 import org.example.backend.service.CartItemService;
-import org.example.backend.service.MyUserDetailsService;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 

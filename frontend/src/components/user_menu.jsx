@@ -76,6 +76,11 @@ const UserMenu = () => {
       label: <Link to="/admin/books">书籍管理</Link>,
       icon: <DatabaseOutlined />,
     },
+    {
+      key: "orderAdmin",
+      label: <Link to="/admin/orders">订单管理</Link>,
+      icon: <OrderedListOutlined />,
+    }
   ];
   return (
     <>

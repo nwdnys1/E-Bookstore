@@ -3,11 +3,7 @@ package org.example.backend.controller;
 import org.example.backend.entity.Comment;
 import org.example.backend.entity.Reply;
 import org.example.backend.entity.Result;
-import org.example.backend.repository.UserRepository;
 import org.example.backend.service.CommentService;
-import org.example.backend.service.MyUserDetailsService;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

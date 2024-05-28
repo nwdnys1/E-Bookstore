@@ -16,6 +16,7 @@ import { ProfilePage } from "./pages/profile";
 import { UserPage } from "./pages/user";
 import UserAdminPage from "./pages/user_admin";
 import BookAdminPage from "./pages/book_admin";
+import OrderAdminPage from "./pages/order_admin";
 
 const App = () => (
   <ConfigProvider locale={zhCN}>
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/user/:username" element={<UserPage />} />
           <Route path="/admin/users" element={<UserAdminPage />} />
           <Route path="/admin/books" element={<BookAdminPage />} />
+          <Route path="/admin/orders" element={<OrderAdminPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>

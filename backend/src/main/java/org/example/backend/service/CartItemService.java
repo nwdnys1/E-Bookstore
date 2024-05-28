@@ -4,8 +4,8 @@ import org.example.backend.entity.Book;
 import org.example.backend.entity.CartItem;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.User;
-import org.example.backend.repository.CartItemRepository;
-import org.example.backend.repository.UserRepository;
+import org.example.backend.sqlRepository.CartItemRepository;
+import org.example.backend.sqlRepository.MysqlUserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class CartItemService {
     private final CartItemRepository repository;
-    private final UserRepository userRepository;
-    public CartItemService(CartItemRepository repository, UserRepository userRepository) {
+    private final MysqlUserRepository userRepository;
+    public CartItemService(CartItemRepository repository, MysqlUserRepository userRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
     }

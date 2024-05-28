@@ -1,10 +1,15 @@
 package org.example.backend.service;
 
+import org.example.backend.DTO.BookPageResponse;
+import org.example.backend.DTO.OrderPageResponse;
 import org.example.backend.entity.OrderRequest;
 import org.example.backend.entity.*;
-import org.example.backend.repository.CartItemRepository;
-import org.example.backend.repository.OrderRepository;
-import org.example.backend.repository.UserRepository;
+import org.example.backend.sqlRepository.CartItemRepository;
+import org.example.backend.sqlRepository.OrderRepository;
+import org.example.backend.sqlRepository.MysqlUserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,8 +22,8 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository repository;
     private final CartItemRepository cartItemRepository;
-    private final UserRepository userRepository;
-    public OrderService(OrderRepository repository,  CartItemRepository cartItemRepository, UserRepository userRepository) {
+    private final MysqlUserRepository userRepository;
+    public OrderService(OrderRepository repository,  CartItemRepository cartItemRepository, MysqlUserRepository userRepository) {
         this.repository = repository;
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
@@ -90,10 +95,7 @@ public class OrderService {
             return Result.error(404, "订单不存在！");
         }
     }
-    public Result<List<Order>> searchOrders(String title) {
-        int uid = getUid();
-        return Result.success(repository.getOrdersByOrderItemsBookTitleLikeAndUserId("%" + title + "%", uid));
-    }
+
 
     public Result<List<Order>> filterOrders(LocalDateTime start, LocalDateTime end) {
         int uid = getUid();
@@ -101,5 +103,19 @@ public class OrderService {
     }
     public Result<List<Order>> getAllOrders() {
         return Result.success(repository.findAll());
+    }
+
+    public Result<List<Order>> searchAllOrders(String keyword) {
+        return Result.success(repository.getOrdersByOrderItemsBookTitleLike("%" + keyword + "%"));
+    }
+    public Result<OrderPageResponse> searchOrders(String keyword,LocalDateTime start,LocalDateTime end, int page, int pageSize){
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Order> orders = repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLikeAndUserId(start, end, "%" + keyword + "%", getUid(), pageable);
+        OrderPageResponse response = new OrderPageResponse(
+                orders.getTotalElements(),
+                orders.getTotalPages(),
+                orders.getContent()
+        );
+        return Result.success(response);
     }
 }

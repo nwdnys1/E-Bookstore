@@ -1,4 +1,4 @@
-package org.example.backend.repository;
+package org.example.backend.sqlRepository;
 
 import org.example.backend.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;

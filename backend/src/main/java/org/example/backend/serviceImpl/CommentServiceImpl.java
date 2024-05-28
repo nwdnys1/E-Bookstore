@@ -1,8 +1,8 @@
 package org.example.backend.serviceImpl;
 
 import org.example.backend.entity.*;
-import org.example.backend.repository.CommentRepository;
-import org.example.backend.repository.UserRepository;
+import org.example.backend.sqlRepository.CommentRepository;
+import org.example.backend.sqlRepository.MysqlUserRepository;
 import org.example.backend.service.CommentService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository repository;
-    private final UserRepository userRepository;
-    public CommentServiceImpl(CommentRepository repository, UserRepository userRepository) {
+    private final MysqlUserRepository userRepository;
+    public CommentServiceImpl(CommentRepository repository, MysqlUserRepository userRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
     }

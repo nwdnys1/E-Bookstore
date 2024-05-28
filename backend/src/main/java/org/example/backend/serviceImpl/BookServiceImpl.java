@@ -4,9 +4,8 @@ import org.example.backend.DTO.BookPageResponse;
 import org.example.backend.entity.Book;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.Tag;
-import org.example.backend.entity.User;
-import org.example.backend.repository.BookRepository;
-import org.example.backend.repository.UploadRepository;
+import org.example.backend.sqlRepository.BookRepository;
+import org.example.backend.sqlRepository.UploadRepository;
 import org.example.backend.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {

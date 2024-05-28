@@ -4,8 +4,8 @@ import org.example.backend.entity.RegisterRequest;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.User;
 import org.example.backend.entity.UserProfile;
-import org.example.backend.repository.UploadRepository;
-import org.example.backend.repository.UserRepository;
+import org.example.backend.sqlRepository.UploadRepository;
+import org.example.backend.sqlRepository.MysqlUserRepository;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,9 +22,9 @@ import java.util.List;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-    UserRepository userRepository;
+    MysqlUserRepository userRepository;
     UploadRepository uploadRepository;
-    public MyUserDetailsService(UserRepository userRepository, UploadRepository uploadRepository) {
+    public MyUserDetailsService(MysqlUserRepository userRepository, UploadRepository uploadRepository) {
         this.userRepository = userRepository;
         this.uploadRepository = uploadRepository;
     }

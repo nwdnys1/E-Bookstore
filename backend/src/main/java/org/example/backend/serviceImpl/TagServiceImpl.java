@@ -2,7 +2,7 @@ package org.example.backend.serviceImpl;
 
 import org.example.backend.entity.Result;
 import org.example.backend.entity.Tag;
-import org.example.backend.repository.TagRepository;
+import org.example.backend.sqlRepository.TagRepository;
 import org.example.backend.service.TagService;
 import org.springframework.stereotype.Service;
 

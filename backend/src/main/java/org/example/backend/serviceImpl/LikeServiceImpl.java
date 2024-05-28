@@ -4,8 +4,8 @@ import org.example.backend.entity.Comment;
 import org.example.backend.entity.Like;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.User;
-import org.example.backend.repository.LikeRepository;
-import org.example.backend.repository.UserRepository;
+import org.example.backend.sqlRepository.LikeRepository;
+import org.example.backend.sqlRepository.MysqlUserRepository;
 import org.example.backend.service.LikeService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +17,8 @@ import java.util.List;
 @Service
 public class LikeServiceImpl implements LikeService {
     private final LikeRepository repository;
-    private final UserRepository userRepository;
-    public LikeServiceImpl(LikeRepository repository, UserRepository userRepository) {
+    private final MysqlUserRepository userRepository;
+    public LikeServiceImpl(LikeRepository repository, MysqlUserRepository userRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
     }
