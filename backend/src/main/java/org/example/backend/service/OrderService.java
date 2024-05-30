@@ -95,20 +95,24 @@ public class OrderService {
             return Result.error(404, "订单不存在！");
         }
     }
-
-
-    public Result<List<Order>> filterOrders(LocalDateTime start, LocalDateTime end) {
-        int uid = getUid();
-        return Result.success(repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end, uid));
-    }
     public Result<List<Order>> getAllOrders() {
         return Result.success(repository.findAll());
     }
+    public Result<OrderPageResponse> searchAllOrders(String keyword, int page, int pageSize,LocalDateTime start,LocalDateTime end){
+        System.out.print(keyword+" "+start+" "+end+" "+page+" "+pageSize+"\n");
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
 
-    public Result<List<Order>> searchAllOrders(String keyword) {
-        return Result.success(repository.getOrdersByOrderItemsBookTitleLike("%" + keyword + "%"));
+        Page<Order> orders = repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLike(start, end, "%" + keyword + "%", pageable);
+        System.out.println(orders.getTotalElements());
+        OrderPageResponse response = new OrderPageResponse(
+                orders.getTotalElements(),
+                orders.getTotalPages(),
+                orders.getContent()
+        );
+        return Result.success(response);
     }
     public Result<OrderPageResponse> searchOrders(String keyword,LocalDateTime start,LocalDateTime end, int page, int pageSize){
+
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Order> orders = repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLikeAndUserId(start, end, "%" + keyword + "%", getUid(), pageable);
         OrderPageResponse response = new OrderPageResponse(

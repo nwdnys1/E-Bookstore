@@ -40,11 +40,7 @@ public class OrderController {
         return service.searchOrders(keyword, start, end, page, pageSize);
     }
     @GetMapping("/admin/search")
-    public Result<List<Order>> searchAllOrdersByBookTitle(@RequestParam String keyword) {
-        return service.searchAllOrders(keyword);
-    }
-    @GetMapping("/filter")
-    public Result<List<Order>> filterOrders(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end) {
-        return service.filterOrders(start, end);
+    public Result<OrderPageResponse> searchAllOrdersByBookTitle(@RequestParam String keyword, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end) {
+        return service.searchAllOrders(keyword, page, pageSize, start, end);
     }
 }

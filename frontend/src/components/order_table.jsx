@@ -1,12 +1,9 @@
-import { Avatar, DatePicker, Flex, Image, Input, List, Row, Table } from "antd";
+import { DatePicker, Flex, Image, Input, List, Row, Table } from "antd";
 import {
-  filterOrders,
-  getOrders,
   searchOrders,
 } from "../services/orderService";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 
 export default function OrderTable() {

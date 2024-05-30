@@ -13,6 +13,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     public Order getOrderById(int id);
     public List<Order> getOrdersByOrderItemsBookTitleLikeAndUserId(String title, int uid);
     public List<Order> getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(LocalDateTime start, LocalDateTime end, int uid);
-    public List<Order> getOrdersByOrderItemsBookTitleLike(String s);
+    public Page<Order> getOrdersByOrderItemsBookTitleLike(String s, Pageable pageable);
     public Page<Order> getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLikeAndUserId(LocalDateTime start, LocalDateTime end, String title, int uid, Pageable pageable);
+
+    public Page<Order> getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLike(LocalDateTime start, LocalDateTime end, String s, Pageable pageable);
+
+    Page<Order> getOrdersByCreateTimeAfterAndCreateTimeBefore(LocalDateTime start, LocalDateTime end, Pageable pageable);
 }
