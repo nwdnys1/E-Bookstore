@@ -4,7 +4,7 @@ import org.example.backend.entity.RegisterRequest;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.UserProfile;
 import org.example.backend.entity.User;
-import org.example.backend.service.MyUserDetailsService;
+import org.example.backend.service.Impl.MyUserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;

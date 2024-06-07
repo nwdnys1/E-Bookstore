@@ -31,13 +31,8 @@ export async function register({ username, password, email }) {
 export async function checkAuth() {
   const url = `${PREFIX}/check`;
   let result;
-  try {
-    result = await get(url);
-    return result;
-  } catch (e) {
-    location.href = "/";
-    alert(e);
-  }
+  result = await get(url);
+  return result;
 }
 
 export async function checkLogin() {

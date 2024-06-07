@@ -3,12 +3,14 @@ package org.example.backend.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.backend.component.MyAuthenticationProvider;
 import org.example.backend.entity.Result;
+import org.example.backend.repository.MySQLRepository.MysqlUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AccountStatusException;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
@@ -21,14 +23,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 
 @Configuration
 public class SecurityConfig {
+    private final MysqlUserRepository repository;
+    public SecurityConfig(MysqlUserRepository repository) {
+        this.repository = repository;
+    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((requests) ->{requests
-                                .requestMatchers("/api/book/admin/**","/api/user/admin/**").hasRole("admin")//只有管理员才能访问
-                                .requestMatchers("/api/book/**","/api/comment/list/**","/api/user/register","/api/tag/**","/image/**").permitAll()
+                                //.requestMatchers("/api/book/admin/**","/api/user/admin/**").hasRole("admin")//只有管理员才能访问
+                                //.requestMatchers("/api/book/**","/api/comment/list/**","/api/user/register","/api/tag/**","/image/**").permitAll()
+                                .requestMatchers("/api/user/register").permitAll()
                                 .anyRequest().authenticated();
                 }
                 ).formLogin(
@@ -42,7 +50,7 @@ public class SecurityConfig {
                 .cors(
                         conf -> {
                             CorsConfiguration cors = new CorsConfiguration();
-                            cors.addAllowedOrigin("http://localhost:5173");
+                            cors.addAllowedOrigin("http://localhost:5173");//允许跨域的地址
                             cors.addAllowedOrigin("http://localhost:5174");
                             cors.setAllowCredentials(true);//允许携带cookie
                             cors.addAllowedMethod("*");
@@ -67,6 +75,15 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){//密码编码器
         return new BCryptPasswordEncoder();}
+    @Bean
+    public MyAuthenticationProvider authenticationProvider() {
+        return new MyAuthenticationProvider(repository, passwordEncoder());
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(){
+        return new ProviderManager(Collections.singletonList(authenticationProvider()));
+    }
+
     private void handleProcess(
             HttpServletRequest request,
             HttpServletResponse response,

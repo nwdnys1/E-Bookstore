@@ -128,9 +128,19 @@ const BookAdminPage = () => {
           position: "bottom",
         }}
       >
-        <Column title="书名" dataIndex="title" key="title" />
+        <Column
+          title="书名"
+          dataIndex="title"
+          key="title"
+          render={(title, item) => <a href={`/details/${item.id}`}>{title}</a>}
+        />
         <Column title="作者" dataIndex="author" key="author" />
-        <Column title="价格" dataIndex="price" key="price" />
+        <Column
+          title="价格"
+          dataIndex="price"
+          key="price"
+          render={(price) => <span>￥{price}</span>}
+        />
         <Column title="库存" dataIndex="stock" key="stock" />
         <Column title="ISBN" dataIndex="isbn" key="isbn" />
         <Column

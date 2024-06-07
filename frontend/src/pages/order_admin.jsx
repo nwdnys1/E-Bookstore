@@ -27,10 +27,10 @@ const OrderAdminPage = () => {
     });
   }, [keyword, page, pageSize, start, end]);
   const computeTotalPrice = (order) => {
-    return `${order.orderItems
+    return `￥${order.orderItems
       .map((item) => item.book.price * item.quantity)
       .reduce((prev, cur) => prev + cur)
-      .toFixed(2)}元`;
+      }`;
   };
   const handleSearch = (value) => {
     searchParams.set("keyword", value);

@@ -21,6 +21,7 @@ const BookListItem = ({ book }) => {
   return (
     <List.Item>
       <Card
+        style={{ width: "100%" }}
         styles={{
           body: {
             padding: "15px",

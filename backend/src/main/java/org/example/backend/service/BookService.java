@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-@Service
 public interface BookService {
     public Result<List<Book>> getBooks();
     public Result<Book> getBookById(int id);

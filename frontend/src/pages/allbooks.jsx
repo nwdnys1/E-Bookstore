@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { categoryBooks, searchBooks } from "../services/bookService";
 import BookDisplay from "../components/book_display";
-import { BasicLayout } from "../components/layout";
+import { BasicLayout, LoginLayout } from "../components/layout";
 import { Flex } from "antd";
 import { useSearchParams } from "react-router-dom";
 import CategoryBar from "../components/category";
@@ -46,12 +46,12 @@ const AllBooksPage = () => {
   }, [keyword, page, pageSize, tag]);
 
   return (
-    <BasicLayout>
+    <LoginLayout>
       <Flex vertical align="center" style={{ marginTop: 20 }}>
         <CategoryBar />
         <BookDisplay books={books} withButton={false} length={length} />
       </Flex>
-    </BasicLayout>
+    </LoginLayout>
   );
 };
 

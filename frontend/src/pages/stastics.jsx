@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { BasicLayout } from "../components/layout";
+import { BasicLayout, LoginLayout } from "../components/layout";
 import { checkLogin } from "../services/loginService";
 
 const StasticsPage = () => {
   return (
-    <BasicLayout>
+    <LoginLayout>
       <div>Stastics Page</div>
-    </BasicLayout>
+    </LoginLayout>
   );
 };
 

@@ -18,7 +18,7 @@ import java.util.Map;
 @Table(name = "books")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems"})//忽略cartItems属性 并且解决某一字段可能为null的问题
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems","orderItems"})//忽略cartItems属性 并且解决某一字段可能为null的问题
 public class Book {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -29,13 +29,14 @@ public class Book {
     private String description;
     @Column(precision = 3,scale = 1)
     private BigDecimal rating;
-    @Column(precision = 5,scale = 2)
-    private BigDecimal price;
+    private int price;
     private String cover;
     private int stock;
     private String ISBN;
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
     @JsonIgnoreProperties({"id","content","user","time","replies","likes"})//忽略所有属性 但是要返回comments数组来获得评论数量
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Comment> comments;

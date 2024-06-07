@@ -17,6 +17,7 @@ import { UserPage } from "./pages/user";
 import UserAdminPage from "./pages/user_admin";
 import BookAdminPage from "./pages/book_admin";
 import OrderAdminPage from "./pages/order_admin";
+import LoginPage from "./pages/login";
 
 const App = () => (
   <ConfigProvider locale={zhCN}>
@@ -25,6 +26,7 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/allbooks/list" element={<AllBooksPage />} />
           <Route path="/allbooks/category" element={<AllBooksPage />} />
           <Route path="/details/:id" element={<DetailsPage />} />

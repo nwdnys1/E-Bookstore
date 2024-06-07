@@ -20,7 +20,6 @@ export const searchBooks = async ({ keyword, page, pageSize }) => {
     return result;
   } catch (e) {
     console.log(e);
-    alert(e);
   }
 };
 

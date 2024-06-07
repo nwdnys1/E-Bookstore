@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { checkAuth } from "../services/loginService";
 import { Profile } from "../components/user_profile";
-import { BasicLayout } from "../components/layout";
+import { BasicLayout, LoginLayout } from "../components/layout";
 
 export const ProfilePage = () => {
   useEffect(() => {
     checkAuth();
   }, []);
   return (
-    <BasicLayout>
+    <LoginLayout>
       <Profile />
-    </BasicLayout>
+    </LoginLayout>
   );
 };

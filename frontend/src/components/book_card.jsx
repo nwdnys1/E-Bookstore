@@ -58,7 +58,7 @@ const BookCard = ({ book }) => {
                   zIndex: 1,
                 }}
               >
-                {book.rating.toFixed(1)}
+                {book?.rating?.toFixed(1)}
               </Row>
             </>
           }
@@ -98,7 +98,7 @@ const BookCard = ({ book }) => {
               margin: 0,
             }}
           >
-            {book.price.toFixed(2) + "¥"}
+            {book?.price.toFixed(2) + "¥"}
           </span>
         </Row>
       </Flex>

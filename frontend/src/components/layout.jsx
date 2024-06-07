@@ -27,7 +27,10 @@ export const BasicLayout = ({ children }) => {
 };
 export const LoginLayout = ({ children }) => {
   useEffect(() => {
-    checkAuth();
+    checkAuth().catch((err) => {
+      alert("请先登录");
+      location.href = "/login";
+    });
   }, []);
   return (
     <Layout

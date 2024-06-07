@@ -6,7 +6,6 @@ import org.example.backend.entity.Result;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
 public interface CommentService {
     public Result<List<Comment>> getCommentsByBid(int bid);
     public Result<Comment> addComment(int bid,  String content);

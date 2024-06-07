@@ -22,7 +22,8 @@ const LoginModal = () => {
       setUser(userRes);
       console.log(userRes);
       alert("登录成功！");
-      location.reload();
+      location.href = "/";
+      //location.reload();
     } catch (error) {
       alert(error);
     }
