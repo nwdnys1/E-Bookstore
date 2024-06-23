@@ -32,6 +32,10 @@ public class OrderDAOImpl implements OrderDAO {
         return repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end, uid, pageable);
     };
     @Override
+    public List<Order> getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(LocalDateTime start, LocalDateTime end, int uid){
+        return repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end, uid);
+    };
+    @Override
     public Page<Order> getOrdersByOrderItemsBookTitleLike(String s, Pageable pageable){
         return repository.getOrdersByOrderItemsBookTitleLike(s, pageable);
     };
@@ -49,7 +53,10 @@ public class OrderDAOImpl implements OrderDAO {
     public Page<Order> getOrdersByCreateTimeAfterAndCreateTimeBefore(LocalDateTime start, LocalDateTime end, Pageable pageable){
         return repository.getOrdersByCreateTimeAfterAndCreateTimeBefore(start, end, pageable);
     };
-
+    @Override
+    public List<Order> getOrdersByCreateTimeAfterAndCreateTimeBefore(LocalDateTime start, LocalDateTime end){
+        return repository.getOrdersByCreateTimeAfterAndCreateTimeBefore(start, end);
+    };
     @Override
     public void save(Order order) {
         repository.save(order);

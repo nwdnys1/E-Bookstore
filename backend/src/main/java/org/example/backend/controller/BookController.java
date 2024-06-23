@@ -1,13 +1,15 @@
 package org.example.backend.controller;
 
-import org.example.backend.DTO.BookPageResponse;
+import org.example.backend.DTO.PageResponse;
+import org.example.backend.DTO.SalesInfo;
 import org.example.backend.entity.Book;
 import org.example.backend.entity.Result;
 import org.example.backend.service.BookService;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -43,17 +45,22 @@ public class BookController {
        return service.addBook(book);
     }
     @GetMapping("/search")
-    public Result<BookPageResponse> searchBooks(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize){
+    public Result<PageResponse<Book>> searchBooks(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize){
         return service.searchBooks(keyword, page, pageSize);
     }
     @GetMapping("/category")
-    public Result<BookPageResponse> categorySearch(@RequestParam(defaultValue = "") int tag, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize){
+    public Result<PageResponse<Book>> categorySearch(@RequestParam(defaultValue = "") int tag, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize){
         return service.categorySearch(tag, page, pageSize);
     }
     @PostMapping("/cover/{id}")
     public Result<String> uploadCover(@PathVariable int id, @RequestParam("file") MultipartFile file) {
         return service.updateCover(id, file);
     }
-
+    @GetMapping("/admin/rank")//按照指定时间段内的销量进行排名
+    public Result<List<SalesInfo>> rank(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+                                        @RequestParam(defaultValue = "10") int nums) {
+        return service.rank(start, end, nums);
+    }
 
 }

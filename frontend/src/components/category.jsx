@@ -21,7 +21,7 @@ const CategoryBar = () => {
       pageSize: searchParams.get("pageSize") || 12,
       keyword: "",
       tag: checked ? tag : "",
-      layout: searchParams.get("layout"),
+      layout: searchParams.get("layout")||"block",
     });
   };
   return (

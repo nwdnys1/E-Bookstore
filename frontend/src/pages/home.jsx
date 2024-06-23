@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BookCarousel from "../components/carousel";
 import BookDisplay from "../components/book_display";
 import { getRecommendedBooks } from "../services/bookService";

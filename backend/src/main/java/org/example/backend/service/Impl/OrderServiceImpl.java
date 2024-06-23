@@ -1,9 +1,10 @@
 package org.example.backend.service.Impl;
 
+import org.example.backend.DAO.BookDAO;
 import org.example.backend.DAO.CartItemDAO;
 import org.example.backend.DAO.OrderDAO;
 import org.example.backend.DAO.UserDAO;
-import org.example.backend.DTO.OrderPageResponse;
+import org.example.backend.DTO.PageResponse;
 import org.example.backend.entity.OrderRequest;
 import org.example.backend.entity.*;
 import org.example.backend.service.OrderService;
@@ -23,10 +24,12 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDAO repository;
     private final CartItemDAO cartItemRepository;
     private final UserDAO userDAO;
-    public OrderServiceImpl(OrderDAO repository, CartItemDAO cartItemRepository, UserDAO userDAO) {
+    private final BookDAO bookDAO;
+    public OrderServiceImpl(OrderDAO repository, CartItemDAO cartItemRepository, UserDAO userDAO, BookDAO bookDAO) {
         this.repository = repository;
         this.cartItemRepository = cartItemRepository;
         this.userDAO = userDAO;
+        this.bookDAO = bookDAO;
     }
     public int getUid() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
@@ -59,14 +62,22 @@ public class OrderServiceImpl implements OrderService {
         for (int cid : request.getCids()) {
             // 在购物车项中查找对应的商品项
             CartItem cartItem = findCartItemById(cartItems, cid);
+            int bid=cartItem.getBook().getId();
             // 创建订单项并设置到订单中
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setBook(new Book());
-            orderItem.getBook().setId(cartItem.getBook().getId());
+            orderItem.getBook().setId(bid);
             orderItem.setQuantity(cartItem.getQuantity());
             orderItems.add(orderItem);
-
+            // 更新商品库存和销量
+            Book book = bookDAO.getBookById(bid);
+            if (book.getStock() < cartItem.getQuantity()) {
+                return Result.error(400, "库存不足！");
+            }
+            book.setStock(book.getStock() - cartItem.getQuantity());
+            book.setSales(book.getSales() + cartItem.getQuantity());
+            bookDAO.save(book);
             // 从购物车中移除对应的商品项
             cartItems.remove(cartItem);
             cartItemRepository.deleteById(cartItem.getId());
@@ -104,14 +115,14 @@ public class OrderServiceImpl implements OrderService {
         return Result.success(repository.findAll());
     }
     @Override
-    public Result<OrderPageResponse> searchAllOrders(String keyword, int page, int pageSize, LocalDateTime start, LocalDateTime end){
+    public Result<PageResponse<Order>> searchAllOrders(String keyword, int page, int pageSize, LocalDateTime start, LocalDateTime end){
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Order> orders;
         if(keyword.isEmpty())
             orders = repository.getOrdersByCreateTimeAfterAndCreateTimeBefore(start, end, pageable);
         else
             orders = repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLike(start, end, "%" + keyword + "%", pageable);
-        OrderPageResponse response = new OrderPageResponse(
+        PageResponse<Order> response = new PageResponse<Order>(
                 orders.getTotalElements(),
                 orders.getTotalPages(),
                 orders.getContent()
@@ -119,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
         return Result.success(response);
     }
     @Override
-    public Result<OrderPageResponse> searchOrders(String keyword, LocalDateTime start, LocalDateTime end, int page, int pageSize){
+    public Result<PageResponse<Order>> searchOrders(String keyword, LocalDateTime start, LocalDateTime end, int page, int pageSize){
 
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Order> orders;
@@ -127,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
             orders = repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end, getUid(), pageable);
         else
             orders = repository.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLikeAndUserId(start, end, "%" + keyword + "%", getUid(), pageable);
-        OrderPageResponse response = new OrderPageResponse(
+        PageResponse<Order> response = new PageResponse<Order>(
                 orders.getTotalElements(),
                 orders.getTotalPages(),
                 orders.getContent()

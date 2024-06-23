@@ -82,3 +82,12 @@ export async function addBook(book) {
   result = await post(url, book);
   return result;
 }
+
+export async function getTopBooks({ start, end }) {
+  const url = `${PREFIX}/admin/rank?start=${start}&end=${end}&nums=20`;
+  let result;
+
+  result = await get(url);
+  return result;
+}
+

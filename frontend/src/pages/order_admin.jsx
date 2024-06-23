@@ -22,7 +22,7 @@ const OrderAdminPage = () => {
       page: page,
       pageSize: pageSize,
     }).then((res) => {
-      setOrders(res.orders);
+      setOrders(res.content);
       setLength(res.total);
     });
   }, [keyword, page, pageSize, start, end]);

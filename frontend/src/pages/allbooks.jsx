@@ -22,7 +22,7 @@ const AllBooksPage = () => {
         page: page,
         pageSize: pageSize,
       }).then((res) => {
-        setBooks(res.books);
+        setBooks(res.content);
         setLength(res.total);
       });
     } else if (tag !== "") {
@@ -31,7 +31,7 @@ const AllBooksPage = () => {
         page: page,
         pageSize: pageSize,
       }).then((res) => {
-        setBooks(res.books);
+        setBooks(res.content);
         setLength(res.total);
       });
     } else
@@ -40,7 +40,7 @@ const AllBooksPage = () => {
         page: page,
         pageSize: pageSize,
       }).then((res) => {
-        setBooks(res.books);
+        setBooks(res.content);
         setLength(res.total);
       });
   }, [keyword, page, pageSize, tag]);

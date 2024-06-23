@@ -35,9 +35,13 @@ const BookInfo = ({ book }) => {
           <Paragraph style={ParagraphStyle}>{"作者：" + book.author}</Paragraph>
           <Divider orientation="left" style={DividerStyle}></Divider>
           <Paragraph style={ParagraphStyle}>
-            {"价格：" + book.price + "元  "}
+            {`价格: ${book.price} 元`}
             <br />
-            {`ISBN: ${book.isbn} 库存: ${book.stock}本`}
+            {`库存: ${book.stock} 本`}
+            <br />
+            {`销量: ${book.sales} 本`}
+            <br />
+            {`ISBN: ${book.isbn}`}
           </Paragraph>
           <Divider style={DividerStyle} />
           <TagBar tags={book.tags} />

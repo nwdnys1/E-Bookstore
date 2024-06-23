@@ -33,6 +33,7 @@ public class Book {
     private String cover;
     private int stock;
     private String ISBN;
+    private int sales;//销量
     @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

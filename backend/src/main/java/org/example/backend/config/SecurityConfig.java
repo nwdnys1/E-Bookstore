@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.backend.component.MyAuthenticationProvider;
 import org.example.backend.entity.Result;
 import org.example.backend.repository.MySQLRepository.MysqlUserRepository;
+import org.example.backend.repository.MySQLRepository.UserAuthRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,8 +28,8 @@ import java.util.Collections;
 
 @Configuration
 public class SecurityConfig {
-    private final MysqlUserRepository repository;
-    public SecurityConfig(MysqlUserRepository repository) {
+    private final UserAuthRepository repository;
+    public SecurityConfig(UserAuthRepository repository) {
         this.repository = repository;
     }
     @Bean

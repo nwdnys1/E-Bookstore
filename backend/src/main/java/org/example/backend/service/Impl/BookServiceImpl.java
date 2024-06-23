@@ -1,10 +1,10 @@
 package org.example.backend.service.Impl;
 
 import org.example.backend.DAO.BookDAO;
-import org.example.backend.DTO.BookPageResponse;
-import org.example.backend.entity.Book;
-import org.example.backend.entity.Result;
-import org.example.backend.entity.Tag;
+import org.example.backend.DAO.OrderDAO;
+import org.example.backend.DTO.PageResponse;
+import org.example.backend.DTO.SalesInfo;
+import org.example.backend.entity.*;
 import org.example.backend.repository.MySQLRepository.UploadRepository;
 import org.example.backend.service.BookService;
 import org.springframework.data.domain.Page;
@@ -15,14 +15,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class BookServiceImpl implements BookService {
     private final BookDAO repository;
     private final UploadRepository uploadRepository;
-    public BookServiceImpl(BookDAO repository, UploadRepository uploadRepository) {
+    private final OrderDAO orderDAO;
+    public BookServiceImpl(BookDAO repository, UploadRepository uploadRepository, OrderDAO orderDAO) {
         this.repository = repository;
         this.uploadRepository = uploadRepository;
+        this.orderDAO = orderDAO;
     }
     public Result<List<Book>> getBooks(){
         return Result.success(repository.findAll());
@@ -38,6 +45,8 @@ public class BookServiceImpl implements BookService {
         return Result.success(repository.getBooksByRatingGreaterThanOrderByRatingDesc(BigDecimal.valueOf(0)).subList(0, nums));
     }
     public Result<Book> addBook(Book book){
+        book.setRating(BigDecimal.valueOf(0));
+        book.setSales(0);
         return Result.success(repository.save(book));
     }
     public Result<Book> updateBook(int id, Book book){
@@ -68,22 +77,22 @@ public class BookServiceImpl implements BookService {
             return Result.error(404, "书籍不存在！");
         }
     }
-    public Result<BookPageResponse> searchBooks(String keyword, int page, int pageSize){
+    public Result<PageResponse<Book>> searchBooks(String keyword, int page, int pageSize){
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Book> books = repository.getBooksByTitleLikeOrAuthorLike("%" + keyword + "%", "%" + keyword + "%", pageable);
-        BookPageResponse response = new BookPageResponse(
+        PageResponse<Book> response = new PageResponse<Book>(
                 books.getTotalElements(),
                 books.getTotalPages(),
                 books.getContent()
         );
         return Result.success(response);
     }
-    public Result<BookPageResponse> categorySearch(int tid, int page, int pageSize){
+    public Result<PageResponse<Book>> categorySearch(int tid, int page, int pageSize){
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Tag tag = new Tag();
         tag.setId(tid);
         Page<Book> books = repository.findBooksByTagsContains(tag, pageable);
-        BookPageResponse response = new BookPageResponse(
+        PageResponse<Book> response = new PageResponse<Book>(
                 books.getTotalElements(),
                 books.getTotalPages(),
                 books.getContent()
@@ -104,5 +113,23 @@ public class BookServiceImpl implements BookService {
         catch (IOException e) {
             return Result.error(500, e.getMessage());
         }
+    }
+    public Result<List<SalesInfo>> rank(LocalDateTime start, LocalDateTime end,int nums){
+        LinkedHashMap<Integer,SalesInfo> saleInfos = new LinkedHashMap<>();
+        List<Order> orders= orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBefore(start, end);//找到所有时间段内的订单
+        for(Order order: orders){
+            List<OrderItem> orderItems = order.getOrderItems();
+            for(OrderItem orderItem: orderItems){
+               Integer bid = orderItem.getBook().getId();
+                if(saleInfos.containsKey(bid)){
+                   saleInfos.get(bid).setSales(saleInfos.get(bid).getSales() + orderItem.getQuantity());
+                }else{
+                    saleInfos.put(bid, new SalesInfo(bid, orderItem.getBook().getTitle(), orderItem.getQuantity()));
+                }
+            }
+        }
+        List<SalesInfo> list = new ArrayList<>(saleInfos.values());
+        list.sort((a, b) -> b.getSales() - a.getSales());//按销量降序排列
+        return Result.success(list.subList(0, Math.min(nums, list.size())));
     }
 }

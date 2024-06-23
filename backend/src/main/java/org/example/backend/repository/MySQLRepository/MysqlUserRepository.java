@@ -9,5 +9,5 @@ public interface MysqlUserRepository extends JpaRepository<User, Integer> {
     boolean existsUserByUsername(String username);
     boolean existsUserByEmail(String email);
 
-    boolean existsUserByUsernameAndPassword(String username, String password);
+
 }

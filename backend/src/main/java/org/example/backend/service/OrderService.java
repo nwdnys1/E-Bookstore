@@ -1,6 +1,6 @@
 package org.example.backend.service;
 
-import org.example.backend.DTO.OrderPageResponse;
+import org.example.backend.DTO.PageResponse;
 import org.example.backend.entity.CartItem;
 import org.example.backend.entity.Order;
 import org.example.backend.entity.OrderRequest;
@@ -21,7 +21,7 @@ public interface OrderService {
 
     Result<List<Order>> getAllOrders();
 
-    Result<OrderPageResponse> searchAllOrders(String keyword, int page, int pageSize, LocalDateTime start, LocalDateTime end);
+    Result<PageResponse<Order>> searchAllOrders(String keyword, int page, int pageSize, LocalDateTime start, LocalDateTime end);
 
-    Result<OrderPageResponse> searchOrders(String keyword, LocalDateTime start, LocalDateTime end, int page, int pageSize);
+    Result<PageResponse<Order>> searchOrders(String keyword, LocalDateTime start, LocalDateTime end, int page, int pageSize);
 }

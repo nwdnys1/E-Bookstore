@@ -1,7 +1,7 @@
 package org.example.backend.component;
 
 import org.example.backend.entity.User;
-import org.example.backend.repository.MySQLRepository.MysqlUserRepository;
+import org.example.backend.repository.MySQLRepository.UserAuthRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 @Component
 public class MyAuthenticationProvider implements AuthenticationProvider {
-    private final MysqlUserRepository repository;
+    private final UserAuthRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public MyAuthenticationProvider(MysqlUserRepository repository, PasswordEncoder passwordEncoder) {
+    public MyAuthenticationProvider(UserAuthRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -28,9 +28,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         password = passwordEncoder.encode(password);
         System.out.println("myauthprovider: "+username+" "+password);
         // 根据用户名和密码查询数据库，判断是否存在对应记录
-        if (repository.existsUserByUsernameAndPassword(username, password)) {
+        if (repository.existsUserAuthByUsernameAndPassword(username, password)) {
             // 如果存在，返回一个完全认证的Authentication对象
-            User user=repository.findUserByUsername(username);
+            User user=repository.findUserAuthByUsername(username).getUser();
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add((GrantedAuthority) () -> "ROLE_" + user.getRole());
             return new UsernamePasswordAuthenticationToken(username, password, authorities);

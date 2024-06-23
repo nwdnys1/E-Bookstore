@@ -47,3 +47,18 @@ export async function enableUser(id) {
   result = await put(url);
   return result;
 }
+
+export async function getTopUsers({ start, end }) {
+  const url = `${PREFIX}/admin/rank?start=${start}&end=${end}&nums=10`;
+  let result;
+  result = await get(url);
+  return result;
+}
+
+export async function getPurchasedBooks({ start, end }) {
+  const url = `${PREFIX}/statistics?start=${start}&end=${end}`;
+  let result;
+
+  result = await get(url);
+  return result;
+}

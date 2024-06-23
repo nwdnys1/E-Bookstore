@@ -35,6 +35,10 @@ const navItems = Items.map((item) => ({
   label: <Link to={item.link}>{item.label}</Link>,
 }));
 
+const handleSearch = (value) => {
+  location.href = `/allbooks/list?page=1&keyword=${value}`;
+};
+
 const Navbar = () => {
   return (
     <Header
@@ -57,7 +61,7 @@ const Navbar = () => {
         ></Menu>
 
         <Row align="middle">
-          <SearchBox />
+          <SearchBox handleSearch={handleSearch}/>
           <UserMenu />
         </Row>
       </Row>

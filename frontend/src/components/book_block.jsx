@@ -3,7 +3,7 @@ import { List, Pagination, Row } from "antd";
 import BookCard from "./book_card";
 import { useSearchParams } from "react-router-dom";
 
-export const BlockLayout = ({ books, length }) => {
+export const BlockLayout = ({ books, length, fixedGrid }) => {
   //这个子组件的回调是修改page和pageSize 其他都不变
   const [searchParams, setSearchParams] = useSearchParams();
   const handlePageChange = (page, pageSize) => {
@@ -19,7 +19,7 @@ export const BlockLayout = ({ books, length }) => {
   return (
     <List
       grid={{
-        xxl: 6,
+        xxl: fixedGrid ? 4 : 6,
         xl: 4,
         lg: 4,
         md: 4,

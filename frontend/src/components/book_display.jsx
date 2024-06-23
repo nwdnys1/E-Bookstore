@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { Button, Flex, Row } from "antd";
 import SwitchButton from "./switchbtn";
 import { ListLayout } from "./book_list";
@@ -33,7 +32,7 @@ const BookDisplay = ({ books, withButton, length }) => {
       {layout === "list" ? (
         <ListLayout books={books} length={length} />
       ) : (
-        <BlockLayout books={books} length={length} />
+        <BlockLayout books={books} length={length} fixedGrid={withButton} />
       )}
     </Flex>
   );

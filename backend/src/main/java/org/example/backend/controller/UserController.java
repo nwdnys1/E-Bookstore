@@ -1,15 +1,19 @@
 package org.example.backend.controller;
 
+import org.example.backend.DTO.PurchaseInfo;
+import org.example.backend.DTO.SpentInfo;
 import org.example.backend.entity.RegisterRequest;
 import org.example.backend.entity.Result;
 import org.example.backend.entity.UserProfile;
 import org.example.backend.entity.User;
 import org.example.backend.service.Impl.MyUserDetailsService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -60,5 +64,16 @@ public class UserController {
     @PostMapping("/avatar")
     public Result<String> uploadAvatar(@RequestParam("avatar") MultipartFile file) {
         return service.updateAvatar(file);
+    }
+    @GetMapping("/admin/rank")//获取用户的消费排名
+    public Result<List<SpentInfo>> rank(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+                                        @RequestParam(defaultValue = "10") int nums) {
+        return service.rank(start, end, nums);
+    }
+    @GetMapping("/statistics")//获取用户的消费统计
+    public Result<List<PurchaseInfo>> statistics(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+                                                 @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end) {
+        return service.statistics(start, end);
     }
 }

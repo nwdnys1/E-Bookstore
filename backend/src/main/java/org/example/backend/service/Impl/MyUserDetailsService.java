@@ -1,10 +1,11 @@
 package org.example.backend.service.Impl;
 
+import org.example.backend.DAO.OrderDAO;
 import org.example.backend.DAO.UserDAO;
-import org.example.backend.entity.RegisterRequest;
-import org.example.backend.entity.Result;
-import org.example.backend.entity.User;
-import org.example.backend.entity.UserProfile;
+import org.example.backend.DTO.PurchaseInfo;
+import org.example.backend.DTO.SalesInfo;
+import org.example.backend.DTO.SpentInfo;
+import org.example.backend.entity.*;
 import org.example.backend.repository.MySQLRepository.UploadRepository;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,27 +18,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
     UserDAO userDAO;
     UploadRepository uploadRepository;
-    public MyUserDetailsService(UserDAO userDAO, UploadRepository uploadRepository) {
+    OrderDAO orderDAO;
+    public MyUserDetailsService(UserDAO userDAO, UploadRepository uploadRepository, OrderDAO orderDAO) {
         this.userDAO = userDAO;
         this.uploadRepository = uploadRepository;
+        this.orderDAO = orderDAO;
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException{
         User user = userDAO.findUserByUsername(username);
+        String pwd = userDAO.findUserAuthByUsername(username).getPassword();
         if (user == null) {
             throw new UsernameNotFoundException("未找到用户");
         }
         List< GrantedAuthority > authorities = new ArrayList<>();
         authorities.add((GrantedAuthority) () -> "ROLE_" + user.getRole());
         System.out.println("loadUserByUsername: "+user.getUsername());
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),  user.isEnabled(), true, true, true, authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), pwd, user.isEnabled(), true, true, true, authorities);
     }
     public Result<User> updateUser(UserProfile request) {
         int id = getUid();
@@ -65,7 +71,6 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         User user = new User();
         user.setUsername(request.getUsername());
-        user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));//加密密码
         user.setEmail(request.getEmail());
         user.setRole("user");
         user.setEnabled(true);
@@ -73,7 +78,10 @@ public class MyUserDetailsService implements UserDetailsService {
         user.setAvatar("https://img.moegirl.org.cn/common/b/b7/Transparent_Akkarin.jpg");//默认头像
         user.setTel("");
         user.setAboutMe("");
-        userDAO.save(user);
+        UserAuth userAuth = new UserAuth();
+        userAuth.setUsername(request.getUsername());
+        userAuth.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+        userDAO.save(user, userAuth);
         return Result.success(user);
     }
     public Result<User> deleteUser(int id) {
@@ -137,5 +145,45 @@ public class MyUserDetailsService implements UserDetailsService {
         user.setEnabled(true);
         userDAO.save(user);
         return Result.success(user);
+    }
+
+    public Result<List<SpentInfo>> rank(LocalDateTime start, LocalDateTime end, int nums) {
+        LinkedHashMap<Integer, SpentInfo> spentInfos = new LinkedHashMap<>();
+        List<Order> orders= orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBefore(start, end);//找到所有时间段内的订单
+        for(Order order: orders){
+            Integer uid = order.getUser().getId();
+            List<OrderItem> orderItems = order.getOrderItems();
+            int totalSpent = 0;
+            for(OrderItem orderItem: orderItems){
+               totalSpent += orderItem.getBook().getPrice() * orderItem.getQuantity();
+            }
+            if(spentInfos.containsKey(uid)) {
+                spentInfos.get(uid).setTotalSpent(spentInfos.get(uid).getTotalSpent() + totalSpent);
+            } else{
+                spentInfos.put(uid, new SpentInfo(uid,order.getUser().getUsername(), totalSpent));
+            }
+        }
+        List<SpentInfo> list = new ArrayList<>(spentInfos.values());
+        list.sort((a, b) -> b.getTotalSpent() - a.getTotalSpent());//按消费金额降序排列
+        return Result.success(list.subList(0, Math.min(nums, list.size())));
+    }
+
+    public Result<List<PurchaseInfo>> statistics(LocalDateTime start, LocalDateTime end) {
+        LinkedHashMap<Integer, PurchaseInfo> purchaseInfos = new LinkedHashMap<>();
+        List<Order> orders= orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end,getUid());//找到所有时间段内的订单
+        for(Order order: orders){
+            List<OrderItem> orderItems = order.getOrderItems();
+            for(OrderItem orderItem: orderItems){
+                Integer bid = orderItem.getBook().getId();
+                if(purchaseInfos.containsKey(bid)){
+                    purchaseInfos.get(bid).setCount(purchaseInfos.get(bid).getCount() + orderItem.getQuantity());
+                }else{
+                    purchaseInfos.put(bid, new PurchaseInfo(bid, orderItem.getBook().getTitle(), orderItem.getQuantity(), orderItem.getBook().getPrice()));
+                }
+            }
+        }
+        List<PurchaseInfo> list = new ArrayList<>(purchaseInfos.values());
+        list.sort((a, b) -> b.getCount() - a.getCount());//按消费金额降序排列
+        return Result.success(list);
     }
 }

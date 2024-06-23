@@ -16,6 +16,7 @@ public interface OrderDAO {
 
     Page<Order> getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(LocalDateTime start, LocalDateTime end, int uid, Pageable pageable);
 
+    List<Order> getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(LocalDateTime start, LocalDateTime end, int uid);//用于找到某个用户在某个时间段内的订单
     Page<Order> getOrdersByOrderItemsBookTitleLike(String s, Pageable pageable);
 
     Page<Order> getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLikeAndUserId(LocalDateTime start, LocalDateTime end, String title, int uid, Pageable pageable);
@@ -23,6 +24,7 @@ public interface OrderDAO {
     Page<Order> getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLike(LocalDateTime start, LocalDateTime end, String s, Pageable pageable);
 
     Page<Order> getOrdersByCreateTimeAfterAndCreateTimeBefore(LocalDateTime start, LocalDateTime end, Pageable pageable);
+    List<Order> getOrdersByCreateTimeAfterAndCreateTimeBefore(LocalDateTime start, LocalDateTime end);//用于找到所有时间段内的订单
 
     void save(Order order);
 

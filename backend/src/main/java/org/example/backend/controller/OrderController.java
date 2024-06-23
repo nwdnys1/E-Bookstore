@@ -1,7 +1,7 @@
 package org.example.backend.controller;
 
 
-import org.example.backend.DTO.OrderPageResponse;
+import org.example.backend.DTO.PageResponse;
 import org.example.backend.entity.OrderRequest;
 import org.example.backend.entity.*;
 import org.example.backend.service.OrderService;
@@ -36,11 +36,11 @@ public class OrderController {
         return service.deleteOrder(id);
     }
     @GetMapping("/search")
-    public Result<OrderPageResponse> searchOrders(@RequestParam String keyword, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+    public Result<PageResponse<Order>> searchOrders(@RequestParam String keyword, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return service.searchOrders(keyword, start, end, page, pageSize);
     }
     @GetMapping("/admin/search")
-    public Result<OrderPageResponse> searchAllOrdersByBookTitle(@RequestParam String keyword, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end) {
+    public Result<PageResponse<Order>> searchAllOrdersByBookTitle(@RequestParam String keyword, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end) {
         return service.searchAllOrders(keyword, page, pageSize, start, end);
     }
 }

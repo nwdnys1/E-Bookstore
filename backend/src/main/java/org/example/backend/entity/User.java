@@ -9,13 +9,12 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems","orders","comments","password","likes"})//忽略cartItems,orders,comments属性
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","cartItems","orders","comments","likes"})//忽略cartItems,orders,comments属性
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String username;
-    private String password;
     private String role;
     private String avatar;
     private String email;
