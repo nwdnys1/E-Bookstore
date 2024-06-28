@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
 import { List, Pagination, Row } from "antd";
 import BookCard from "./book_card";
 import { useSearchParams } from "react-router-dom";
 
-export const BlockLayout = ({ books, length, fixedGrid }) => {
+export const BlockLayout = ({ books, length, fixedGrid, paging }) => {
   //这个子组件的回调是修改page和pageSize 其他都不变
   const [searchParams, setSearchParams] = useSearchParams();
   const handlePageChange = (page, pageSize) => {
@@ -35,20 +34,22 @@ export const BlockLayout = ({ books, length, fixedGrid }) => {
       )}
     >
       <Row justify="center">
-        <Pagination
-          current={searchParams.get("page") || 1}
-          defaultPageSize={12}
-          pageSize={searchParams.get("pageSize") || 12}
-          onChange={handlePageChange}
-          showQuickJumper
-          showSizeChanger
-          pageSizeOptions={["12", "24", "48"]}
-          total={length}
-          showTotal={(total, range) =>
-            `${total} 项中的 ${range[0]}-${range[1]} 项 `
-          }
-          position="bottom"
-        />
+        {paging && (
+          <Pagination
+            current={searchParams.get("page") || 1}
+            defaultPageSize={12}
+            pageSize={searchParams.get("pageSize") || 12}
+            onChange={handlePageChange}
+            showQuickJumper
+            showSizeChanger
+            pageSizeOptions={["12", "24", "48"]}
+            total={length}
+            showTotal={(total, range) =>
+              `${total} 项中的 ${range[0]}-${range[1]} 项 `
+            }
+            position="bottom"
+          />
+        )}
       </Row>
     </List>
   );

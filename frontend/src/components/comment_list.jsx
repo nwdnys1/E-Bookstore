@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { ReplyList } from "./reply_list";
 import {
   CloseCircleOutlined,
-  LikeFilled,
   LikeOutlined,
   LikeTwoTone,
   MessageOutlined,

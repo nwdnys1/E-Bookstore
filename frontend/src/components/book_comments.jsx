@@ -5,8 +5,6 @@ import CommentList from "./comment_list";
 import { useParams } from "react-router-dom";
 import { getCommentsByBookId } from "../services/commentService";
 
-const { TabPane } = Tabs;
-
 export const BookComments = () => {
   const [sortBy, setSortBy] = useState("hottest");
   let { id } = useParams();
@@ -24,7 +22,7 @@ export const BookComments = () => {
     comments.sort((a, b) => new Date(b.time) - new Date(a.time));
   }
   if (sortBy === "hottest") {
-    comments.sort((a, b) => b.likes - a.likes);
+    comments.sort((a, b) => b.likes.length - a.likes.length);
   }
   if (sortBy === "mostReplies") {
     comments.sort((a, b) => b.replies.length - a.replies.length);

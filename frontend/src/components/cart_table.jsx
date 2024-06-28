@@ -154,6 +154,7 @@ const CartTable = () => {
         />
         <Row justify="end" align={"middle"}>
           <p>合计：￥{computeTotalPrice()}</p>
+          <div style={{ width: 10 }} />
           <Button
             type="primary"
             disabled={selectedItems.length === 0}

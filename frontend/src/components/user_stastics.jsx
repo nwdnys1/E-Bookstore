@@ -72,7 +72,10 @@ const UserStastics = () => {
       <Bar {...config} />
       <Row justify={"space-between"}>
         <h2>{`总购书数：${books.reduce((acc, cur) => acc + cur.count, 0)}`}</h2>
-        <h2>{`总花费：${books.reduce((acc, cur) => acc + cur.price, 0)}￥`}</h2>
+        <h2>{`总花费：${books.reduce(
+          (acc, cur) => acc + cur.price * cur.count,
+          0
+        )}￥`}</h2>
       </Row>
     </LoginLayout>
   );

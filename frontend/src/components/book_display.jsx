@@ -30,9 +30,14 @@ const BookDisplay = ({ books, withButton, length }) => {
         )}
       </Row>
       {layout === "list" ? (
-        <ListLayout books={books} length={length} />
+        <ListLayout books={books} length={length} paging={!withButton} />
       ) : (
-        <BlockLayout books={books} length={length} fixedGrid={withButton} />
+        <BlockLayout
+          books={books}
+          length={length}
+          fixedGrid={withButton}
+          paging={!withButton}
+        />
       )}
     </Flex>
   );

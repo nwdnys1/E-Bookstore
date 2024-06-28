@@ -11,7 +11,7 @@ const OrderAdminPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
   const page = searchParams.get("page") || 1;
-  const pageSize = searchParams.get("pageSize") || 12;
+  const pageSize = searchParams.get("pageSize") || 24;
   const start = searchParams.get("start") || "1970-01-01 00:00:00";
   const end = searchParams.get("end") || "2100-01-01 00:00:00";
   useEffect(() => {
@@ -29,8 +29,7 @@ const OrderAdminPage = () => {
   const computeTotalPrice = (order) => {
     return `￥${order.orderItems
       .map((item) => item.book.price * item.quantity)
-      .reduce((prev, cur) => prev + cur)
-      }`;
+      .reduce((prev, cur) => prev + cur)}`;
   };
   const handleSearch = (value) => {
     searchParams.set("keyword", value);
@@ -135,7 +134,6 @@ const OrderAdminPage = () => {
           }))}
           pagination={{
             current: page,
-            defaultPageSize: 12,
             pageSize: pageSize,
             onChange: handlePageChange,
             showQuickJumper: true,

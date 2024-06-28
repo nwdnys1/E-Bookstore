@@ -16,7 +16,7 @@ export async function get(url) {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include",//
+    credentials: "include",
   };
   let res = await fetch(url, opts);
   return await res.json().then(handleResponse);

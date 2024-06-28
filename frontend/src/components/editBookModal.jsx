@@ -28,14 +28,14 @@ const EditBookModal = ({ form, showModal, handleCancel, handleSubmit }) => {
           name="stock"
           rules={[{ required: true, message: "请输入库存" }]}
         >
-          <Input />
+          <Input type="number" min={0}/>
         </Form.Item>
         <Form.Item
           label="ISBN"
           name="isbn"
           rules={[{ required: true, message: "请输入ISBN" }]}
         >
-          <Input />
+          <Input type="number" min={0}/>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">

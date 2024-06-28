@@ -90,4 +90,3 @@ export async function getTopBooks({ start, end }) {
   result = await get(url);
   return result;
 }
-
