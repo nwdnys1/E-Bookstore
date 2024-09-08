@@ -1,6 +1,6 @@
 export const BASEURL = "http://localhost:8081";
 export const PREFIX = `${BASEURL}/api`;
-//export const API_DOCS_URL = `${BASEURL}/api-docs`;
+
 
 export async function handleResponse(res) {
   if (res.code === 200) {
