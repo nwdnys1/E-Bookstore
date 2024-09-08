@@ -9,28 +9,22 @@
 <p align="center">
 <img src="images/首页.png" width="75%">
 </p>
-<center>首页</center>
-<br>
+
 <p align="center">
 <img src="images/书籍浏览页.png" width="75%">
 </p>
-<center>书籍浏览页</center>
-<br>
+
 <p align="center">
 <img src="images/书籍详情页.png" width="75%">
 </p>
-<center>书籍详情页</center>
-<br>
+
 <p align="center">
 <img src="images/数据统计页.png" width="75%">
 </p>
-<center>数据统计页</center>
-<br>
+
 <p align="center">
 <img src="images/个人主页.png" width="75%">
 </p>
-<center>个人主页</center>
-<br>
 
 - 还具有**用户、订单、书籍管理**功能（管理员）与**购物车、搜索、评分评论**功能（顾客）
 
