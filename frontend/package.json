@@ -12,6 +12,7 @@
     "antd": "^5.14.2",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
+    "express": "^4.21.0",
     "get-image-colors": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,7 +21,9 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "start:dev": "vite --mode development",
+    "start:prod": "vite --mode production",
+    "build": "vite build --mode production",
     "serve": "vite preview"
   },
   "eslintConfig": {

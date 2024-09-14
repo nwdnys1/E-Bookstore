@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { login } from "../services/loginService";
 import { useAuth } from "../context/authContext";
 import { getUser } from "../services/userService";
+import { logoUri } from "../utils/config";
 
 const { Title, Paragraph } = Typography;
 
@@ -37,7 +38,7 @@ const LoginModal = () => {
         justify="space-evenly"
         style={{ width: 400, height: 400 }}
       >
-        <img alt="logo" src="/logo.jpg" width="45px"></img>
+        <img alt="logo" src={logoUri} width="45px"></img>
         <Title level={2} style={{ margin: "0" }}>
           E-BOOKSTORE
         </Title>

@@ -1,5 +1,9 @@
 package org.example.backend.repository.MySQLRepository;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,10 +17,17 @@ import java.util.UUID;
 
 @Repository
 public class UploadRepository {
-    private static final String UPLOAD_DIR = "src/main/resources/static/image/";
-    private static final String DOMAIN = "http://localhost:8081/";
 
-    public String uploadFile( MultipartFile file,String type) throws IOException {
+    private static final String UPLOAD_DIR = "/root/ebookstore/static/image/";//如果上传到服务器上 用这个
+    @Value("${s3.domain}")
+    private String DOMAIN ;//上传到个人图床 用这个
+    private final AmazonS3 amazonS3;
+    @Value("${s3.bucket_name}")
+    private String bucketName;
+    public UploadRepository(AmazonS3 amazonS3) {
+        this.amazonS3 = amazonS3;
+    }
+    public String uploadFile(MultipartFile file,String type) throws IOException {
         if (file.isEmpty()) {
             return null;
         }
@@ -28,14 +39,13 @@ public class UploadRepository {
         String encodedFileName = URLEncoder.encode(prefix + originalFilename, StandardCharsets.UTF_8);
         encodedFileName = encodedFileName.replace("+", "%20");//替换空格
         String fileName = prefix + originalFilename;
-        // 设置文件保存路径
-        Path filePath = Paths.get(UPLOAD_DIR + fileName);
-        // 将文件保存到指定路径
-        Files.copy(file.getInputStream(), filePath);
-        fileName = DOMAIN + type + "/" + encodedFileName;
-        return fileName;
+        // 设置文件的元信息 否则默认application/octet-stream 会下载
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getSize());
+        // 保存文件
+        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata));
+        // 返回文件的url
+        return DOMAIN +'/'+ encodedFileName;
     }
-
-
-
 }

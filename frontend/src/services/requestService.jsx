@@ -1,6 +1,6 @@
-export const BASEURL = "http://localhost:8081";
+export const BASEURL = import.meta.env.VITE_BASEURL;
+console.log(BASEURL);
 export const PREFIX = `${BASEURL}/api`;
-
 
 export async function handleResponse(res) {
   if (res.code === 200) {
@@ -89,6 +89,3 @@ export async function put(url, data) {
   let res = await fetch(url, opts);
   return await res.json().then(handleResponse);
 }
-
-
-
