@@ -20,7 +20,7 @@ jobs:
       # 缓存 node_modules 文件夹，避免每次都重新安装依赖
       - name: Cache node modules
         id: cache-npm
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
