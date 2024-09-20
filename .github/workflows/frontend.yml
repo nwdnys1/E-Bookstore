@@ -18,24 +18,11 @@ jobs:
         uses: actions/checkout@v4
 
       # 缓存 node_modules 文件夹，避免每次都重新安装依赖
-      - name: Cache node modules
-        id: cache-npm
+      - name: Cache node_modules
         uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: npm list
+          path: frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
 
       # 使用 setup-node action 来安装 Node.js
       - name: Use Node.js
