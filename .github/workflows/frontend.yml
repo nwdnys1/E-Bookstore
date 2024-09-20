@@ -1,6 +1,10 @@
 name: Deploy Frontend
 on:
-  workflow_dispatch: # 手动触发工作流程
+  push:
+    branches:
+      - github-action-test # 你可以根据需要修改触发分支
+    paths:
+      - "frontend/**" # 仅当 frontend 文件夹下有更改时触发
 jobs:
   Deploy:
     runs-on: ubuntu-latest
