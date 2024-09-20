@@ -33,51 +33,57 @@ jobs:
           cache-dependency-path: frontend/package-lock.json # 仅当 package-lock.json 文件有更改时才会使用缓存
 
       - name: Install dependencies
-        run: npm install 
+        run: npm install
         working-directory: frontend
 
       - name: Build project
         run: npm run build
         working-directory: frontend
 
-      - name: Upload dist folder
-        uses: appleboy/scp-action@v0.1.3
+      - name: Upload files and execute script
+        uses: fifsky/ssh-action@master
         with:
+          command: |
+            scp -r /root/ebookstore/frontend/dist root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
+            scp /root/ebookstore/deployment/frontend/server.js root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
+            scp /root/ebookstore/deployment/frontend/Dockerfile root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
+            cd /root/ebookstore/frontend 
+            sudo docker build -t ebook-frontend .
+            cd /root/ebookstore
+            docker-compose down 
+            docker-compose up -d
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          source: "frontend/dist/*"
-          target: "/root/ebookstore/frontend/dist"
-          strip_components: 2 # 去掉 dist 文件夹前两级目录
+          user: ${{ secrets.SSH_USERNAME }}
+          pass: ${{ secrets.SSH_PASSWORD}}
 
-      - name: Upload server.js
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          source: "deployment/frontend/server.js"
-          target: "/root/ebookstore/frontend"
-          strip_components: 2 # 去掉 server.js 文件前两级目录
+      # - name: Upload dist folder
+      #   uses: appleboy/scp-action@v0.1.3
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     password: ${{ secrets.SSH_PASSWORD }}
+      #     source: "frontend/dist/*"
+      #     target: "/root/ebookstore/frontend/dist"
+      #     strip_components: 2 # 去掉 dist 文件夹前两级目录
 
-      - name: Upload Dockerfile
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          source: "deployment/frontend/Dockerfile"
-          target: "/root/ebookstore/frontend"
-          strip_components: 2 # 去掉 Dockerfile 文件前两级目录
+      # - name: Upload server.js
+      #   uses: appleboy/scp-action@v0.1.3
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     password: ${{ secrets.SSH_PASSWORD }}
+      #     source: "deployment/frontend/server.js,deployment/frontend/Dockerfile"
+      #     target: "/root/ebookstore/frontend"
+      #     strip_components: 2 # 去掉 server.js 文件前两级目录
 
-      - name: Build Docker image
-        run: sudo docker build -t ebook-frontend .
-        working-directory: /root/ebookstore/frontend
+      # - name: Build Docker image
+      #   run: sudo docker build -t ebook-frontend .
+      #   working-directory: /root/ebookstore/frontend
 
-      - name: Shutdown Docker containers
-        run: docker-compose down
-        working-directory: /root/ebookstore
+      # - name: Shutdown Docker containers
+      #   run: docker-compose down
+      #   working-directory: /root/ebookstore
 
-      - name: Start Docker containers
-        run: docker-compose up -d
-        working-directory: /root/ebookstore
+      # - name: Start Docker containers
+      #   run: docker-compose up -d
+      #   working-directory: /root/ebookstore
