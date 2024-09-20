@@ -1,22 +1,36 @@
 name: Deploy Frontend
+
 on:
   push:
     branches:
       - github-action-test # 你可以根据需要修改触发分支
     paths:
       - "frontend/**" # 仅当 frontend 文件夹下有更改时触发
+      - "deployment/frontend/**" # 仅当 deployment/frontend 文件夹下有更改时触发
+      - "deployment/docker-compose.yml" # 仅当 deployment/docker-compose.yml 文件有更改时触发
+
 jobs:
   Deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+      
+        # 使用 setup-node action 来安装 Node.js 具有缓存功能
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci # 使用 npm ci 安装依赖 通常比 npm install 更快 适合在 CI/CD 中使用
         working-directory: frontend
+
       - name: Build project
         run: npm run build
         working-directory: frontend
+
       - name: Upload files via SSH
         uses: appleboy/scp-action@v0.1.3
         with:
@@ -25,12 +39,15 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           source: "frontend/dist/,deployment/frontend/server.js,deployment/frontend/Dockerfile"
           target: "/root/ebookstore/frontend"
+
       - name: Build Docker image
         run: docker build -t ebook-frontend .
         working-directory: /root/ebookstore/frontend
+
       - name: Shutdown Docker containers
         run: docker-compose down
         working-directory: /root/ebookstore
+
       - name: Start Docker containers
         run: docker-compose up -d
         working-directory: /root/ebookstore
