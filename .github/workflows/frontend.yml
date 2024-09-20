@@ -71,7 +71,7 @@ jobs:
           strip_components: 2 # 去掉 Dockerfile 文件前两级目录
 
       - name: Build Docker image
-        run: docker build -t ebook-frontend .
+        run: sudo docker build -t ebook-frontend .
         working-directory: /root/ebookstore/frontend
 
       - name: Shutdown Docker containers
