@@ -44,6 +44,7 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
+            ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
             scp -r /root/ebookstore/frontend/dist root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
             scp /root/ebookstore/deployment/frontend/server.js root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
             scp /root/ebookstore/deployment/frontend/Dockerfile root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
