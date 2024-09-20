@@ -15,7 +15,7 @@ services:
     networks:
       - my-network
     env_file:
-      - backend.env
+      - backend/.env
   frontend:
     image: ebook-frontend
     container_name: ebook-frontend
