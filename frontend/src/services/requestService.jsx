@@ -1,4 +1,4 @@
-export const BASEURL = import.meta.env.BASEURL;
+export const BASEURL = import.meta.env.BASE_URL;
 console.log(BASEURL);
 export const PREFIX = `${BASEURL}/api`;
 
