@@ -40,14 +40,32 @@ jobs:
         run: npm run build
         working-directory: frontend
 
-      - name: Upload files via SSH
+      - name: Upload dist folder
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: "./frontend/dist,./deployment/frontend/server.js,./deployment/frontend/Dockerfile"
-          target: "/root/ebookstore/frontend"
+          source: "frontend/dist"
+          target: "/root/ebookstore/frontend/dist"
+
+      - name: Upload dist folder
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "deployment/frontend/server.js"
+          target: "/root/ebookstore/frontend/server.js"
+
+      - name: Upload dist folder
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "deployment/frontend/Dockerfile"
+          target: "/root/ebookstore/frontend/Dockerfile"
 
       - name: Build Docker image
         run: docker build -t ebook-frontend .
