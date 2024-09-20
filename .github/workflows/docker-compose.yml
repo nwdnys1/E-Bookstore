@@ -1,12 +1,11 @@
-name: Deploy Nginx
+name: Update Docker Compose
 
 on:
   push:
     branches:
       - github-action-test # 你可以根据需要修改触发分支
     paths:
-      - "deployment/nginx/**"
-
+      - "deployment/docker-compose.yml"
 
 jobs:
   Deploy:
@@ -22,16 +21,14 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: "deployment/nginx/Dockerfile,deployment/nginx/nginx.conf"
-          target: "/root/ebookstore/nginx"
-          strip_components: 2 # 去掉前两级目录
+          source: "deployment/docker-compose.yml"
+          target: "/root/ebookstore"
+          strip_components: 1 
 
       - name: Execute script
         uses: fifsky/ssh-action@master
         with:
           command: |
-            cd /root/ebookstore/nginx
-            sudo docker build -t ebook-nginx .
             cd /root/ebookstore
             docker-compose down 
             docker-compose up -d

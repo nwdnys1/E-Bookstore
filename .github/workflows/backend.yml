@@ -7,7 +7,6 @@ on:
     paths:
       - "backend/**"
       - "deployment/backend/**"
-      - "deployment/docker-compose.yml"
 
 jobs:
   Deploy:

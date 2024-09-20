@@ -7,7 +7,6 @@ on:
     paths:
       - "frontend/**" # 仅当 frontend 文件夹下有更改时触发
       - "deployment/frontend/**" # 仅当 deployment/frontend 文件夹下有更改时触发
-      - "deployment/docker-compose.yml" # 仅当 deployment/docker-compose.yml 文件有更改时触发
 
 jobs:
   Deploy:

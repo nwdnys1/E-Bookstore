@@ -1,7 +1,7 @@
 services:
   my-nginx:
-    image: my-nginx:latest
-    container_name: my-nginx
+    image: ebook-nginx
+    container_name: ebook-nginx
     ports:
       - 80:80
     networks:
