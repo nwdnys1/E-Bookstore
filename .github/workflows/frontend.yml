@@ -46,26 +46,29 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: "frontend/dist"
+          source: "frontend/dist/*"
           target: "/root/ebookstore/frontend/dist"
+          strip_components: 2 # 去掉 dist 文件夹前两级目录
 
-      - name: Upload dist folder
+      - name: Upload server.js
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "deployment/frontend/server.js"
-          target: "/root/ebookstore/frontend/server.js"
+          target: "/root/ebookstore/frontend"
+          strip_components: 2 # 去掉 server.js 文件前两级目录
 
-      - name: Upload dist folder
+      - name: Upload Dockerfile
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "deployment/frontend/Dockerfile"
-          target: "/root/ebookstore/frontend/Dockerfile"
+          target: "/root/ebookstore/frontend"
+          strip_components: 2 # 去掉 Dockerfile 文件前两级目录
 
       - name: Build Docker image
         run: docker build -t ebook-frontend .
