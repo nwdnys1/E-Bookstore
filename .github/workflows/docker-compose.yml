@@ -3,7 +3,7 @@ name: Update Docker Compose
 on:
   push:
     branches:
-      - github-action-test # 你可以根据需要修改触发分支
+      - main # 你可以根据需要修改触发分支
     paths:
       - "deployment/docker-compose.yml"
 
