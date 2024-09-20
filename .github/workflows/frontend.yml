@@ -1,46 +1,17 @@
-name: Deploy Frontend
-
-on:
-  push:
-    branches:
-      - github-action-test # 你可以根据需要修改触发分支
-    paths:
-      - "frontend/**" # 仅当 frontend 文件夹下有更改时触发
-  workflow_dispatch: # 手动触发工作流程
-
+name: Frontend
+on: [push]
 jobs:
-  deploy:
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: npm install
-        working-directory: frontend
-
-      - name: Build project
-        run: npm run build
-        working-directory: frontend
-
-      - name: Upload files via SSH
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          source: "frontend/dist/,deployment/frontend/server.js,deployment/frontend/Dockerfile"
-          target: "/root/ebookstore/frontend"
-
-      - name: Build Docker image
-        run: docker build -t ebook-frontend .
-        working-directory: /root/ebookstore/frontend
-
-      - name: Shutdown Docker containers
-        run: docker-compose down
-        working-directory: /root/ebookstore
-
-      - name: Start Docker containers
-        run: docker-compose up -d
-        working-directory: /root/ebookstore
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
