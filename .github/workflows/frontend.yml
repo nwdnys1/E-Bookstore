@@ -53,23 +53,23 @@ jobs:
         run: npm run build
         working-directory: frontend
 
-      - name: Upload files via SSH
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          source: "frontend/dist/,deployment/frontend/server.js,deployment/frontend/Dockerfile"
-          target: "/root/ebookstore/frontend"
+      # - name: Upload files via SSH
+      #   uses: appleboy/scp-action@v0.1.3
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     password: ${{ secrets.SSH_PASSWORD }}
+      #     source: "frontend/dist/,deployment/frontend/server.js,deployment/frontend/Dockerfile"
+      #     target: "/root/ebookstore/frontend"
 
-      - name: Build Docker image
-        run: docker build -t ebook-frontend .
-        working-directory: /root/ebookstore/frontend
+      # - name: Build Docker image
+      #   run: docker build -t ebook-frontend .
+      #   working-directory: /root/ebookstore/frontend
 
-      - name: Shutdown Docker containers
-        run: docker-compose down
-        working-directory: /root/ebookstore
+      # - name: Shutdown Docker containers
+      #   run: docker-compose down
+      #   working-directory: /root/ebookstore
 
-      - name: Start Docker containers
-        run: docker-compose up -d
-        working-directory: /root/ebookstore
+      # - name: Start Docker containers
+      #   run: docker-compose up -d
+      #   working-directory: /root/ebookstore
