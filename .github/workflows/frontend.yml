@@ -2,8 +2,7 @@ name: Deploy Frontend
 
 on:
   push:
-    branches:
-      - github-actions-test  # 你可以根据需要修改触发分支
+    workflow_dispatch: 
     paths:
       - 'frontend/**'  # 仅当 frontend 文件夹下有更改时触发
 
@@ -29,13 +28,17 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: "frontend/dist/,frontend/server.js,frontend/Dockerfile"
+          source: "frontend/dist/,deployment/frontend/server.js,deployment/frontend/Dockerfile"
           target: "/root/ebookstore/frontend"
 
       - name: Build Docker image
         run: docker build -t ebook-frontend .
         working-directory: /root/ebookstore/frontend
 
+      - name: Shutdown Docker containers
+        run: docker-compose down
+        working-directory: /root/ebookstore
+
       - name: Start Docker containers
         run: docker-compose up -d
-        working-directory: /root/ebookstore/frontend
+        working-directory: /root/ebookstore
