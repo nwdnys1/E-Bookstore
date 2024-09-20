@@ -1,0 +1,40 @@
+name: Deploy Nginx
+
+on:
+  push:
+    branches:
+      - main # 你可以根据需要修改触发分支
+    paths:
+      - "deployment/nginx/**"
+
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload files
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "deployment/nginx/Dockerfile,deployment/nginx/nginx.conf"
+          target: "/root/ebookstore/nginx"
+          strip_components: 2 # 去掉前两级目录
+
+      - name: Execute script
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            cd /root/ebookstore/nginx
+            sudo docker build -t ebook-nginx .
+            cd /root/ebookstore
+            docker-compose down 
+            docker-compose up -d
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USERNAME }}
+          pass: ${{ secrets.SSH_PASSWORD}}

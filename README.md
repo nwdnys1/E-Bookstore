@@ -62,4 +62,4 @@ $ npm start
 
 ## 贡献者
 
-- [关于 - nwdnysl](https://nwdnys1.github.io/about)
+- [关于 - nwdnysl](https://blog.nwdnysl.site/about)
