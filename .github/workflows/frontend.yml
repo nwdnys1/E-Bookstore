@@ -16,13 +16,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-        # 使用 setup-node action 来安装 Node.js 具有缓存功能
+
+      # 缓存 node_modules 文件夹，避免每次都重新安装依赖
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+        # 使用 setup-node action 来安装 Node.js
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18.x"
-          cache: "npm" # 使用 npm 缓存
+          cache: "npm" # 使用 npm 缓存 package-lock.json 等文件
           cache-dependency-path: frontend/package-lock.json # 仅当 package-lock.json 文件有更改时才会使用缓存
 
       - name: Install dependencies
