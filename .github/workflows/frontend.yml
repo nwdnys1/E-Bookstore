@@ -45,9 +45,9 @@ jobs:
         with:
           command: |
             ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-            scp -r /root/ebookstore/frontend/dist root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
-            scp /root/ebookstore/deployment/frontend/server.js root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
-            scp /root/ebookstore/deployment/frontend/Dockerfile root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
+            scp -r /home/runner/work/E-Bookstore/E-Bookstore/frontend/dist root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
+            scp /home/runner/work/E-Bookstore/E-Bookstore/deployment/frontend/server.js root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
+            scp /home/runner/work/E-Bookstore/E-Bookstore/deployment/frontend/Dockerfile root@${{ secrets.SSH_HOST }}:/root/ebookstore/frontend
             cd /root/ebookstore/frontend 
             sudo docker build -t ebook-frontend .
             cd /root/ebookstore
