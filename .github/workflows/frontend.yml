@@ -46,7 +46,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: "frontend/dist/,deployment/frontend/server.js,deployment/frontend/Dockerfile"
+          source: "./frontend/dist,./deployment/frontend/server.js,./deployment/frontend/Dockerfile"
           target: "/root/ebookstore/frontend"
 
       - name: Build Docker image
