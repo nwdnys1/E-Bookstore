@@ -1,0 +1,38 @@
+services:
+  backend:
+    image: ebook-backend
+    container_name: ebook-backend
+    ports:
+      - 8080:8080
+    networks:
+      - my-network
+    volumes:
+      - ../backend:/backend
+      - E:/.m2/repository:/root/.m2/repository
+    env_file:
+      - ../deployment/backend/.env
+  frontend:
+    image: ebook-frontend
+    container_name: ebook-frontend
+    ports:
+      - 5173:5173
+    networks:
+      - my-network
+    volumes:
+      - ../frontend:/frontend  
+    # command: sh -c "npm install && npm start -- --host"
+  mysql:
+    image: ebook-mysql
+    container_name: ebook-mysql
+    ports:
+      - 3306:3306
+    networks:
+      - my-network
+    volumes:
+      - E:/MySQL/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+networks:
+  my-network:
+    name: my-network
+    driver: bridge

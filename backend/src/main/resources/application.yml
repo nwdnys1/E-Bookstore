@@ -23,7 +23,7 @@ spring:
       ddl-auto: none
   servlet:
     multipart:
-      max-file-size: 100MB
+      max-file-size: 110MB
       max-request-size: 100MB
 
 # S3配置

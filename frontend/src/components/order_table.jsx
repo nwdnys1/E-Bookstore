@@ -70,7 +70,6 @@ export default function OrderTable() {
 
   return (
     <Flex
-      style={{ width: "65%", minWidth: 800, margin: "0 auto" }}
       vertical
       justify="center"
     >
