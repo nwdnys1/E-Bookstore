@@ -12,4 +12,5 @@ public class OrderRequest {
     private String address;
     private String tel;
     private int[] cids;
+    private Integer uid;//用户id 用于消息队列
 }

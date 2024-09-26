@@ -4,6 +4,7 @@ import MyFooter from "./footer";
 import Navbar from "./navbar";
 import { checkAuth } from "../services/loginService";
 import { getUser } from "../services/userService";
+import { useAuth } from "../context/authContext";
 const { Content } = Layout;
 export const BasicLayout = ({ children }) => {
   return (
@@ -26,9 +27,11 @@ export const BasicLayout = ({ children }) => {
   );
 };
 export const LoginLayout = ({ children }) => {
+  const {setUser} = useAuth();
   useEffect(() => {
     checkAuth().catch((err) => {
-      alert("请先登录");
+      setUser(null);
+      alert(err);
       location.href = "/login";
     });
   }, []);

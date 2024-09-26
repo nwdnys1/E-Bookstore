@@ -36,10 +36,10 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException{
         User user = userDAO.findUserByUsername(username);
-        String pwd = userDAO.findUserAuthByUsername(username).getPassword();
         if (user == null) {
             throw new UsernameNotFoundException("未找到用户");
         }
+        String pwd = userDAO.findUserAuthByUsername(username).getPassword();
         List< GrantedAuthority > authorities = new ArrayList<>();
         authorities.add((GrantedAuthority) () -> "ROLE_" + user.getRole());
         System.out.println("loadUserByUsername: "+user.getUsername());

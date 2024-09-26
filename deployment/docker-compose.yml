@@ -23,7 +23,13 @@ services:
       - 3000:3000
     networks:
       - my-network
-      
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: ebook-kafka
+    ports:
+      - 9092:9092
+    networks:
+      - my-network 
 networks:
   my-network:
     name: my-network

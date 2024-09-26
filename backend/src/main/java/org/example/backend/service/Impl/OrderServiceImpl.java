@@ -1,5 +1,6 @@
 package org.example.backend.service.Impl;
 
+import jakarta.transaction.Transactional;
 import org.example.backend.DAO.BookDAO;
 import org.example.backend.DAO.CartItemDAO;
 import org.example.backend.DAO.OrderDAO;
@@ -40,8 +41,9 @@ public class OrderServiceImpl implements OrderService {
         return Result.success(repository.getOrdersByUserId(getUid()));
     }
     @Override
+    @Transactional
     public Result<Order> addOrder(OrderRequest request){
-        int uid = getUid();
+        int uid = request.getUid();
         Order order = new Order();
         order.setAddress(request.getAddress());
         order.setTel(request.getTel());

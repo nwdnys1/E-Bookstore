@@ -3,7 +3,6 @@ package org.example.backend.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.backend.component.MyAuthenticationProvider;
 import org.example.backend.entity.Result;
 import org.example.backend.repository.MySQLRepository.MysqlUserRepository;
 import org.example.backend.repository.MySQLRepository.UserAuthRepository;
@@ -28,26 +27,30 @@ import java.util.Collections;
 
 @Configuration
 public class SecurityConfig {
-    private final UserAuthRepository repository;
-    public SecurityConfig(UserAuthRepository repository) {
-        this.repository = repository;
-    }
+//    private final UserAuthRepository repository;
+//    public SecurityConfig(UserAuthRepository repository) {
+//        this.repository = repository;
+//    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests((requests) ->{requests
                                 .requestMatchers("/api/book/admin/**","/api/user/admin/**").hasRole("admin")//只有管理员才能访问
-                                .requestMatchers("/api/book/**","/api/comment/list/**","/api/user/register","/api/tag/**","/image/**").permitAll()
-                                .requestMatchers("/api/user/register").permitAll()
+                                .requestMatchers("/api/book/**","/api/comment/list/**","/api/user/register","/api/tag/**","/image/**","/api/user/login","/api/user/logout").permitAll()
                                 .anyRequest().authenticated();
                 }
                 ).formLogin(
                         conf -> {
-                            conf.loginProcessingUrl("/api/user/login");
+                            //conf.loginProcessingUrl("/api/login");
                             conf.successHandler(this::handleProcess);
                             conf.failureHandler(this::handleProcess);
                             conf.permitAll();
                         }
                 ).csrf(AbstractHttpConfigurer::disable)
+                .rememberMe(
+                        conf -> {
+                            conf.alwaysRemember(true);
+                        }
+                )
                 .cors(
                         conf -> {
                             CorsConfiguration cors = new CorsConfiguration();
@@ -68,7 +71,7 @@ public class SecurityConfig {
                         }
                 ).logout(
                         conf->{
-                            conf.logoutUrl("/api/user/logout");
+                            //conf.logoutUrl("/api/user/logout");
                             conf.logoutSuccessHandler(this::handleProcess);
                         }
                 ).build();
@@ -76,14 +79,14 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){//密码编码器
         return new BCryptPasswordEncoder();}
-    @Bean
-    public MyAuthenticationProvider authenticationProvider() {
-        return new MyAuthenticationProvider(repository, passwordEncoder());
-    }
-    @Bean
-    public AuthenticationManager authenticationManager(){
-        return new ProviderManager(Collections.singletonList(authenticationProvider()));
-    }
+//    @Bean
+//    public MyAuthenticationProvider authenticationProvider() {
+//        return new MyAuthenticationProvider(repository, passwordEncoder());
+//    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(){
+//        return new ProviderManager(Collections.singletonList(authenticationProvider()));
+//    }
 
     private void handleProcess(
             HttpServletRequest request,
@@ -91,29 +94,38 @@ public class SecurityConfig {
             Object exceptionOrAuthentication) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
-
         if (exceptionOrAuthentication instanceof AuthenticationException authException) {
             // 如果是认证异常，则判断具体是用户名密码错误还是未登录
             if (authException instanceof BadCredentialsException) {
                 // 用户名密码错误
                 writer.write(Result.error(401, "用户名或密码错误").asJsonString());
+                response.setStatus(401);
             } else if (authException instanceof AccountStatusException) {
                 // 账号被禁用
                 writer.write(Result.error(401, "您的账号已被禁用！").asJsonString());
-            } else {
+                response.setStatus(401);
+            } else if(authException instanceof InsufficientAuthenticationException || authException instanceof AuthenticationCredentialsNotFoundException) {
                 // 未登录
                 writer.write(Result.error(401, "请先登录").asJsonString());
+                response.setStatus(401);
+            } else {
+                // 其他认证异常
+                writer.write(Result.error(401, authException.getMessage()).asJsonString());
+                response.setStatus(401);
             }
         } else if (exceptionOrAuthentication instanceof AccessDeniedException) {
             // 权限不足
             writer.write(Result.error(403, "您没有权限访问").asJsonString());
+            response.setStatus(403);
         } else if (exceptionOrAuthentication instanceof Authentication) {
             // 身份验证成功
             writer.write(Result.success((Authentication) exceptionOrAuthentication).asJsonString());
         } else {
             // 其他情况，返回通用错误信息
             writer.write(Result.error(500, "服务器内部错误").asJsonString());
+            response.setStatus(500);
         }
+
 
     }
 

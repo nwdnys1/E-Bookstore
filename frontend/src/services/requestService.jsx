@@ -3,6 +3,7 @@ console.log(BASEURL);
 export const PREFIX = `${BASEURL}/api`;
 
 export async function handleResponse(res) {
+  if (res.code === undefined) throw JSON.stringify(res); //如果没有code字段说明是非标准格式的返回 服务器内部错误
   if (res.code === 200) {
     return res.data;
   } else {

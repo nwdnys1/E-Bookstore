@@ -31,7 +31,14 @@ services:
     volumes:
       - E:/MySQL/data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 123456
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: ebook-kafka
+    ports:
+      - 9092:9092
+    networks:
+      - my-network
 networks:
   my-network:
     name: my-network

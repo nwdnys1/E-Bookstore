@@ -3,6 +3,9 @@ server:
   servlet:
     session:
       timeout: 30d # 30 days
+      persistent: true # session data will be stored in the database
+      cookie:
+        max-age: 30d
 
 spring:
   datasource:
@@ -25,6 +28,8 @@ spring:
     multipart:
       max-file-size: 110MB
       max-request-size: 100MB
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
 
 # S3配置
 s3:

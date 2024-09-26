@@ -22,8 +22,8 @@ const UserMenu = () => {
   const logoutAndClearUser = () => {
     setUser(null);
     logout()
-      .then(() => {
-        alert("登出成功！");
+      .then((res) => {
+        alert(res);
         location.href = "/";
       })
       .catch((e) => {
