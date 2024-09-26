@@ -27,7 +27,7 @@ export const BasicLayout = ({ children }) => {
   );
 };
 export const LoginLayout = ({ children }) => {
-  const {setUser} = useAuth();
+  const { setUser } = useAuth();
   useEffect(() => {
     checkAuth().catch((err) => {
       setUser(null);
