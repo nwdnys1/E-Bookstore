@@ -16,6 +16,7 @@ services:
       - my-network
     env_file:
       - backend/.env
+    restart: always
   frontend:
     image: ebook-frontend
     container_name: ebook-frontend
@@ -23,6 +24,7 @@ services:
       - 3000:3000
     networks:
       - my-network
+    restart: always
   kafka:
     image: ebook-kafka
     container_name: ebook-kafka
@@ -30,6 +32,9 @@ services:
       - 9092:9092
     networks:
       - my-network 
+    volumes:
+      - kafka/server.properties:/opt/kafka/config/server.properties
+    restart: always
 networks:
   my-network:
     name: my-network
