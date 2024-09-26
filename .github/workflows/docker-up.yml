@@ -1,0 +1,26 @@
+name: Up All Docker Containers
+
+on:
+    workflow_run: # 当指定的 workflow 运行结束时触发
+        workflows: ["Update Docker Compose","Deploy Backend","Deploy Frontend","Deploy Nginx"]
+        types:
+            - completed
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Execute script
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            cd /root/ebookstore
+            docker-compose down 
+            docker-compose up -d
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USERNAME }}
+          pass: ${{ secrets.SSH_PASSWORD}}

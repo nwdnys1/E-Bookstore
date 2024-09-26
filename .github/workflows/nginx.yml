@@ -32,9 +32,6 @@ jobs:
           command: |
             cd /root/ebookstore/nginx
             sudo docker build -t ebook-nginx .
-            cd /root/ebookstore
-            docker-compose down 
-            docker-compose up -d
           host: ${{ secrets.SSH_HOST }}
           user: ${{ secrets.SSH_USERNAME }}
           pass: ${{ secrets.SSH_PASSWORD}}

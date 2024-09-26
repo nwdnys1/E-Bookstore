@@ -24,14 +24,3 @@ jobs:
           source: "deployment/docker-compose.yml"
           target: "/root/ebookstore"
           strip_components: 1 
-
-      - name: Execute script
-        uses: fifsky/ssh-action@master
-        with:
-          command: |
-            cd /root/ebookstore
-            docker-compose down 
-            docker-compose up -d
-          host: ${{ secrets.SSH_HOST }}
-          user: ${{ secrets.SSH_USERNAME }}
-          pass: ${{ secrets.SSH_PASSWORD}}
