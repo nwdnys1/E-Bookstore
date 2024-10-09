@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-@ServerEndpoint("/order")
+@ServerEndpoint("/ws/order")
 @Component
 @Slf4j
 public class OrderWS {
