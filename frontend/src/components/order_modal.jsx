@@ -16,7 +16,7 @@ export default function OrderModal({ selectedItems, totalPrice }) {
       cids: selectedItems.map((item) => item.id),
     };
     await placeOrder(orderInfo);
-    alert("下单成功！");
+    alert("订单提交成功！正在处理中...");
     window.location.reload();
   };
   return (

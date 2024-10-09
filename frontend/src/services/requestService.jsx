@@ -1,4 +1,5 @@
 export const BASEURL = import.meta.env.VITE_BASEURL;
+export const orderWSURL = import.meta.env.VITE_ORDERWSURL;
 console.log(BASEURL);
 export const PREFIX = `${BASEURL}/api`;
 

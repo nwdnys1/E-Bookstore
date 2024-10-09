@@ -9,7 +9,7 @@ import {
   Table,
   Typography,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   deleteCartItem,
   getCartItems,
@@ -18,11 +18,34 @@ import {
 import { Link } from "react-router-dom";
 import { DeleteOutlined } from "@ant-design/icons";
 import OrderModal from "./order_modal";
+import { orderWSURL } from "../services/requestService";
 const { Text } = Typography;
 const CartTable = () => {
   const [items, setItems] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const ws = useRef(null);
+  const initWebSocket = () => {
+    const socket = new WebSocket(orderWSURL);
+
+    socket.onopen = () => {
+      console.log("Connected to WebSocket server");
+      ws.current = socket; // 保存WebSocket对象
+    };
+
+    socket.onmessage = (e) => {
+      alert(e.data);
+    };
+
+    socket.onerror = (err) => {
+      console.error("WebSocket error:", err);
+    };
+
+    socket.onclose = () => {
+      console.log("Disconnected from WebSocket server");
+    };
+  };
+
   const handleDeleteItem = async (id) => {
     await deleteCartItem(id);
     setItems(items.filter((item) => item.id !== id));
@@ -30,9 +53,13 @@ const CartTable = () => {
   };
 
   useEffect(() => {
+    initWebSocket();
     getCartItems().then((res) => {
       setItems(res);
     });
+    return () => {
+      ws.current?.close();
+    };
   }, []);
 
   const openModal = () => {

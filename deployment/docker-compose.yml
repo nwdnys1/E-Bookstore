@@ -6,7 +6,6 @@ services:
       - 80:80
     networks:
       - my-network
-    restart: always
   backend:
     image: ebook-backend
     container_name: ebook-backend
@@ -16,7 +15,6 @@ services:
       - my-network
     env_file:
       - backend/.env
-    restart: always
   frontend:
     image: ebook-frontend
     container_name: ebook-frontend
@@ -24,7 +22,6 @@ services:
       - 3000:3000
     networks:
       - my-network
-    restart: always
   kafka:
     image: apache/kafka:3.7.0
     container_name: ebook-kafka

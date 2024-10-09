@@ -7,6 +7,7 @@ import org.example.backend.repository.MySQLRepository.BookRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -46,6 +47,7 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
+    @Transactional
     public Book save(Book book) {
         return repository.save(book);
     }

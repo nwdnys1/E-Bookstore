@@ -4,6 +4,7 @@ import org.example.backend.DAO.CartItemDAO;
 import org.example.backend.entity.CartItem;
 import org.example.backend.repository.MySQLRepository.CartItemRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Repository
@@ -36,6 +37,7 @@ public class CartItemDAOImpl implements CartItemDAO {
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
         repository.deleteById(id);
     }

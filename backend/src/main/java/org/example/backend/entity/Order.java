@@ -31,5 +31,7 @@ public class Order {
     private User user;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
+    @Transient//不映射到数据库 用于消息队列传递
+    private int uid;
 
 }

@@ -24,6 +24,10 @@ public class Result<T> {
         return new Result<>(code, null, message);
     }
 
+    public static <T> Result<T> error(int code, String message, T data) {
+        return new Result<>(code, data, message);
+    }
+
     public String asJsonString() {
         return JSONObject.from(this, JSONWriter.Feature.WriteNulls).toString();
     }
