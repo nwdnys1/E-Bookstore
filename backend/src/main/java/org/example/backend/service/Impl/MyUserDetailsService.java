@@ -3,10 +3,10 @@ package org.example.backend.service.Impl;
 import org.example.backend.DAO.OrderDAO;
 import org.example.backend.DAO.UserDAO;
 import org.example.backend.DTO.PurchaseInfo;
-import org.example.backend.DTO.SalesInfo;
 import org.example.backend.DTO.SpentInfo;
 import org.example.backend.entity.*;
 import org.example.backend.repository.MySQLRepository.UploadRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +28,8 @@ public class MyUserDetailsService implements UserDetailsService {
     UserDAO userDAO;
     UploadRepository uploadRepository;
     OrderDAO orderDAO;
+    @Value("${default_avatar}")
+    private String DEFAULT_AVATAR;
     public MyUserDetailsService(UserDAO userDAO, UploadRepository uploadRepository, OrderDAO orderDAO) {
         this.userDAO = userDAO;
         this.uploadRepository = uploadRepository;
@@ -35,7 +37,7 @@ public class MyUserDetailsService implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException{
-        User user = userDAO.findUserByUsername(username);
+        User user = userDAO.getUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("未找到用户");
         }
@@ -46,11 +48,7 @@ public class MyUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), pwd, user.isEnabled(), true, true, true, authorities);
     }
     public Result<User> updateUser(UserProfile request) {
-        int id = getUid();
-        User user = userDAO.findById(id);
-        if (user == null) {
-            return Result.error(404, "用户不存在！");
-        }
+        User user = getUser();
         if(userDAO.existsUserByUsername(request.getUsername()) && !request.getUsername().equals(user.getUsername())) {
             return Result.error(400, "用户名已存在！");
         }
@@ -58,9 +56,7 @@ public class MyUserDetailsService implements UserDetailsService {
         user.setEmail(request.getEmail());
         user.setTel(request.getTel());
         user.setAboutMe(request.getAboutMe());
-        userDAO.save(user);
-        return Result.success(user);
-
+        return Result.success(userDAO.save(user));
     }
     public Result<User> addUser(RegisterRequest request) {
         if(userDAO.existsUserByUsername(request.getUsername())) {
@@ -75,40 +71,36 @@ public class MyUserDetailsService implements UserDetailsService {
         user.setRole("user");
         user.setEnabled(true);
         user.setLevel(1);
-        user.setAvatar("https://img.moegirl.org.cn/common/b/b7/Transparent_Akkarin.jpg");//默认头像
+        user.setAvatar(DEFAULT_AVATAR);//默认头像
         user.setTel("");
         user.setAboutMe("");
         UserAuth userAuth = new UserAuth();
         userAuth.setUsername(request.getUsername());
         userAuth.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
-        userDAO.save(user, userAuth);
-        return Result.success(user);
+        return Result.success(userDAO.save(user, userAuth));
     }
     public Result<User> deleteUser(int id) {
-        if (userDAO.existsById(id)) {
-            userDAO.deleteById(id);
+        User user = userDAO.getUserById(id);
+        if (user != null) {
+            userDAO.deleteUser(user);
             return Result.success(null);
         } else {
             return Result.error(404, "用户不存在！");
         }
     }
     public Result<User> getUserByUsername(String username) {
-        User user = userDAO.findUserByUsername(username);
+        User user = userDAO.getUserByUsername(username);
         if (user == null) {
             return Result.error(404, "用户不存在！");
         }
         return Result.success(user);
     }
-    public int getUid() {//从数据库里查询id
+    public User getUser() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userDAO.findUserByUsername(username).getId();
+        return userDAO.getUserByUsername(username);
     }
     public Result<String> updateAvatar(MultipartFile file)  {
-        int id = getUid();
-        User user = userDAO.findById(id);
-        if (user == null) {
-            return Result.error(404, "用户不存在！");
-        }
+        User user = getUser();
         try {
             String url = uploadRepository.uploadFile(file, "image");
             user.setAvatar(url);
@@ -121,7 +113,7 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     public Result<User> disableUser(int id) {
-        User user = userDAO.findById(id);
+        User user = userDAO.getUserById(id);
         if (user == null) {
             return Result.error(404, "用户不存在！");
         }
@@ -129,8 +121,7 @@ public class MyUserDetailsService implements UserDetailsService {
             return Result.error(403, "无法禁用管理员！");
         }
         user.setEnabled(false);
-        userDAO.save(user);
-        return Result.success(user);
+        return Result.success(userDAO.save(user));
     }
 
     public Result<List<User>> getAllUsers() {
@@ -138,13 +129,12 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     public Result<User> enableUser(int id) {
-        User user = userDAO.findById(id);
+        User user = userDAO.getUserById(id);
         if (user == null) {
             return Result.error(404, "用户不存在！");
         }
         user.setEnabled(true);
-        userDAO.save(user);
-        return Result.success(user);
+        return Result.success(userDAO.save(user));
     }
 
     public Result<List<SpentInfo>> rank(LocalDateTime start, LocalDateTime end, int nums) {
@@ -170,7 +160,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     public Result<List<PurchaseInfo>> statistics(LocalDateTime start, LocalDateTime end) {
         LinkedHashMap<Integer, PurchaseInfo> purchaseInfos = new LinkedHashMap<>();
-        List<Order> orders= orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end,getUid());//找到所有时间段内的订单
+        List<Order> orders= orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end, getUser().getId());//找到所有时间段内的订单
         for(Order order: orders){
             List<OrderItem> orderItems = order.getOrderItems();
             for(OrderItem orderItem: orderItems){

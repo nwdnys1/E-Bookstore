@@ -40,7 +40,7 @@ const BookListItem = ({ book }) => {
           />,
           <IconText
             icon={MessageOutlined}
-            text={book.comments.length}
+            text={book.bookDetails.comments.length}
             key="list-vertical-message"
           />,
         ]}

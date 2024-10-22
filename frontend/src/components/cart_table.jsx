@@ -102,7 +102,7 @@ const CartTable = () => {
       render: (number, item) => (
         <InputNumber
           min={1}
-          max={item.book.stock}
+          max={item.book.bookDetails.stock}
           value={item.quantity}
           onChange={(newNumber) => {
             handleNumberChange(item.id, newNumber);

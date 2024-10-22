@@ -11,8 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
-    public Book getBookById(int id);
-    public List<Book> getBooksByRatingGreaterThanOrderByRatingDesc(BigDecimal rating);
+    public List<Book> getBooksByBookDetailsRatingGreaterThanOrderByBookDetailsRatingDesc(int rating);
     public Page<Book> getBooksByTitleLikeOrAuthorLike(String title, String author, Pageable pageable);
     public Page<Book> findBooksByTagsContains(Tag tag, Pageable pageable);
 }

@@ -1,17 +1,6 @@
 import { BASEURL, Delete, get, post, put } from "./requestService";
 const PREFIX = `${BASEURL}/api/book`;
 
-export const getAllBooks = async () => {
-  const url = `${PREFIX}/list`;
-  let result;
-  try {
-    result = await get(url);
-    return result;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 export const searchBooks = async ({ keyword, page, pageSize }) => {
   const url = `${PREFIX}/search?keyword=${keyword}&page=${page}&pageSize=${pageSize}`;
   let result;

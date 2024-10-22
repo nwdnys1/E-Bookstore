@@ -1,5 +1,6 @@
 package org.example.backend.service.Impl;
 
+import org.example.backend.DAO.BookDAO;
 import org.example.backend.DAO.CartItemDAO;
 import org.example.backend.DAO.UserDAO;
 import org.example.backend.entity.Book;
@@ -12,33 +13,38 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CartItemServiceImpl implements CartItemService {
     private final CartItemDAO repository;
     private final UserDAO userDAO;
-    public CartItemServiceImpl(CartItemDAO repository, UserDAO userDAO) {
+    private final BookDAO bookDAO;
+    public CartItemServiceImpl(CartItemDAO repository, UserDAO userDAO, BookDAO bookDAO) {
         this.repository = repository;
         this.userDAO = userDAO;
+        this.bookDAO = bookDAO;
     }
-    public int getUid() {//从数据库里查询id
+    public User getUser() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userDAO.findUserByUsername(username).getId();
+        return userDAO.getUserByUsername(username);
     }
     @Override
     public Result<List<CartItem>> getCartItems(){
-        return Result.success(repository.getCartItemsByUserId(getUid()));
+        return Result.success(repository.getCartItemsByUserId(getUser().getId()));
     }
     @Override
     public Result<CartItem> addCartItem(int bid){//需要判断是否已经存在
-        int uid = getUid();
-        if(repository.existsByUserIdAndBookId(uid, bid)){
+        User user = getUser();
+        if(repository.existsByUserIdAndBookId(user.getId(), bid)){
             return Result.error(400, "购物车项目已存在！");
         }else{
             CartItem item = new CartItem();
             item.setQuantity(1);
-            item.setUser(new User());
-            item.getUser().setId(uid);
+            item.setUser(user);
+            if (!bookDAO.existsById(bid)) {
+                return Result.error(404, "书籍不存在！");
+            }
             item.setBook(new Book());
             item.getBook().setId(bid);
             repository.save(item);
@@ -48,7 +54,7 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public Result<CartItem> deleteCartItem(int id){//需要判断是否存在
         if(repository.existsById(id)){
-            if(repository.getCartItemById(id).getUser().getId()!=getUid()){
+            if(!Objects.equals(repository.getCartItemById(id).getUser().getId(), getUser().getId())){
                 return Result.error(403, "无权操作！");
             }
             repository.deleteById(id);
@@ -61,7 +67,7 @@ public class CartItemServiceImpl implements CartItemService {
     public Result<CartItem> updateCartItem(int id, int quantity){//需要判断是否存在
         if(repository.existsById(id)){
             CartItem item = repository.getCartItemById(id);
-            if(item.getUser().getId()!=getUid()){
+            if(!Objects.equals(item.getUser().getId(), getUser().getId())){
                 return Result.error(403, "无权操作！");
             }
             item.setQuantity(quantity);

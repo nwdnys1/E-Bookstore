@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
-    public List<CartItem> getCartItemsByUserId(int uid);
-    public CartItem getCartItemById(int id);
-    public boolean existsByUserIdAndBookId(int uid, int bid);
+    List<CartItem> getCartItemsByUserId(int uid);
+    CartItem getCartItemById(int id);
+    boolean existsByUserIdAndBookId(int uid, int bid);
+
+    boolean existsByBookId(int id);
 }

@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 public interface BookService {
-    public Result<List<Book>> getBooks();
     public Result<Book> getBookById(int id);
     public Result<List<Book>> getRecommendations(int nums);
     public Result<Book> addBook(Book book);

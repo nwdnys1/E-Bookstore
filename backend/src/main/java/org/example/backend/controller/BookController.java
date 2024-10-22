@@ -20,10 +20,6 @@ public class BookController {
     public BookController(BookService service) {
         this.service = service;
     }
-    @GetMapping("/list")
-    public Result<List<Book>> list() {
-       return service.getBooks();
-    }
     @GetMapping("/get/{id}")
     public Result<Book> getBookById(@PathVariable int id) {
        return service.getBookById(id);

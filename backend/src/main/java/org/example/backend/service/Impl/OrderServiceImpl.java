@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -31,13 +32,13 @@ public class OrderServiceImpl implements OrderService {
         this.bookDAO = bookDAO;
         this.orderItemDAO = orderItemDAO;
     }
-    public int getUid() {//从数据库里查询id
+    public User getUser() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userDAO.findUserByUsername(username).getId();
+        return userDAO.getUserByUsername(username);
     }
     @Override
     public Result<List<Order>> getOrders(){
-        return Result.success(orderDAO.getOrdersByUserId(getUid()));
+        return Result.success(orderDAO.getOrdersByUserId(getUser().getId()));
     }
     @Override
     @Transactional
@@ -76,13 +77,13 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setQuantity(cartItem.getQuantity());
             orderItems.add(orderItem);
             // 更新商品库存和销量
-            Book book = bookDAO.getBookById(bid);
-            if (book.getStock() < cartItem.getQuantity()) {
-                return Result.error(400, "库存不足！");
+            BookDetails bookDetails = bookDAO.getBookDetailsById(bid);
+            if (bookDetails.getStock() < cartItem.getQuantity()) {
+                return Result.error(400, "库存不足！",order);
             }
-            book.setStock(book.getStock() - cartItem.getQuantity());
-            book.setSales(book.getSales() + cartItem.getQuantity());
-            bookDAO.save(book);
+            bookDetails.setStock(bookDetails.getStock() - cartItem.getQuantity());
+            bookDetails.setSales(bookDetails.getSales() + cartItem.getQuantity());
+            bookDAO.saveDetails(bookDetails);
             // 从购物车中移除对应的商品项
             cartItemDAO.deleteById(cartItem.getId());
         }
@@ -108,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Result<Order> deleteOrder(int id){
         if(orderDAO.existsById(id)){
-            if(orderDAO.getOrderById(id).getUser().getId() != getUid()){
+            if(!Objects.equals(orderDAO.getOrderById(id).getUser().getId(), getUser().getId())){
                 return Result.error(403, "无权删除他人订单！");
             }
             orderDAO.deleteById(id);
@@ -142,9 +143,9 @@ public class OrderServiceImpl implements OrderService {
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Order> orders;
         if (keyword.isEmpty())//如果关键字为空 则只根据时间查询 这里是因为我发现当关键词为空时 会导致分页结果有问题 比如pageSize为6时只查询到2条 原因不明 只能先这样解决
-            orders = orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end, getUid(), pageable);
+            orders = orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndUserId(start, end, getUser().getId(), pageable);
         else
-            orders = orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLikeAndUserId(start, end, "%" + keyword + "%", getUid(), pageable);
+            orders = orderDAO.getOrdersByCreateTimeAfterAndCreateTimeBeforeAndOrderItemsBookTitleLikeAndUserId(start, end, "%" + keyword + "%", getUser().getId(), pageable);
         PageResponse<Order> response = new PageResponse<Order>(
                 orders.getTotalElements(),
                 orders.getTotalPages(),

@@ -16,4 +16,6 @@ public interface CommentDAO {
     void deleteById(int id);
 
     Comment findById(int cid);
+
+    int countByBookId(int bid);
 }

@@ -14,8 +14,8 @@ public class CommentDAOImpl implements CommentDAO {
     }
     @Override
     public List<Comment> getCommentsByBookId(int bid){
-        return repository.getCommentsByBookId(bid);
-    };
+        return repository.getCommentsByBid(bid);
+    }
     @Override
     public Comment getCommentById(int id){
         return repository.getCommentById(id);
@@ -39,5 +39,10 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public Comment findById(int cid) {
         return repository.findById(cid).orElse(null);
+    }
+
+    @Override
+    public int countByBookId(int bid) {
+        return repository.countByBid(bid);
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class CommentServiceImpl implements CommentService {
     private final CommentDAO repository;
@@ -18,20 +20,18 @@ public class CommentServiceImpl implements CommentService {
         this.repository = repository;
         this.userDAO = userDAO;
     }
-    public int getUid() {//从数据库里查询id
+    public User getUser() {//鉴权获得登录用户
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userDAO.findUserByUsername(username).getId();
+        return userDAO.getUserByUsername(username);
     }
     public Result<List<Comment>> getCommentsByBid(int bid) {
         List<Comment> comments = repository.getCommentsByBookId(bid);
         return Result.success(comments);
     }
     public Result<Comment> addComment(int bid, String content) {
-        int uid = getUid();
+        User user = getUser();
         Comment comment = new Comment();
-        comment.setBook(new Book());
-        comment.getBook().setId(bid);
-        User user = userDAO.findById(uid);
+        comment.setBid(bid);
         comment.setUser(user);
         comment.setContent(content);
         comment.setTime(LocalDateTime.now());//获取当前时间
@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
     }
     public Result<Comment> deleteComment(int id) {
        if (repository.existsById(id)) {
-           if(repository.getCommentById(id).getUser().getId() != getUid())
+           if(!Objects.equals(repository.getCommentById(id).getUser().getId(), getUser().getId()))
                return Result.error(403,"无权删除");
             repository.deleteById(id);
             return Result.success(null);
@@ -51,17 +51,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     public Result<Reply> addReply(int cid, String content) {
-        int uid = getUid();
+        User user = getUser();
         Comment comment = repository.findById(cid);
         if (comment == null) {
             return Result.error(404,"评论不存在");
         }
         Reply reply = new Reply();
         reply.setComment(comment);
-        User user = userDAO.findById(uid);
-        if (user == null) {
-            return Result.error(404,"用户不存在");
-        }
         reply.setUser(user);
         reply.setContent(content);
         reply.setTime(LocalDateTime.now());

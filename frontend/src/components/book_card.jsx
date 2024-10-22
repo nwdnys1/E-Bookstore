@@ -58,7 +58,7 @@ const BookCard = ({ book }) => {
                   zIndex: 1,
                 }}
               >
-                {book?.rating?.toFixed(1)}
+                {(book?.bookDetails.rating/10).toFixed(1)}
               </Row>
             </>
           }

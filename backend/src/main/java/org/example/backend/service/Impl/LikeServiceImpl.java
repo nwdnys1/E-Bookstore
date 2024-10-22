@@ -22,13 +22,13 @@ public class LikeServiceImpl implements LikeService {
         this.repository = repository;
         this.userDAO = userDAO;
     }
-    public int getUid() {//从数据库里查询id
+    public User getUser() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userDAO.findUserByUsername(username).getId();
+        return userDAO.getUserByUsername(username);
     }
     public Result<String> likeComment(int cid) {
-        int uid = getUid();
-        Like like = repository.getLikeByUserIdAndCommentId(uid, cid);
+        User user = getUser();
+        Like like = repository.getLikeByUserIdAndCommentId(user.getId(), cid);
         if(like != null)
         {
             repository.delete(like);
@@ -37,13 +37,12 @@ public class LikeServiceImpl implements LikeService {
         like = new Like();
         like.setComment(new Comment());
         like.getComment().setId(cid);
-        like.setUser(new User());
-        like.getUser().setId(uid);
+        like.setUser(user);
         repository.save(like);
         return Result.success("点赞成功");
     }
     public Result<List<Integer>> getCids() {
-        int uid = getUid();
+        int uid = getUser().getId();
         List<Integer> cids = new ArrayList<>();
         List<Like> likes = repository.getLikesByUserId(uid);
         for(Like like : likes)

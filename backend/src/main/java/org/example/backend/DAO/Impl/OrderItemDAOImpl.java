@@ -18,4 +18,8 @@ public class OrderItemDAOImpl implements OrderItemDAO {
     public void saveAll(List<OrderItem> orderItems){
         repository.saveAll(orderItems);
     }
+    @Override
+    public boolean existsByBookId(int id){
+        return repository.existsByBookId(id);
+    }
 }

@@ -35,6 +35,10 @@ public class CartItemDAOImpl implements CartItemDAO {
     public boolean existsById(int id) {
         return repository.existsById(id);
     }
+    @Override
+    public boolean existsByBookId(int id) {
+        return repository.existsByBookId(id);
+    }
 
     @Override
     @Transactional

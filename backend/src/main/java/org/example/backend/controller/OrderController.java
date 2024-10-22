@@ -28,9 +28,9 @@ public class OrderController {
         this.kafkaTemplate = kafkaTemplate;
         this.userDAO = userDAO;
     }
-    public int getUid() {//从数据库里查询id
+    public User getUser() {//从数据库里查询id
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userDAO.findUserByUsername(username).getId();
+        return userDAO.getUserByUsername(username);
     }
     @GetMapping("/list")
     public Result<List<Order>> getOrders() {
@@ -42,8 +42,8 @@ public class OrderController {
     }
     @PostMapping("/add")
     public Result<String> addOrder(@RequestBody OrderRequest request) {
-        System.out.println("控制层接收到的订单信息：" + request);
-        request.setUid(getUid());//由于kafka消息处理时没有session上下文，所以需要在这里鉴权
+        // System.out.println("控制层接收到的订单信息：" + request);
+        request.setUid(getUser().getId());//由于kafka消息处理时没有session上下文，所以需要在这里鉴权
         kafkaTemplate.send("AddOrder", JSON.toJSONString(request));//发送订单信息到kafka 序列化为json
         return Result.success("订单已提交，等待处理");
     }

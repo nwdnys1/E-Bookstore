@@ -22,7 +22,7 @@ public class OrderWS {
     }
     private static final ConcurrentHashMap<Integer, Session> sessionPool = new ConcurrentHashMap<>();//用户id和session的映射
     private int getUid(Session session) {//根据session获取用户id
-        return userDAO.findUserByUsername(session.getUserPrincipal().getName()).getId();
+        return userDAO.getUserByUsername(session.getUserPrincipal().getName()).getId();
     }
     public void SendToUser (int uid, String message){
         Session session = sessionPool.get(uid);
@@ -41,11 +41,9 @@ public class OrderWS {
      */
     @OnOpen
     public void onOpen(Session session) throws IOException {
-        log.info(session.getUserPrincipal().toString());
         int uid = getUid(session);
         sessionPool.put(uid, session);//将用户id和session绑定
         log.info("与USER {} 建立连接", uid);
-
     }
     /**
      * 链接关闭调用的方法

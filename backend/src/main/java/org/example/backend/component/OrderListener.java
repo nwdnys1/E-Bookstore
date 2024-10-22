@@ -37,6 +37,7 @@ public class OrderListener {
     @KafkaListener(topics = "FinishOrder",groupId = "FinishOrder",concurrency = "1")//3个消费者并发处理
     public void finishOrder(String newOrder)  {
         Result<Order> result = JSON.parseObject(newOrder, new TypeReference<Result<Order>>() {});
+        System.out.println("Finished Order: " + result.asJsonString());
         if (result.getCode() == 200) {
             orderWS.SendToUser(result.getData().getUid(), "您的订单已成功提交！");
         }

@@ -1,7 +1,6 @@
 package org.example.backend.service.Impl;
 
-import org.example.backend.DAO.BookDAO;
-import org.example.backend.DAO.OrderDAO;
+import org.example.backend.DAO.*;
 import org.example.backend.DTO.PageResponse;
 import org.example.backend.DTO.SalesInfo;
 import org.example.backend.entity.*;
@@ -14,61 +13,62 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class BookServiceImpl implements BookService {
     private final BookDAO repository;
     private final UploadRepository uploadRepository;
     private final OrderDAO orderDAO;
-    public BookServiceImpl(BookDAO repository, UploadRepository uploadRepository, OrderDAO orderDAO) {
+    private final CartItemDAO cartItemDAO;
+    private final OrderItemDAO orderItemDAO;
+    private final CommentDAO commentDAO;
+    public BookServiceImpl(BookDAO repository, UploadRepository uploadRepository, OrderDAO orderDAO, CartItemDAO cartItemDAO, OrderItemDAO orderItemDAO, CommentDAO commentDAO) {
         this.repository = repository;
         this.uploadRepository = uploadRepository;
         this.orderDAO = orderDAO;
-    }
-    public Result<List<Book>> getBooks(){
-        return Result.success(repository.findAll());
+        this.cartItemDAO = cartItemDAO;
+        this.orderItemDAO = orderItemDAO;
+        this.commentDAO = commentDAO;
     }
     public Result<Book> getBookById(int id){
         if(repository.existsById(id)){
-            return Result.success(repository.getBookById(id));
+            Book book = repository.getBookById(id);
+            book.getBookDetails().setComments(commentDAO.getCommentsByBookId(id));//获取评论列表
+            return Result.success(book);
         }else{
             return Result.error(404, "书籍不存在！");
         }
     }
     public Result<List<Book>> getRecommendations(int nums){
-        return Result.success(repository.getBooksByRatingGreaterThanOrderByRatingDesc(BigDecimal.valueOf(0)).subList(0, nums));
+        return Result.success(repository.getBooksByRatingGreaterThanOrderByRatingDesc(0).subList(0, nums));
     }
     public Result<Book> addBook(Book book){
-        book.setRating(BigDecimal.valueOf(0));
-        book.setSales(0);
+        book.getBookDetails().setRating(0);
+        book.getBookDetails().setSales(0);
         return Result.success(repository.save(book));
     }
     public Result<Book> updateBook(int id, Book book){
-        Book oldBook = repository.findById(id);
-        if(oldBook == null){
+        if (!repository.existsById(id)) {
             return Result.error(404, "书籍不存在！");
         }
+        Book oldBook = repository.getBookById(id);
         oldBook.setTitle(book.getTitle());
         oldBook.setAuthor(book.getAuthor());
         //oldBook.setDescription(book.getDescription());
         //oldBook.setPrice(book.getPrice());
         //oldBook.setRating(book.getRating());
-        oldBook.setStock(book.getStock());
-        oldBook.setISBN(book.getISBN());
+        oldBook.getBookDetails().setStock(book.getBookDetails().getStock());
+        oldBook.setIsbn(book.getIsbn());
         return Result.success(repository.save(oldBook));
     }
     public Result<Book> deleteBook(int id){
         if(repository.existsById(id)){
-            if(!repository.getBookById(id).getCartItems().isEmpty()){
+            if(cartItemDAO.existsByBookId(id)){
                 return Result.error(400, "书籍已被用户加入购物车，无法删除！");
             }
-            if(!repository.getBookById(id).getOrderItems().isEmpty()){
+            if(orderItemDAO.existsByBookId(id)){
                 return Result.error(400, "书籍已被用户购买，无法删除！");
             }
             repository.deleteById(id);
@@ -80,6 +80,9 @@ public class BookServiceImpl implements BookService {
     public Result<PageResponse<Book>> searchBooks(String keyword, int page, int pageSize){
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         Page<Book> books = repository.getBooksByTitleLikeOrAuthorLike("%" + keyword + "%", "%" + keyword + "%", pageable);
+        for (Book book : books.getContent()) { // 为每本书添加评论列表 用于计算评论数
+            book.getBookDetails().setComments(new ArrayList<>(Collections.nCopies(commentDAO.countByBookId(book.getId()), null))); // 一个长度为评论数的空列表
+        }
         PageResponse<Book> response = new PageResponse<Book>(
                 books.getTotalElements(),
                 books.getTotalPages(),
@@ -92,6 +95,9 @@ public class BookServiceImpl implements BookService {
         Tag tag = new Tag();
         tag.setId(tid);
         Page<Book> books = repository.findBooksByTagsContains(tag, pageable);
+        for (Book book : books.getContent()) { // 为每本书添加评论列表 用于计算评论数
+            book.getBookDetails().setComments(new ArrayList<>(Collections.nCopies(commentDAO.countByBookId(book.getId()), null))); // 一个长度为评论数的空列表
+        }
         PageResponse<Book> response = new PageResponse<Book>(
                 books.getTotalElements(),
                 books.getTotalPages(),
@@ -100,7 +106,7 @@ public class BookServiceImpl implements BookService {
         return Result.success(response);
     }
     public Result<String> updateCover(int id, MultipartFile file) {
-        Book book = repository.findById(id);
+        Book book = repository.getBookById(id);
         if (book == null) {
             return Result.error(404, "书籍不存在！");
         }

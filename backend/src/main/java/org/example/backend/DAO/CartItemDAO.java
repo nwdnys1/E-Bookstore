@@ -14,6 +14,7 @@ public interface CartItemDAO {
     void save(CartItem item);
 
     boolean existsById(int id);
+    boolean existsByBookId(int id);
 
     void deleteById(int id);
 }

@@ -37,9 +37,9 @@ const BookInfo = ({ book }) => {
           <Paragraph style={ParagraphStyle}>
             {`价格: ${book.price} 元`}
             <br />
-            {`库存: ${book.stock} 本`}
+            {`库存: ${book.bookDetails.stock} 本`}
             <br />
-            {`销量: ${book.sales} 本`}
+            {`销量: ${book.bookDetails.sales} 本`}
             <br />
             {`ISBN: ${book.isbn}`}
           </Paragraph>

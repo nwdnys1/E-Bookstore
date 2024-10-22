@@ -3,7 +3,6 @@ import { AdminLayout } from "../components/layout";
 import {
   addBook,
   deleteBookById,
-  getAllBooks,
   searchBooks,
   updateBook,
 } from "../services/bookService";
