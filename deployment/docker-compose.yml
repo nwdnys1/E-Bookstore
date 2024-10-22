@@ -53,8 +53,15 @@ services:
       - KAFKA_LOG_SEGMENT_BYTES=1073741824
       - KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS=300000
     restart: always
+    
+  redis:
+    image: redis:latest
+    container_name: ebook-redis
+    ports:
+      - 6379:6379
+    networks:
+      - my-network
 networks:
   my-network:
     name: my-network
     driver: bridge
-
