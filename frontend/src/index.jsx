@@ -18,6 +18,7 @@ import UserAdminPage from "./pages/user_admin";
 import BookAdminPage from "./pages/book_admin";
 import OrderAdminPage from "./pages/order_admin";
 import LoginPage from "./pages/login";
+import SearchAuthorsPage from "./pages/search_authors";
 
 const App = () => (
   <ConfigProvider locale={zhCN}>
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/admin/users" element={<UserAdminPage />} />
           <Route path="/admin/books" element={<BookAdminPage />} />
           <Route path="/admin/orders" element={<OrderAdminPage />} />
+          <Route path="/searchAuthors" element={<SearchAuthorsPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>

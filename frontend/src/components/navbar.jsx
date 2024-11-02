@@ -6,6 +6,7 @@ import {
   HomeOutlined,
   ReadOutlined,
   BarChartOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import SearchBox from "./searchbox";
 import UserMenu from "./user_menu";
@@ -27,6 +28,12 @@ const Items = [
     label: "统计",
     link: "/stastics",
   },
+  {
+    key: "searchAuthors",
+    icon: <SearchOutlined />,
+    label: "搜索作者",
+    link: "/searchAuthors",
+  }
 ];
 
 const navItems = Items.map((item) => ({

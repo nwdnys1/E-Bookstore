@@ -79,3 +79,11 @@ export async function getTopBooks({ start, end }) {
   result = await get(url);
   return result;
 }
+
+export async function searchAuthorsByTitle(title) {
+  const url = `http://localhost:8081/api/search/author?title=${title}`;
+  let result;
+
+  result = await get(url);
+  return result;
+}
