@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8001
 
 spring:
   application:
@@ -9,11 +9,25 @@ spring:
       discovery:
         server-addr: ${NACOS_SERVER_ADDR}
     gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
+        corsConfiguration:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+
       routes:
         - id: search-service
           uri: lb://search-service
           predicates:
             - Path=/api/search/**
+
+        - id: price-service
+          uri: lb://price-service
+          predicates:
+            - Path=/computePrice
 
         - id: main-service
           uri: lb://main-service

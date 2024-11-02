@@ -1,7 +1,5 @@
 import { DatePicker, Flex, Image, Input, List, Row, Table } from "antd";
-import {
-  searchOrders,
-} from "../services/orderService";
+import { computePrice, searchOrders } from "../services/orderService";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 const { RangePicker } = DatePicker;
@@ -27,12 +25,10 @@ export default function OrderTable() {
       setLength(res.total);
     });
   }, [keyword, page, pageSize, start, end]);
-  const computeTotalPrice = (order) => {
-    return `￥${order.orderItems
-      .map((item) => item.book.price * item.quantity)
-      .reduce((prev, cur) => prev + cur)
-      }`;
-  };
+  async function computeTotalPrice(order) {
+    const result = await computePrice(order);
+    return result;
+  }
   const handleSearch = (value) => {
     searchParams.set("keyword", value);
     searchParams.set("page", 1);
@@ -69,10 +65,7 @@ export default function OrderTable() {
   ];
 
   return (
-    <Flex
-      vertical
-      justify="center"
-    >
+    <Flex vertical justify="center">
       <Row justify={"space-between"} style={{ marginBottom: 20 }}>
         <RangePicker
           onChange={handleRange}

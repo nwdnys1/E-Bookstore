@@ -33,3 +33,10 @@ export const placeOrder = async (orderRequest) => {
     alert(e);
   }
 };
+
+export const computePrice = (order) => {
+  const url = `http://localhost:8001/computePrice`;
+  let result;
+  result = post(url, order.orderItems);
+  return result;
+}
