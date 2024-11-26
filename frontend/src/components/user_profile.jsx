@@ -3,6 +3,7 @@ import { ProfileForm } from "./profile_form";
 import ProfileInfo from "./profile_info";
 import { useAuth } from "../context/authContext";
 import { updateUser } from "../services/userService";
+import { useParams } from "react-router-dom";
 
 export const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -20,8 +21,7 @@ export const Profile = () => {
     }
     try {
       await updateUser(user).then((res) => {
-        setUser(res);// 更新会话中的用户信息
-        console.log(res);
+        setUser(res); // 更新会话中的用户信息
         alert("修改成功！");
         setIsEditing(false);
       });
@@ -37,6 +37,6 @@ export const Profile = () => {
       user={user}
     />
   ) : (
-    <ProfileInfo user={user} handleClick={handleEdit} setUser={setUser} />
+    <ProfileInfo handleClick={handleEdit} />
   );
 };

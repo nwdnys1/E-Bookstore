@@ -7,15 +7,15 @@ import java.util.List;
 public interface CommentDAO {
     List<Comment> getCommentsByBookId(int bid);
 
-    Comment getCommentById(int id);
+    Comment getCommentById(String id);
 
     void save(Comment comment);
 
-    boolean existsById(int id);
+    boolean existsById(String id);
 
-    void deleteById(int id);
+    void deleteById(String id);
 
-    Comment findById(int cid);
+    Comment findById(String cid);
 
     int countByBookId(int bid);
 }

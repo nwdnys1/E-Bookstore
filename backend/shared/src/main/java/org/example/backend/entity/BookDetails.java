@@ -20,12 +20,6 @@ public class BookDetails {
     private int rating;
     private int stock;
     private int sales;//销量
-//    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
-//    private List<CartItem> cartItems;
-//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//    private List<OrderItem> orderItems;
-//    @JsonIgnoreProperties({"id","content","user","time","replies","likes"})//忽略所有属性 但是要返回comments数组来获得评论数量
-//    @OneToMany(mappedBy = "bid",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @Transient //不映射到数据库
     private List<Comment> comments;
 }

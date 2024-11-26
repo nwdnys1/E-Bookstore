@@ -1,19 +1,10 @@
 import { Divider, Flex, Tabs } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CommentBox from "./comment_box";
 import CommentList from "./comment_list";
-import { useParams } from "react-router-dom";
-import { getCommentsByBookId } from "../services/commentService";
 
-export const BookComments = () => {
+export const BookComments = ({ comments, setComments }) => {
   const [sortBy, setSortBy] = useState("hottest");
-  let { id } = useParams();
-  const [comments, setComments] = useState([]);
-  useEffect(() => {
-    getCommentsByBookId(id).then((res) => {
-      setComments(res);
-    });
-  }, []);
   const handleTabChange = (key) => {
     setSortBy(key);
   };
@@ -31,17 +22,23 @@ export const BookComments = () => {
     {
       label: "最热评论",
       key: "hottest",
-      children: <CommentList comments={comments} setComments={setComments} />,
+      children: (
+        <CommentList comments={comments} setComments={setComments} />
+      ),
     },
     {
       label: "最新评论",
       key: "latest",
-      children: <CommentList comments={comments} setComments={setComments} />,
+      children: (
+        <CommentList comments={comments} setComments={setComments} />
+      ),
     },
     {
       label: "最多回复",
       key: "mostReplies",
-      children: <CommentList comments={comments} setComments={setComments} />,
+      children: (
+        <CommentList comments={comments} setComments={setComments} />
+      ),
     },
   ];
   return (

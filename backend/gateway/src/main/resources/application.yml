@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 8000
 
 spring:
   application:
@@ -9,14 +9,17 @@ spring:
       discovery:
         server-addr: ${NACOS_SERVER_ADDR}
     gateway:
+      # 网关全局跨域配置
       globalcors:
-        add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
-        corsConfiguration:
+        cors-configurations:
           '[/**]':
-            allowedOriginPatterns: "*"
+            allowed-origins:
+              - "http://localhost:5173"
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
+        # 解决options请求被拦截的问题
+        add-to-simple-url-handler-mapping: true
 
       routes:
         - id: search-service

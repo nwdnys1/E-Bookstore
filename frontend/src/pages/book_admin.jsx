@@ -173,7 +173,7 @@ const BookAdminPage = () => {
               <Upload
                 showUploadList={false}
                 name="file"
-                action={`${BASEURL}/api/book/cover/${item.id}`}
+                action={`${BASEURL}/api/book/admin/cover/${item.id}`}
                 withCredentials
                 onChange={(info) => handleCover(info, item.id)}
               >

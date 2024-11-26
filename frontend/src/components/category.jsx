@@ -2,6 +2,7 @@ import { Row, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getTags } from "../services/tagService";
+import { defaultPageSize } from "../utils/config";
 
 const CategoryBar = () => {
   //这个子组件的回调是修改tag 其他都不变 初始化时获取tags 并且如果url参数改变了tag 则选中tag
@@ -9,19 +10,27 @@ const CategoryBar = () => {
   const [tags, setTags] = useState([]);
   const [selected, setSelected] = useState([]);
   useEffect(() => {
-    getTags().then((res) => {
-      setTags(res);
-    });
-    setSelected([searchParams.get("tag") || ""]);
-  }, [searchParams.get("tag")]);
+    getTags()
+      .then((res) => {
+        setTags(res);
+      })
+      .catch((e) => alert(e));
+    setSelected(searchParams.getAll("tag"));
+  }, [searchParams]);
   const handleChange = (tag, checked) => {
-    setSelected(checked ? [tag] : [""]);
+    let newSelected = [];
+    if (checked) {
+      newSelected = [...selected, tag];
+    } else {
+      newSelected = selected.filter((t) => t !== tag);
+    }
+    setSelected(newSelected);
     setSearchParams({
       page: 1,
-      pageSize: searchParams.get("pageSize") || 12,
+      pageSize: searchParams.get("pageSize") || defaultPageSize,
       keyword: "",
-      tag: checked ? tag : "",
-      layout: searchParams.get("layout")||"block",
+      tag: newSelected,
+      layout: searchParams.get("layout") || "block",
     });
   };
   return (
@@ -33,7 +42,7 @@ const CategoryBar = () => {
             checked={selected.includes(tag.id.toString())}
             onChange={(checked) => handleChange(tag.id.toString(), checked)}
           >
-            {tag.content}
+            {tag.name}
           </Tag.CheckableTag>
         ))}
       </Row>

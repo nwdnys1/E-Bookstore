@@ -19,11 +19,13 @@ import { Link } from "react-router-dom";
 import { DeleteOutlined } from "@ant-design/icons";
 import OrderModal from "./order_modal";
 import { orderWSURL } from "../services/requestService";
+import { computePrice } from "../services/orderService";
 const { Text } = Typography;
 const CartTable = () => {
   const [items, setItems] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
   const ws = useRef(null);
   const initWebSocket = () => {
     const socket = new WebSocket(orderWSURL);
@@ -61,6 +63,15 @@ const CartTable = () => {
       ws.current?.close();
     };
   }, []);
+  useEffect(() => {
+    computePrice(selectedItems)
+      .then((res) => {
+        setTotalPrice(res);
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  }, [selectedItems]);
 
   const openModal = () => {
     setShowModal(true);
@@ -68,13 +79,6 @@ const CartTable = () => {
 
   const closeModal = () => {
     setShowModal(false);
-  };
-
-  const computeTotalPrice = () => {
-    const prices = selectedItems.map((item) => item.book.price * item.quantity);
-    return prices.length > 0
-      ? prices.reduce((prev, cur) => prev + cur).toFixed(2)
-      : 0;
   };
 
   const handleNumberChange = async (id, number) => {
@@ -143,10 +147,7 @@ const CartTable = () => {
             keyboard
             width={"auto"}
           >
-            <OrderModal
-              selectedItems={selectedItems}
-              totalPrice={computeTotalPrice()}
-            />
+            <OrderModal selectedItems={selectedItems} totalPrice={totalPrice} />
           </Modal>
         )}
         <Table
@@ -180,7 +181,7 @@ const CartTable = () => {
           }))}
         />
         <Row justify="end" align={"middle"}>
-          <p>合计：￥{computeTotalPrice()}</p>
+          <p>合计：￥{totalPrice}</p>
           <div style={{ width: 10 }} />
           <Button
             type="primary"

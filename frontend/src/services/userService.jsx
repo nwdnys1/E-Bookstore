@@ -22,16 +22,11 @@ export async function updateUser(user) {
   return result;
 }
 
-export async function getOtherUser(username) {
-  const url = `${PREFIX}/get/${username}`;
+export async function getOtherUser(uid) {
+  const url = `${PREFIX}/get/${uid}`;
   let result;
-  try {
-    result = await get(url);
-    return result;
-  } catch (e) {
-    console.log(e);
-    return e;
-  }
+  result = await get(url);
+  return result;
 }
 
 export async function disableUser(id) {

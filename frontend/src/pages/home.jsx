@@ -13,12 +13,12 @@ const HomePage = () => {
   }, []);
 
   return (
-    <LoginLayout>
+    <BasicLayout>
       <Flex vertical align="center">
         <BookCarousel books={recommendedBooks} />
         <BookDisplay books={recommendedBooks} withButton />
       </Flex>
-    </LoginLayout>
+    </BasicLayout>
   );
 };
 

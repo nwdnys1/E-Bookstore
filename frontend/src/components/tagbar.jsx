@@ -9,7 +9,7 @@ const TagBar = ({ tags }) => {
         {tags.map((tag) => (
           <Link to={`/allbooks/category?tag=${tag.id}`} key={tag.id}>
             <Tag key={tag.id} color="blue">
-              {tag.content}
+              {tag.name}
             </Tag>
           </Link>
         ))}

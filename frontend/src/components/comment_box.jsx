@@ -16,6 +16,7 @@ const CommentBox = ({ setComments }) => {
   };
   const handleRatingChange = (value) => {
     setRating(value);
+    console.log(value);
   };
   const handleSubmit = async () => {
     if (!content || !rating) {
@@ -26,7 +27,7 @@ const CommentBox = ({ setComments }) => {
       alert(`评论内容过长，当前字数${content.length}，请控制在3000字以内`);
       return;
     }
-    await addComment({ bid: id, content: content })
+    await addComment({ bid: id, content, rating })
       .then((res) => {
         setComments((comments) => [...comments, res]);
         setContent("");

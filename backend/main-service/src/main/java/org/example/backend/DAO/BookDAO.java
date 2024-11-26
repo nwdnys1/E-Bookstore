@@ -1,29 +1,28 @@
 package org.example.backend.DAO;
 
+import java.util.List;
+
 import org.example.backend.entity.Book;
 import org.example.backend.entity.BookDetails;
-import org.example.backend.entity.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface BookDAO {
-    Book getBookById(int id);
+	Book getBookById(int id);
 
-    BookDetails getBookDetailsById(int id);
+	BookDetails getBookDetailsById(int id);
 
-    List<Book> getBooksByRatingGreaterThanOrderByRatingDesc(int rating);
+	List<Book> getBooksByRatingGreaterThanOrderByRatingDesc(int rating);
 
-    Page<Book> getBooksByTitleLikeOrAuthorLike(String title, String author, Pageable pageable);
+	Page<Book> getBooksByTitleLikeOrAuthorLike(String title, String author, Pageable pageable);
 
-    Page<Book> findBooksByTagsContains(Tag tag, Pageable pageable);
+	Page<Book> findBooksByTagIds(List<Long> tids, Pageable pageable);
 
-    boolean existsById(int id);
+	boolean existsById(int id);
 
-    Book save(Book book);
+	Book save(Book book);
 
-    BookDetails saveDetails(BookDetails bookDetails);
+	BookDetails saveDetails(BookDetails bookDetails);
 
-    void deleteById(int id);
+	void deleteById(int id);
 }

@@ -29,10 +29,10 @@ const Items = [
     link: "/stastics",
   },
   {
-    key: "searchAuthors",
+    key: "extra",
     icon: <SearchOutlined />,
-    label: "搜索作者",
-    link: "/searchAuthors",
+    label: "探索更多",
+    link: "/extra",
   }
 ];
 

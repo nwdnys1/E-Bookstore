@@ -6,21 +6,25 @@ export const getOrders = async () => {
   result = await get(url);
   return result;
 };
-export const searchAllOrders = async ({keyword,page,pageSize,start,end }) => {
+export const searchAllOrders = async ({
+  keyword,
+  page,
+  pageSize,
+  start,
+  end,
+}) => {
   const url = `${PREFIX}/admin/search?keyword=${keyword}&page=${page}&pageSize=${pageSize}&start=${start}&end=${end}`;
-  let result;
-  result = await get(url);
-  return result;
-}
-
-export const searchOrders = async ({ keyword,start, end,page,pageSize }) => {
-  const url = `${PREFIX}/search?keyword=${keyword}&start=${start}&end=${end}&page=${page}&pageSize=${pageSize}`;
   let result;
   result = await get(url);
   return result;
 };
 
-
+export const searchOrders = async ({ keyword, start, end, page, pageSize }) => {
+  const url = `${PREFIX}/search?keyword=${keyword}&start=${start}&end=${end}&page=${page}&pageSize=${pageSize}`;
+  let result;
+  result = await get(url);
+  return result;
+};
 
 export const placeOrder = async (orderRequest) => {
   const url = `${PREFIX}/add`;
@@ -34,9 +38,17 @@ export const placeOrder = async (orderRequest) => {
   }
 };
 
-export const computePrice = (order) => {
-  const url = `http://localhost:8001/computePrice`;
-  let result;
-  result = post(url, order.orderItems);
-  return result;
-}
+export const computePrice = async (orderItems) => {
+  const url = `${BASEURL}/computePrice`;
+  let opts = {
+    method: "POST",
+    body: JSON.stringify(orderItems),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  };
+  let res = await fetch(url, opts);
+  res = await res.json();
+  return res[0];
+};

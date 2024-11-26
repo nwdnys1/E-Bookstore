@@ -12,13 +12,13 @@ import CartPage from "./pages/cart";
 import { AuthProvider } from "./context/authContext";
 import ScrollToTop from "./components/scrollToTop";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ProfilePage } from "./pages/profile";
 import { UserPage } from "./pages/user";
 import UserAdminPage from "./pages/user_admin";
 import BookAdminPage from "./pages/book_admin";
 import OrderAdminPage from "./pages/order_admin";
 import LoginPage from "./pages/login";
-import SearchAuthorsPage from "./pages/search_authors";
+import ExtraPage from "./pages/extra";
+
 
 const App = () => (
   <ConfigProvider locale={zhCN}>
@@ -34,12 +34,11 @@ const App = () => (
           <Route path="/cart" element={<CartPage />} />
           <Route path="/orders" element={<OrdersPage />} />
           <Route path="/stastics" element={<StasticsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/user/:username" element={<UserPage />} />
+          <Route path="/user/:uid" element={<UserPage />} />
           <Route path="/admin/users" element={<UserAdminPage />} />
           <Route path="/admin/books" element={<BookAdminPage />} />
           <Route path="/admin/orders" element={<OrderAdminPage />} />
-          <Route path="/searchAuthors" element={<SearchAuthorsPage />} />
+          <Route path="/extra" element={<ExtraPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Router>

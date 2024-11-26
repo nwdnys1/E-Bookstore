@@ -8,15 +8,21 @@ import { getBookById } from "../services/bookService";
 const DetailsPage = () => {
   let { id } = useParams();
   const [book, setBook] = useState(null);
+  const [comments, setComments] = useState([]);
   useEffect(() => {
-    getBookById(id).then((book) => setBook(book));
+    getBookById(id).then((res) => {
+      setBook(res);
+      setComments(res.bookDetails.comments);
+    });
   }, []);
 
   return (
-    <LoginLayout>
-      <BookDetails book={book} />
-      <BookComments />
-    </LoginLayout>
+    book && (
+      <BasicLayout>
+        <BookDetails book={book} />
+        <BookComments comments={comments} setComments={setComments} />
+      </BasicLayout>
+    )
   );
 };
 

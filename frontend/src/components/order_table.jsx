@@ -2,6 +2,7 @@ import { DatePicker, Flex, Image, Input, List, Row, Table } from "antd";
 import { computePrice, searchOrders } from "../services/orderService";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { defaultPageSize } from "../utils/config";
 const { RangePicker } = DatePicker;
 
 export default function OrderTable() {
@@ -10,7 +11,7 @@ export default function OrderTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
   const page = searchParams.get("page") || 1;
-  const pageSize = searchParams.get("pageSize") || 12;
+  const pageSize = searchParams.get("pageSize") || defaultPageSize;
   const start = searchParams.get("start") || "1970-01-01 00:00:00";
   const end = searchParams.get("end") || "2100-01-01 00:00:00";
   useEffect(() => {
@@ -21,14 +22,19 @@ export default function OrderTable() {
       page: page,
       pageSize: pageSize,
     }).then((res) => {
-      setOrders(res.content);
+      Promise.all(
+        res.content.map(async (order) => {
+          let totalPrice = await computePrice(order.orderItems);
+          order.totalPrice = totalPrice;
+          return order;
+        })
+      ).then((orders) => {
+        setOrders(orders);
+      });
       setLength(res.total);
     });
   }, [keyword, page, pageSize, start, end]);
-  async function computeTotalPrice(order) {
-    const result = await computePrice(order);
-    return result;
-  }
+
   const handleSearch = (value) => {
     searchParams.set("keyword", value);
     searchParams.set("page", 1);
@@ -54,7 +60,7 @@ export default function OrderTable() {
     {
       title: "总价",
       key: "totalPrice",
-      render: (_, order) => computeTotalPrice(order),
+      render: (_, order) => `￥${order.totalPrice}`,
     },
     {
       title: "下单时间",
@@ -122,7 +128,7 @@ export default function OrderTable() {
         }))}
         pagination={{
           current: page,
-          defaultPageSize: 12,
+          defaultPageSize: defaultPageSize,
           pageSize: pageSize,
           onChange: handlePageChange,
           showQuickJumper: true,

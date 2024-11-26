@@ -1,25 +1,32 @@
 package org.example.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Node
 @Data
-@Entity
-@Table(name = "tags")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Tag {
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private int id;
-    @Lob
-    private String content;
-    @ManyToMany(mappedBy = "tags",fetch = FetchType.LAZY)
-    private List<Book> books;
+	@Id
+	@GeneratedValue
+	private Long id;
+	private String name;
+	@Relationship(type = "RELATE_TO")
+	private Set<Tag> relatedTags = new HashSet<>();
+
+	public void relateTo(Tag tag) { // 用于建立标签之间的关系
+		this.relatedTags.add(tag);
+		tag.relatedTags.add(this);
+	}
+
 }

@@ -11,7 +11,7 @@ export const ListLayout = ({ books, length, paging }) => {
       page: page,
       pageSize: pageSize,
       keyword: searchParams.get("keyword") || "",
-      tag: searchParams.get("tag") || "",
+      tag: searchParams.getAll("tag") || [],
       layout: searchParams.get("layout") || "block",
     });
   };

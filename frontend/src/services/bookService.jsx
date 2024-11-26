@@ -12,8 +12,9 @@ export const searchBooks = async ({ keyword, page, pageSize }) => {
   }
 };
 
-export const categoryBooks = async ({ tag, page, pageSize }) => {
-  const url = `${PREFIX}/category?tag=${tag}&page=${page}&pageSize=${pageSize}`;
+export const searchBooksByTags = async ({ tags, page, pageSize }) => {
+  const tagsParams = tags.map((tag) => `tid=${tag}`).join("&");
+  const url = `${PREFIX}/search/by_tag?${tagsParams}&page=${page}&pageSize=${pageSize}`;
   let result;
   try {
     result = await get(url);
@@ -81,7 +82,7 @@ export async function getTopBooks({ start, end }) {
 }
 
 export async function searchAuthorsByTitle(title) {
-  const url = `http://localhost:8081/api/search/author?title=${title}`;
+  const url = `${BASEURL}/api/search/author?title=${title}`;
   let result;
 
   result = await get(url);

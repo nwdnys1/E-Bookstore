@@ -3,11 +3,8 @@ import { Input } from "antd";
 import { useSearchParams } from "react-router-dom";
 const { Search } = Input;
 const SearchBox = ({ handleSearch }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
   return (
     <Search
-      
       placeholder="输入书名、作者或关键词搜索书籍"
       onSearch={handleSearch}
       style={{

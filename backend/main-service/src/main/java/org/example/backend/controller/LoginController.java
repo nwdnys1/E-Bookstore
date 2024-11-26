@@ -32,8 +32,8 @@ public class LoginController {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(myUserDetailsService);
-        Authentication authenticate = daoAuthenticationProvider.authenticate(usernamePasswordAuthenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authenticate);//设置上下文
+        Authentication authenticate = daoAuthenticationProvider.authenticate(usernamePasswordAuthenticationToken);//默认的authenticate
+        SecurityContextHolder.getContext().setAuthentication(authenticate);//设置上下文 也就是把用户session放入上下文
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());//设置session
         SecurityContextHolder.clearContext();//清除上下文
         timerService.start();

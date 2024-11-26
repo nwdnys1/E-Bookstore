@@ -14,7 +14,6 @@ public class BookController {
 		this.service = service;
 	}
 	@GetMapping("/author")
-	@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
 	public Result<List<String>> searchAuthor(@RequestParam String title) {
 		return service.searchAuthorByTitle(title);
 	}

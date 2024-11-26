@@ -48,7 +48,7 @@ const UserMenu = () => {
   const items = [
     {
       key: "userPage",
-      label: <Link to="/profile">个人中心</Link>,
+      label: <Link to={`/user/${user?.id}`}>个人中心</Link>,
       icon: <UserOutlined />,
     },
     {
@@ -80,7 +80,7 @@ const UserMenu = () => {
       key: "orderAdmin",
       label: <Link to="/admin/orders">订单管理</Link>,
       icon: <OrderedListOutlined />,
-    }
+    },
   ];
   return (
     <>

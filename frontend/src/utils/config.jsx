@@ -4,3 +4,7 @@ export const defaultAvatar =
 export const defaultLayout = "block";
 
 export const logoUri = "/logo.png";
+
+export const defaultPageSize = 12;
+
+export const defaultPage = 1;

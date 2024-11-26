@@ -88,6 +88,13 @@ public class MyUserDetailsService implements UserDetailsService {
             return Result.error(404, "用户不存在！");
         }
     }
+	public Result<User> getUserById(int uid) {
+		User user = userDAO.getUserById(uid);
+		if (user == null) {
+			return Result.error(404, "用户不存在！");
+		}
+		return Result.success(user);
+	}
     public Result<User> getUserByUsername(String username) {
         User user = userDAO.getUserByUsername(username);
         if (user == null) {

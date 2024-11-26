@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoginLayout } from "./layout";
+import { BasicLayout, LoginLayout } from "./layout";
 import { useSearchParams } from "react-router-dom";
 import { DatePicker, Row } from "antd";
 import { Bar, Column } from "@ant-design/plots";
@@ -55,7 +55,7 @@ const UserStastics = () => {
     }).then((res) => setBooks(res));
   }, [searchParams]);
   return (
-    <LoginLayout>
+    <BasicLayout>
       <RangePicker
         onChange={handleRange}
         // defaultValue={[
@@ -77,7 +77,7 @@ const UserStastics = () => {
           0
         )}￥`}</h2>
       </Row>
-    </LoginLayout>
+    </BasicLayout>
   );
 };
 

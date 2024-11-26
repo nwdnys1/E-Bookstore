@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 
 import com.alibaba.fastjson2.JSONObject;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import reactor.core.publisher.Flux;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})

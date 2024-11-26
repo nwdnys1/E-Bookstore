@@ -23,12 +23,4 @@ public class User {
     private String tel;
     @Lob
     private String aboutMe;
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
-//    private List<CartItem> cartItems;
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
-//    private List<Order> orders;
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
-//    private List<Comment> comments;
-//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
-//    private List<Like> likes;
 }
