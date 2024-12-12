@@ -2,7 +2,7 @@
  FROM nginx:alpine
 
  # 复制自定义配置文件到容器 注意路径是相对路径 相对于指定的上下文路径 我的dockerfile在/root下
- COPY nginx.conf /etc/nginx/nginx.conf
+#  COPY nginx.conf /etc/nginx/nginx.conf
 
  # 暴露80端口（仅做声明）
  EXPOSE 80

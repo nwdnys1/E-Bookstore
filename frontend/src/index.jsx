@@ -18,31 +18,34 @@ import BookAdminPage from "./pages/book_admin";
 import OrderAdminPage from "./pages/order_admin";
 import LoginPage from "./pages/login";
 import ExtraPage from "./pages/extra";
-
+import { ApolloProvider } from "@apollo/client";
+import client from "./components/apollo_client";
 
 const App = () => (
   <ConfigProvider locale={zhCN}>
-    <AuthProvider>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/allbooks/list" element={<AllBooksPage />} />
-          <Route path="/allbooks/category" element={<AllBooksPage />} />
-          <Route path="/details/:id" element={<DetailsPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/stastics" element={<StasticsPage />} />
-          <Route path="/user/:uid" element={<UserPage />} />
-          <Route path="/admin/users" element={<UserAdminPage />} />
-          <Route path="/admin/books" element={<BookAdminPage />} />
-          <Route path="/admin/orders" element={<OrderAdminPage />} />
-          <Route path="/extra" element={<ExtraPage />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/allbooks/list" element={<AllBooksPage />} />
+            <Route path="/allbooks/category" element={<AllBooksPage />} />
+            <Route path="/details/:id" element={<DetailsPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/stastics" element={<StasticsPage />} />
+            <Route path="/user/:uid" element={<UserPage />} />
+            <Route path="/admin/users" element={<UserAdminPage />} />
+            <Route path="/admin/books" element={<BookAdminPage />} />
+            <Route path="/admin/orders" element={<OrderAdminPage />} />
+            <Route path="/extra" element={<ExtraPage />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ApolloProvider>
   </ConfigProvider>
 );
 

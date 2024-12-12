@@ -28,6 +28,7 @@ const BookCard = ({ book }) => {
                   aspectRatio: "3/4",
                   objectFit: "cover",
                   borderRadius: "5px",
+                  maxWidth: "300px",
                 }}
               />
               <Button
@@ -98,7 +99,7 @@ const BookCard = ({ book }) => {
               margin: 0,
             }}
           >
-            {book?.price.toFixed(2) + "¥"}
+            {book?.price?.toFixed(2) + "¥"}
           </span>
         </Row>
       </Flex>
