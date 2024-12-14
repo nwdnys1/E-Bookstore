@@ -22,10 +22,6 @@ spring:
       port: ${REDIS_PORT}
   neo4j:
     uri: ${NEO4J_URI}
-    database: ${NEO4J_DATABASE}
-    authentication:
-      username: ${NEO4J_USERNAME}
-      password: ${NEO4J_PASSWORD}
 
   mvc:
     throw-exception-if- no-handler-found: true
@@ -51,6 +47,7 @@ spring:
     nacos:
       discovery:
         server-addr: ${NACOS_SERVER_ADDR}
+        ip: ${NACOS_IP}
 
 # S3配置
 s3:

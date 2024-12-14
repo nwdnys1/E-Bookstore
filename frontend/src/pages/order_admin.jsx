@@ -74,7 +74,7 @@ const OrderAdminPage = () => {
   return (
     <AdminLayout>
       <Flex
-        style={{ width: "65%", minWidth: 800, margin: "0 auto" }}
+        style={{  minWidth: 800, margin: "0 auto" }}
         vertical
         justify="center"
       >
