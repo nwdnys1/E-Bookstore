@@ -29,7 +29,7 @@ public class SecurityConfig {
 		return http.authorizeHttpRequests((requests) -> {
 			requests.requestMatchers("/api/book/admin/**", "/api/user/admin/**").hasRole("admin")// 只有管理员才能访问
 					.requestMatchers("api/user/update", "/api/user/avatar").authenticated()// 登录后才能访问
-					.requestMatchers("/api/book/**", "/api/comment/list/**", "/api/user/**", "/api/tag/**", "/image/**")
+					.requestMatchers("/api/book/**", "/api/comment/list/**", "/api/user/**", "/api/tag/**", "/image/**","/graphql","/")
 					.permitAll().anyRequest().authenticated();
 		}).formLogin(conf -> {
 			// conf.loginProcessingUrl("/api/login");

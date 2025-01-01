@@ -10,6 +10,7 @@ public interface TagRepository extends Neo4jRepository<Tag, Long> {
 	List<Tag> findTagNamesByTids(List<Long> tids);
 	@Query("MATCH (t:Tag) RETURN t")
 	List<Tag> allTags();
-	@Query("MATCH (t1:Tag)-[:RELATE_TO]->(t2)-[:RELATE_TO]->(t3) WHERE t1.name = $0 WITH COLLECT(t1) + COLLECT(t2) + COLLECT(t3) AS t4 UNWIND t4 AS t RETURN DISTINCT ID(t)")
+	@Query("MATCH (t1:Tag)-[:RELATE_TO]-(t2:Tag) WHERE t1.name = $0 OPTIONAL MATCH (t2)-[:RELATE_TO]-(t3)  "
+			+ "WITH COLLECT(t1) + COLLECT(t2) + COLLECT(t3) AS t4 UNWIND t4 AS t RETURN DISTINCT ID(t)")
 	List<Long> findRelatedTags(String name);
 }

@@ -34,22 +34,24 @@ const ExtraPage = () => {
   };
   const handleSearchKeyword = (value) => {
     const GET_BOOKS = gql`
-      query {
-        findBooksByTitle(title: "${value}") {
+      query findBooksByTitle($title: String!) {
+        findBooksByTitle(title: $title) {
           id
           title
           author
           cover
           price
-          bookDetails{
+          bookDetails {
             rating
           }
         }
       }
     `;
+    const variables = { title: value };
     client
       .query({
         query: GET_BOOKS,
+        variables,
       })
       .then((res) => {
         setBooks(res.data.findBooksByTitle);
