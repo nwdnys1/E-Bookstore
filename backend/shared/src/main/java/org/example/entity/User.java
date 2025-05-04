@@ -22,4 +22,16 @@ public class User {
     private String tel;
     @Lob
     private String aboutMe;
+
+    public User() {
+        id = 0;
+        username = "";
+        role = "user";
+        avatar = "";
+        email = "";
+        enabled = true;
+        level = 0;
+        tel = "";
+        aboutMe = "";
+    }
 }

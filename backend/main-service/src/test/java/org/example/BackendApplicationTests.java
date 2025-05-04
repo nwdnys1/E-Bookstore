@@ -9,17 +9,5 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootTest
 class BackendApplicationTests {
-    @Resource
-    CartItemRepository cartItemRepository;
-    CartItemService cartItemService;
-
-    @Test
-    void contextLoads() {
-
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            System.out.print(encoder.encode("123"));
-
-
-    }
 
 }

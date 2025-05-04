@@ -98,12 +98,10 @@ public class OrderServiceImpl implements OrderService {
     // 在购物车项列表中查找指定ID的购物车项
     @Override
     public CartItem findCartItemById(List<CartItem> cartItems, int cid) {
-        for (CartItem cartItem : cartItems) {
-            if (cartItem.getId() == cid) {
-                return cartItem;
-            }
-        }
-        return null;
+        return cartItems .stream()
+                .filter(cartItem -> cartItem.getId() == cid)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

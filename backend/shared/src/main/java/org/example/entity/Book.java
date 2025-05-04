@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "books")
 @AllArgsConstructor
-@NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // 忽略cartItems属性 并且解决某一字段可能为null的问题
 public class Book {
 	@Id
@@ -32,4 +32,19 @@ public class Book {
 	@Transient
 	private List<Tag> tags;
 
+	public Book() {
+		title = "";
+		author = "";
+		description = "";
+		price = 0;
+		cover = "";
+		isbn = "";
+		bookDetails = new BookDetails();
+		bookDetails.setRating(0);
+		bookDetails.setSales(0);
+		bookDetails.setComments(new ArrayList<>());
+		bookDetails.setId(0);
+		bookDetails.setStock(0);
+		tags = new ArrayList<>();
+	}
 }
